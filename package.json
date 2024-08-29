@@ -1,0 +1,19 @@
+{
+  "name": "fastfeet",
+  "version": "1.0.0",
+  "description": "Desafio referente aos módulos: DDD no Node.js e NestJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.5.1"
+  },
+  "dependencies": {
+    "tsc": "^2.0.4",
+    "typescript": "^5.5.4"
+  }
+}
