@@ -1,12 +1,11 @@
 import { UnqiueEntityID } from "./unique-entity-id";
 
-export class Entity<Props> {
-  protected props: Props;
+export abstract class Entity<Props> {
   private _id: UnqiueEntityID;
+  protected props: Props;
 
-  protected constructor(entity: Entity<Props>, id?: UnqiueEntityID) {
-    Object.assign(this, entity);
-
+  protected constructor(props: Props, id?: UnqiueEntityID) {
+    this.props = props;
     this._id = id ?? new UnqiueEntityID();
   }
 

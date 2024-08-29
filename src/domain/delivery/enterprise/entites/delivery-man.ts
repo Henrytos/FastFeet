@@ -25,7 +25,7 @@ export class DeliveryMan extends Entity<DeliveryManProps> {
     return this.name;
   }
 
-  static create(props: DeliveryMan, id?: UnqiueEntityID) {
+  static create(props: DeliveryManProps, id?: UnqiueEntityID) {
     const deliveryMan = new DeliveryMan(props, id);
 
     return deliveryMan;
