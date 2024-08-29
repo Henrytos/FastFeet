@@ -55,6 +55,18 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 
 [ ] Deve ser possível notificar o destinatário a cada alteração no status da encomenda
 
+#### entitites 
+delivery man :entregador
+maneger: admin
+order: pedido
+recipient: destinatário
+
+### value object 
+cpf 
+address
+
+#### use cases 
+
 ### Regras de negócio
 
 
