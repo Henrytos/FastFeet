@@ -5,18 +5,18 @@ import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-
 import { DeliveryMan } from "../../enterprise/entites/delivery-man";
 import { HashGenerator } from "../cryptography/hash-generator";
 
-interface CreateDeliveryManUseCaseRequest {
+interface CreateDeliveryManByAdministratorUseCaseRequest {
   cpf: string;
   name: string;
   password: string;
   administratorId: string;
 }
-type CreateDeliveryManUseCaseResponse = Either<
+type CreateDeliveryManByAdministratorUseCaseResponse = Either<
   AdministratorDoesNotExistError,
   {}
 >;
 
-export class CreateDeliveryManUseCase {
+export class CreateDeliveryManByAdministratorUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
     private deliveryMansRepository: DeliveryMansRepository,
@@ -28,7 +28,7 @@ export class CreateDeliveryManUseCase {
     name,
     password,
     administratorId,
-  }: CreateDeliveryManUseCaseRequest): Promise<CreateDeliveryManUseCaseResponse> {
+  }: CreateDeliveryManByAdministratorUseCaseRequest): Promise<CreateDeliveryManByAdministratorUseCaseResponse> {
     const administrator = await this.administratorsRepository.findById(
       administratorId
     );

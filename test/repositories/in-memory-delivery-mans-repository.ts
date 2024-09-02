@@ -21,4 +21,9 @@ export class InMemoryDeliveryMansRepository implements DeliveryMansRepository {
   async delete(deliveryMan: DeliveryMan): Promise<void> {
     this.items = this.items.filter((item) => item.id !== deliveryMan.id);
   }
+
+  async save(deliveryMan: DeliveryMan): Promise<void> {
+    const index = this.items.findIndex((item) => item.id === deliveryMan.id);
+    this.items[index] = deliveryMan;
+  }
 }

@@ -1,5 +1,5 @@
 import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
-import { CreateDeliveryManUseCase } from "./create-delivery-man-use-case";
+import { CreateDeliveryManByAdministratorUseCase } from "./create-delivery-man-by-administrator-use-case";
 import { FakeHashGenerator } from "@/test/cryptography/fake-hash-generator";
 import { HashGenerator } from "../cryptography/hash-generator";
 import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
@@ -7,7 +7,7 @@ import { makeAdministrator } from "@/test/factories/make-administrator";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 
 describe("create deleviry man  use case", () => {
-  let sut: CreateDeliveryManUseCase;
+  let sut: CreateDeliveryManByAdministratorUseCase;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
   let fakeHashGenerator: HashGenerator;
@@ -15,7 +15,7 @@ describe("create deleviry man  use case", () => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     fakeHashGenerator = new FakeHashGenerator();
-    sut = new CreateDeliveryManUseCase(
+    sut = new CreateDeliveryManByAdministratorUseCase(
       inMemoryAdministratorsRepository,
       inMemoryDeliveryMansRepository,
       fakeHashGenerator
