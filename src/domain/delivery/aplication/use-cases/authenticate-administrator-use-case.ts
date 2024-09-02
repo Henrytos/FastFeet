@@ -4,6 +4,7 @@ import { HashComparer } from "../cryptography/hash-comparer";
 import { AdministratorsRepository } from "../repositories/administrators-repository";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { Cpf } from "../../enterprise/entites/value-object/cpf";
 
 interface AuthenticateAdministratorUseCaseRequest {
   cpf: string;
@@ -27,7 +28,9 @@ export class AuthenticateAdministratorUseCase {
     cpf,
     password,
   }: AuthenticateAdministratorUseCaseRequest): Promise<AuthenticateAdministratorUseCaseResponse> {
-    const administrator = await this.administratorsRepository.findByCpf(cpf);
+    const administrator = await this.administratorsRepository.findByCpf(
+      Cpf.createFromValue(cpf)
+    );
 
     if (!administrator) {
       return left(new AdministratorDoesNotExistError());

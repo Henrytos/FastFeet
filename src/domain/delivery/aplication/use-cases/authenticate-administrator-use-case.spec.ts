@@ -7,6 +7,7 @@ import { Encrypter } from "../cryptography/encrypter";
 import { HashComparer } from "../cryptography/hash-comparer";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { Cpf } from "../../enterprise/entites/value-object/cpf";
 
 describe("authenticate administrator use case", () => {
   let sut: AuthenticateAdministratorUseCase;
@@ -26,10 +27,10 @@ describe("authenticate administrator use case", () => {
     );
   });
 
-  it("should be able possible to log in with CPF and password", async () => {
+  it("should be able possible to login with CPF and password", async () => {
     const administrator = makeAdministrator({
       password: "123456",
-      cpf: "12345678900",
+      cpf: Cpf.createFromValue("12345678900"),
     });
     inMemoryadministratorsRepository.items.push(administrator);
 
@@ -47,7 +48,7 @@ describe("authenticate administrator use case", () => {
   it("should not be possible to authenticate with the invalid password ", async () => {
     const administrator = makeAdministrator({
       password: "123456",
-      cpf: "12345678900",
+      cpf: Cpf.createFromValue("12345678900"),
     });
     inMemoryadministratorsRepository.items.push(administrator);
 
@@ -63,7 +64,7 @@ describe("authenticate administrator use case", () => {
   it("should not be possible to authenticate with the invalid CPF ", async () => {
     const administrator = makeAdministrator({
       password: "123456",
-      cpf: "12345678900",
+      cpf: Cpf.createFromValue("12345678900"),
     });
     inMemoryadministratorsRepository.items.push(administrator);
 
