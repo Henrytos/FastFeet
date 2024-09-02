@@ -1,18 +1,18 @@
 import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
-import { DeleteDeliveryManUseCase } from "./delete-delivery-man-use-case";
+import { DeleteDeliveryManByIdUseCase } from "./delete-delivery-man-by-id-use-case";
 import { makeAdministrator } from "@/test/factories/make-administrator";
 import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 
 describe("create deleviry man  use case", () => {
-  let sut: DeleteDeliveryManUseCase;
+  let sut: DeleteDeliveryManByIdUseCase;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
 
   beforeEach(() => {
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
 
-    sut = new DeleteDeliveryManUseCase(inMemoryDeliveryMansRepository);
+    sut = new DeleteDeliveryManByIdUseCase(inMemoryDeliveryMansRepository);
   });
 
   it("should be possible to delete a delivery by administrator", async () => {
@@ -27,7 +27,7 @@ describe("create deleviry man  use case", () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      deleviryManId: deliveryMan.id.toString(),
+      deliveryManId: deliveryMan.id.toString(),
     });
 
     expect(result.isRight()).toBe(true);
@@ -39,7 +39,7 @@ describe("create deleviry man  use case", () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      deleviryManId: "invalid-delivery-man-id",
+      deliveryManId: "invalid-delivery-man-id",
     });
 
     expect(result.isLeft()).toBe(true);
@@ -59,7 +59,7 @@ describe("create deleviry man  use case", () => {
 
     const result = await sut.execute({
       administratorId: administrator2.id.toString(),
-      deleviryManId: deliveryMan.id.toString(),
+      deliveryManId: deliveryMan.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);

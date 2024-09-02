@@ -11,7 +11,6 @@ export function makeAdministrator(
 ) {
   const administrator = Administrator.create(
     {
-      id: new UnqiueEntityID(),
       cpf: faker.lorem.text(),
       name: faker.internet.userName(),
       password: faker.internet.password(),
