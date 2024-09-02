@@ -29,7 +29,7 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 ### Regras da aplicação
 
 
-[ ] A aplicação deve ter dois tipos de usuário, entregador e/ou admin
+[ x ] A aplicação deve ter dois tipos de usuário, entregador e/ou admin
 
 [ ] Deve ser possível realizar login com CPF e Senha
 

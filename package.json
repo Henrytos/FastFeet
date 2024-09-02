@@ -4,16 +4,20 @@
   "description": "Desafio referente aos módulos: DDD no Node.js e NestJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^22.5.1"
+    "@faker-js/faker": "^8.4.1",
+    "@types/node": "^22.5.1",
+    "faker": "^6.6.6",
+    "vitest": "^2.0.5"
   },
   "dependencies": {
     "tsc": "^2.0.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest-tsconfig-paths": "^3.4.1"
   }
 }

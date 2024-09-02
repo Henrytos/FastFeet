@@ -1,7 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 
-interface AdministratorProps {
+export interface AdministratorProps {
   id: UnqiueEntityID;
   cpf: string;
   password: string;
@@ -10,19 +10,19 @@ interface AdministratorProps {
 
 export class Administrator extends Entity<AdministratorProps> {
   get id(): UnqiueEntityID {
-    return this.id;
+    return this.props.id;
   }
 
   get cpf(): string {
-    return this.cpf;
+    return this.props.cpf;
   }
 
   get password(): string {
-    return this.password;
+    return this.props.password;
   }
 
   get name(): string {
-    return this.name;
+    return this.props.name;
   }
 
   static create(props: AdministratorProps, id?: UnqiueEntityID) {
