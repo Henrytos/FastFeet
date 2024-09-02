@@ -13,10 +13,12 @@ describe("authenticate administrator use case", () => {
   let inMemoryadministratorsRepository: InMemoryAdministratorsRepository;
   let fakeEncrypter: Encrypter;
   let fakeHashComparer: HashComparer;
+
   beforeEach(() => {
     inMemoryadministratorsRepository = new InMemoryAdministratorsRepository();
     fakeEncrypter = new FakeEncrypter();
     fakeHashComparer = new FakeHashComparer();
+
     sut = new AuthenticateAdministratorUseCase(
       inMemoryadministratorsRepository,
       fakeEncrypter,
@@ -29,7 +31,6 @@ describe("authenticate administrator use case", () => {
       password: "123456",
       cpf: "12345678900",
     });
-
     inMemoryadministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({
@@ -48,7 +49,6 @@ describe("authenticate administrator use case", () => {
       password: "123456",
       cpf: "12345678900",
     });
-
     inMemoryadministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({
@@ -65,7 +65,6 @@ describe("authenticate administrator use case", () => {
       password: "123456",
       cpf: "12345678900",
     });
-
     inMemoryadministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({

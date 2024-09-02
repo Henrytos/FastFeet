@@ -6,6 +6,7 @@ import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { DeliveryMan } from "../../enterprise/entites/delivery-man";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 import { HashGenerator } from "../cryptography/hash-generator";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
 
 interface UpdateDeliveryManByAdministratorUseCaseRequest {
   deliveryManId: string;
@@ -21,6 +22,7 @@ type UpdateDeliveryManByAdministratorUseCaseResponse = Either<
 
 export class UpdateDeliveryManByAdministratorUseCase {
   constructor(
+    private administratorsRepository: AdministratorsRepository,
     private deliveryMansRepository: DeliveryMansRepository,
     private hashGenerator: HashGenerator
   ) {}
@@ -32,9 +34,18 @@ export class UpdateDeliveryManByAdministratorUseCase {
     name,
     password,
   }: UpdateDeliveryManByAdministratorUseCaseRequest): Promise<UpdateDeliveryManByAdministratorUseCaseResponse> {
+    const administrator = await this.administratorsRepository.findById(
+      administratorId
+    );
+
+    if (!administrator) {
+      return left(new AdministratorDoesNotExistError());
+    }
+
     const deliveryMan = await this.deliveryMansRepository.findById(
       deliveryManId
     );
+
     if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError());
     }

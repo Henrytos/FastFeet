@@ -5,7 +5,7 @@ import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
 import { makeAdministrator } from "@/test/factories/make-administrator";
 import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
-import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 
 describe("update delivery use case", () => {
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
@@ -17,7 +17,9 @@ describe("update delivery use case", () => {
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     hashGenerator = new FakeHashGenerator();
+
     sut = new UpdateDeliveryManByAdministratorUseCase(
+      inMemoryAdministratorsRepository,
       inMemoryDeliveryMansRepository,
       hashGenerator
     );
@@ -25,6 +27,7 @@ describe("update delivery use case", () => {
 
   it("should be possible to update a delivery by administrator", async () => {
     const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan({
       administratorId: administrator.id,
       cpf: "123456789000",
@@ -87,6 +90,6 @@ describe("update delivery use case", () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(WrongCredentialsError);
+    expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
   });
 });

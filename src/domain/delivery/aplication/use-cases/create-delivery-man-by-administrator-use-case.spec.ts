@@ -11,10 +11,12 @@ describe("create deleviry man  use case", () => {
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
   let fakeHashGenerator: HashGenerator;
+
   beforeEach(() => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     fakeHashGenerator = new FakeHashGenerator();
+
     sut = new CreateDeliveryManByAdministratorUseCase(
       inMemoryAdministratorsRepository,
       inMemoryDeliveryMansRepository,

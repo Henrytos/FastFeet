@@ -3,6 +3,8 @@ import { DeliveryMansRepository } from "../repositories/delivery-mans-repository
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { DeliveryMan } from "../../enterprise/entites/delivery-man";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
 
 interface GetDeliveryManByIdUseCaseRequest {
   deleviryManId: string;
@@ -14,12 +16,23 @@ type GetDeliveryManByIdUseCaseResponse = Either<
 >;
 
 export class GetDeliveryManByIdUseCase {
-  constructor(private deliveryMansRepository: DeliveryMansRepository) {}
+  constructor(
+    private administratorsRepository: AdministratorsRepository,
+    private deliveryMansRepository: DeliveryMansRepository
+  ) {}
 
   async execute({
     deleviryManId,
     administratorId,
   }: GetDeliveryManByIdUseCaseRequest): Promise<GetDeliveryManByIdUseCaseResponse> {
+    const administrator = await this.administratorsRepository.findById(
+      administratorId
+    );
+
+    if (!administrator) {
+      return left(new AdministratorDoesNotExistError());
+    }
+
     const deliveryMan = await this.deliveryMansRepository.findById(
       deleviryManId
     );
