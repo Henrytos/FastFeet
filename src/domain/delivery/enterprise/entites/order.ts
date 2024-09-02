@@ -3,7 +3,6 @@ import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 
 interface OrderProps {
-  id: UnqiueEntityID;
   deliviryManId: UnqiueEntityID;
   recipientId: UnqiueEntityID;
   deliveryAddressId: UnqiueEntityID;
@@ -15,10 +14,6 @@ interface OrderProps {
 }
 
 export class Order extends Entity<OrderProps> {
-  get id(): UnqiueEntityID {
-    return this.props.id;
-  }
-
   get deliviryManId() {
     return this.props.deliviryManId;
   }
