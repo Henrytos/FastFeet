@@ -15,4 +15,14 @@ export class InMemoryAdministratorsRepository
 
     return administrator;
   }
+
+  async findById(id: string): Promise<Administrator | null> {
+    const deliveryMan = this.items.find((item) => item.id.toString() === id);
+
+    if (!deliveryMan) {
+      return null;
+    }
+
+    return deliveryMan;
+  }
 }

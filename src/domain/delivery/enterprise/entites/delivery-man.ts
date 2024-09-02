@@ -2,27 +2,27 @@ import { Entity } from "@/core/entities/entity";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 
 interface DeliveryManProps {
-  id: UnqiueEntityID;
   cpf: string;
   password: string;
   name: string;
+  administratorId: UnqiueEntityID;
 }
 
 export class DeliveryMan extends Entity<DeliveryManProps> {
-  get id(): UnqiueEntityID {
-    return this.id;
+  get cpf() {
+    return this.props.cpf;
   }
 
-  get cpf(): UnqiueEntityID {
-    return this.cpf;
+  get password() {
+    return this.props.password;
   }
 
-  get password(): UnqiueEntityID {
-    return this.password;
+  get name() {
+    return this.props.name;
   }
 
-  get name(): string {
-    return this.name;
+  get administratorId() {
+    return this.props.administratorId;
   }
 
   static create(props: DeliveryManProps, id?: UnqiueEntityID) {
