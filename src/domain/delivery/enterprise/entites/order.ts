@@ -5,13 +5,13 @@ import { Optional } from "@/core/types/optional";
 interface OrderProps {
   id: UnqiueEntityID;
   deliviryManId: UnqiueEntityID;
+  recipientId: UnqiueEntityID;
   deliveryAddressId: UnqiueEntityID;
-  reciverId: UnqiueEntityID;
   status: "pending" | "delivered" | "withdrawn";
   createdAt: Date;
   updatedAt?: Date | null;
-  deliveryDate?: Date | null;
-  withdrawnDate: Date;
+  deliveryAt?: Date | null;
+  withdrawnAt?: Date;
 }
 
 export class Order extends Entity<OrderProps> {
@@ -19,16 +19,16 @@ export class Order extends Entity<OrderProps> {
     return this.props.id;
   }
 
-  get deliviryManId(): UnqiueEntityID {
+  get deliviryManId() {
     return this.props.deliviryManId;
   }
 
-  get deliveryAddressId(): UnqiueEntityID {
-    return this.props.deliveryAddressId;
+  get recipientId() {
+    return this.props.recipientId;
   }
 
-  get reciverId(): UnqiueEntityID {
-    return this.props.reciverId;
+  get deliveryAddressId() {
+    return this.props.deliveryAddressId;
   }
 
   get status() {
@@ -43,12 +43,12 @@ export class Order extends Entity<OrderProps> {
     return this.props.updatedAt;
   }
 
-  get deliveryDate() {
-    return this.props.deliveryDate;
+  get deliveryAt() {
+    return this.props.deliveryAt;
   }
 
-  get withdrawnDate() {
-    return this.props.withdrawnDate;
+  get withdrawnAt() {
+    return this.props.withdrawnAt;
   }
 
   static create(props: Optional<OrderProps, "createdAt">, id: UnqiueEntityID) {

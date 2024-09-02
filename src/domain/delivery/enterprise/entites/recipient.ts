@@ -1,13 +1,12 @@
 import { Entity } from "@/core/entities/entity";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 
-interface AddresseerProps {
+interface RecipientProps {
   id: UnqiueEntityID;
   name: string;
-  addresId: UnqiueEntityID;
 }
 
-export class Addresseer extends Entity<AddresseerProps> {
+export class Recipient extends Entity<RecipientProps> {
   get id(): UnqiueEntityID {
     return this.id;
   }
@@ -16,9 +15,9 @@ export class Addresseer extends Entity<AddresseerProps> {
     return this.name;
   }
 
-  static create(props: AddresseerProps, id?: UnqiueEntityID) {
-    const addresseer = new Addresseer(props, id);
+  static create(props: RecipientProps, id?: UnqiueEntityID) {
+    const recipient = new Recipient(props, id);
 
-    return addresseer;
+    return recipient;
   }
 }
