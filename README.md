@@ -66,7 +66,6 @@ attachment or photo
 cpf 
 address
 
-#### use cases 
 
 ### Regras de negócio
 
