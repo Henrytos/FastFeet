@@ -4,6 +4,7 @@ import { DeliveryMansRepository } from "../repositories/delivery-mans-repository
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { DeliveryMan } from "../../enterprise/entites/delivery-man";
 import { HashGenerator } from "../cryptography/hash-generator";
+import { Cpf } from "../../enterprise/entites/value-object/cpf";
 
 interface CreateDeliveryManByAdministratorUseCaseRequest {
   cpf: string;
@@ -40,7 +41,7 @@ export class CreateDeliveryManByAdministratorUseCase {
     const passwordHash = await this.hashGenerator.hash(password);
 
     const deliveryMan = DeliveryMan.create({
-      cpf,
+      cpf: Cpf.createFromValue(cpf),
       name,
       password: passwordHash,
       administratorId: administrator.id,

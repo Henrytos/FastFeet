@@ -1,22 +1,23 @@
 import { Entity } from "@/core/entities/entity";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { Cpf } from "./value-object/cpf";
 
 export interface AdministratorProps {
-  cpf: string;
+  cpf: Cpf;
   password: string;
   name: string;
 }
 
 export class Administrator extends Entity<AdministratorProps> {
-  get cpf(): string {
+  get cpf() {
     return this.props.cpf;
   }
 
-  get password(): string {
+  get password() {
     return this.props.password;
   }
 
-  get name(): string {
+  get name() {
     return this.props.name;
   }
 

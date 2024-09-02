@@ -58,7 +58,7 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 #### entitites 
 delivery man :entregador
 manageror administrator: admin
-order: pedido
+order: encomenda
 recipient: destinatário
 attachment or photo
 

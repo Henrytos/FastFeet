@@ -30,7 +30,7 @@ describe("create deleviry man  use case", () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      cpf: "123456789000",
+      cpf: "12345678900",
       name: "john doe",
       password: "123456",
     });
@@ -45,7 +45,7 @@ describe("create deleviry man  use case", () => {
   it("should not be possible to create without being administrator", async () => {
     const result = await sut.execute({
       administratorId: "invalid-administrator-id",
-      cpf: "123456789000",
+      cpf: "12345678900",
       name: "john doe",
       password: "123456",
     });

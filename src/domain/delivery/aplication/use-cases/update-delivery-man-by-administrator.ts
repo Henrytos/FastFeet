@@ -7,6 +7,7 @@ import { DeliveryMan } from "../../enterprise/entites/delivery-man";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 import { HashGenerator } from "../cryptography/hash-generator";
 import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { Cpf } from "../../enterprise/entites/value-object/cpf";
 
 interface UpdateDeliveryManByAdministratorUseCaseRequest {
   deliveryManId: string;
@@ -58,7 +59,7 @@ export class UpdateDeliveryManByAdministratorUseCase {
     const updatedDeliveryMan = DeliveryMan.create(
       {
         administratorId: new UnqiueEntityID(administratorId),
-        cpf,
+        cpf: Cpf.createFromValue(cpf),
         name,
         password: passwordHash,
       },

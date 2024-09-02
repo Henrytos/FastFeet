@@ -6,6 +6,7 @@ import { makeAdministrator } from "@/test/factories/make-administrator";
 import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { Cpf } from "../../enterprise/entites/value-object/cpf";
 
 describe("update delivery use case", () => {
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
@@ -30,23 +31,17 @@ describe("update delivery use case", () => {
     inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan({
       administratorId: administrator.id,
-      cpf: "123456789000",
+      cpf: Cpf.createFromValue("12345678900"),
       name: "john doe",
       password: "123456",
     });
     inMemoryAdministratorsRepository.items.push(administrator);
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
-    expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
-      props: {
-        cpf: "123456789000",
-        name: "john doe",
-      },
-    });
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      cpf: "000987654321",
+      cpf: "00987654321",
       name: "doe john",
       password: "654321",
     });
@@ -55,7 +50,7 @@ describe("update delivery use case", () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
     expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
       props: {
-        cpf: "000987654321",
+        cpf: Cpf.createFromValue("00987654321"),
         name: "doe john",
       },
     });
@@ -68,7 +63,7 @@ describe("update delivery use case", () => {
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       deliveryManId: "non-existing-id",
-      cpf: "000987654321",
+      cpf: "00987654321",
       name: "doe john",
       password: "654321",
     });
@@ -84,7 +79,7 @@ describe("update delivery use case", () => {
     const result = await sut.execute({
       administratorId: "non-existing-id",
       deliveryManId: deliveryMan.id.toString(),
-      cpf: "000987654321",
+      cpf: "00987654321",
       name: "doe john",
       password: "654321",
     });

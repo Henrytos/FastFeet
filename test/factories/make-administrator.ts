@@ -3,6 +3,7 @@ import {
   Administrator,
   AdministratorProps,
 } from "@/domain/delivery/enterprise/entites/administrator";
+import { Cpf } from "@/domain/delivery/enterprise/entites/value-object/cpf";
 import { faker } from "@faker-js/faker";
 
 export function makeAdministrator(
@@ -11,7 +12,9 @@ export function makeAdministrator(
 ) {
   const administrator = Administrator.create(
     {
-      cpf: faker.lorem.text(),
+      cpf: Cpf.createFromValue(
+        faker.number.int({ min: 10000000000, max: 99999999999 }).toString()
+      ),
       name: faker.internet.userName(),
       password: faker.internet.password(),
       ...overwide,

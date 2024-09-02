@@ -1,8 +1,9 @@
 import { Entity } from "@/core/entities/entity";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { Cpf } from "./value-object/cpf";
 
 export interface DeliveryManProps {
-  cpf: string;
+  cpf: Cpf;
   password: string;
   name: string;
   administratorId: UnqiueEntityID;
