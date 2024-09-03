@@ -1,8 +1,19 @@
 import { DeliveryMansRepository } from "@/domain/delivery/aplication/repositories/delivery-mans-repository";
 import { DeliveryMan } from "@/domain/delivery/enterprise/entites/delivery-man";
+import { Cpf } from "@/domain/delivery/enterprise/entites/value-object/cpf";
 
 export class InMemoryDeliveryMansRepository implements DeliveryMansRepository {
   public items: DeliveryMan[] = [];
+
+  async findByCpf(cpf: Cpf): Promise<DeliveryMan | null> {
+    const deliveryMan = this.items.find((item) => item.cpf.value == cpf.value);
+
+    if (!deliveryMan) {
+      return null;
+    }
+
+    return deliveryMan;
+  }
 
   async create(deliveryMan: DeliveryMan): Promise<void> {
     this.items.push(deliveryMan);
