@@ -1,6 +1,6 @@
 import { Entity } from "@/core/entities/entity";
 
-interface DeliveryAddressProps {
+export interface DeliveryAddressProps {
   state: string;
   city: string;
   neighborhood: string;

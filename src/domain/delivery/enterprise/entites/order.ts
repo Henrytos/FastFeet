@@ -10,6 +10,7 @@ interface OrderProps {
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
   withdrawnAt?: Date;
+  photoIds: UnqiueEntityID[];
 }
 
 export class Order extends Entity<OrderProps> {
@@ -19,6 +20,9 @@ export class Order extends Entity<OrderProps> {
 
   get recipientId() {
     return this.props.recipientId;
+  }
+  get photoIds() {
+    return this.props.photoIds;
   }
 
   get status() {
