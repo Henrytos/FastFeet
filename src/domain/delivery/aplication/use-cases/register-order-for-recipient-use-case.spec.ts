@@ -10,24 +10,49 @@ import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does
 
 import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
 import { RegisterOrderForRecipientUseCase } from "./register-order-for-recipient-use-case";
+import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
+import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
+import { InMemoryRecipientsRepository } from "@/test/repositories/in-memory-recipients-repository";
 
 describe("register order for recipient use case", () => {
   let sut: RegisterOrderForRecipientUseCase;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
+  let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
+  let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
+  let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository;
+
   beforeEach(() => {
-    sut = new RegisterOrderForRecipientUseCase();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
+    inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
+    inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository();
+    sut = new RegisterOrderForRecipientUseCase(
+      inMemoryOrdersRepository,
+      inMemoryAdministratorsRepository,
+      inMemoryDeliveryMansRepository,
+      inMemoryDeliveryAddressRepository,
+      inMemoryRecipientsRepository
+    );
   });
 
   it("should be possible to register order for the destination", async () => {
     const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan({
       administratorId: administrator.id,
     });
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const deliveryAddress = makeDeliveryAddress();
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
+
     const recipient = makeRecipient({
       deliveryAddressId: deliveryAddress.id,
     });
+    inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
@@ -41,12 +66,14 @@ describe("register order for recipient use case", () => {
   });
 
   it("should not be possible to create order without administrator", async () => {
-    const deliveryMan = makeDeliveryMan({});
+    const deliveryMan = makeDeliveryMan();
 
     const deliveryAddress = makeDeliveryAddress();
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
     const recipient = makeRecipient({
       deliveryAddressId: deliveryAddress.id,
     });
+    inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
       administratorId: "invalide-administrator-id",
@@ -55,18 +82,21 @@ describe("register order for recipient use case", () => {
       recipientId: recipient.id.toString(),
     });
 
-    expect(result.isRight()).toEqual(true);
+    expect(result.isLeft()).toEqual(true);
     expect(inMemoryOrdersRepository.items).toHaveLength(0);
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
   });
 
   it("should not be possible to create order without delivery", async () => {
     const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryAddress = makeDeliveryAddress();
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
     const recipient = makeRecipient({
       deliveryAddressId: deliveryAddress.id,
     });
+    inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
@@ -82,11 +112,14 @@ describe("register order for recipient use case", () => {
 
   it("should not be possible to create order without destination", async () => {
     const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan({
       administratorId: administrator.id,
     });
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const deliveryAddress = makeDeliveryAddress();
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
@@ -102,14 +135,18 @@ describe("register order for recipient use case", () => {
 
   it("should not be possible to create order with address of the destination", async () => {
     const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan({
       administratorId: administrator.id,
     });
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const deliveryAddress = makeDeliveryAddress();
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
     const recipient = makeRecipient({
       deliveryAddressId: deliveryAddress.id,
     });
+    inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),

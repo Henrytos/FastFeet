@@ -3,14 +3,14 @@ import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 
 interface OrderProps {
-  deliviryManId: UnqiueEntityID;
+  deliviryManId?: UnqiueEntityID;
   recipientId: UnqiueEntityID;
   status: "pending" | "delivered" | "withdrawn";
   createdAt: Date;
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
   withdrawnAt?: Date;
-  photoIds: UnqiueEntityID[];
+  photoIds?: UnqiueEntityID[];
 }
 
 export class Order extends Entity<OrderProps> {
@@ -45,11 +45,13 @@ export class Order extends Entity<OrderProps> {
     return this.props.withdrawnAt;
   }
 
-  static create(props: Optional<OrderProps, "createdAt">, id: UnqiueEntityID) {
+  static create(props: Optional<OrderProps, "createdAt">, id?: UnqiueEntityID) {
     const order = new Order(
       {
+        createdAt: new Date(),
+        updatedAt: props.updatedAt ?? new Date(),
+
         ...props,
-        createdAt: props.createdAt ?? new Date(),
       },
       id
     );
