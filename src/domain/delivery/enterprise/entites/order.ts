@@ -5,7 +5,6 @@ import { Optional } from "@/core/types/optional";
 interface OrderProps {
   deliviryManId: UnqiueEntityID;
   recipientId: UnqiueEntityID;
-  deliveryAddressId: UnqiueEntityID;
   status: "pending" | "delivered" | "withdrawn";
   createdAt: Date;
   updatedAt?: Date | null;
@@ -20,10 +19,6 @@ export class Order extends Entity<OrderProps> {
 
   get recipientId() {
     return this.props.recipientId;
-  }
-
-  get deliveryAddressId() {
-    return this.props.deliveryAddressId;
   }
 
   get status() {
