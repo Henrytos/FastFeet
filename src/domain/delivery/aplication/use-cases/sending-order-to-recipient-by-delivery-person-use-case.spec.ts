@@ -63,6 +63,8 @@ describe("register order for recipient use case", () => {
       recipientId: recipient.id,
     });
 
+    inMemoryOrdersRepository.items.push(order);
+
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       orderId: order.id.toString(),
@@ -73,7 +75,7 @@ describe("register order for recipient use case", () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
   });
 
-  it("It should not be possible to send order if there is no administrator", async () => {
+  it("should not be possible to send order if there is no administrator", async () => {
     const deliveryMan = makeDeliveryMan({});
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -88,6 +90,7 @@ describe("register order for recipient use case", () => {
     const order = makeOrder({
       recipientId: recipient.id,
     });
+    inMemoryOrdersRepository.items.push(order);
 
     const result = await sut.execute({
       administratorId: "invalid-administrator-id",
@@ -95,9 +98,9 @@ describe("register order for recipient use case", () => {
       deliveryManId: deliveryMan.id.toString(),
     });
 
-    expect(result.isLeft()).toEqual(false);
+    expect(result.isLeft()).toEqual(true);
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
-    expect(result.value).toEqual(new AdministratorDoesNotExistError());
+    expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
         status: "pending",
@@ -105,7 +108,7 @@ describe("register order for recipient use case", () => {
     });
   });
 
-  it("It should not be possible to send order if there is no order", async () => {
+  it("should not be possible to send order if there is no order", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -128,17 +131,12 @@ describe("register order for recipient use case", () => {
       deliveryManId: deliveryMan.id.toString(),
     });
 
-    expect(result.isLeft()).toEqual(false);
-    expect(inMemoryOrdersRepository.items).toHaveLength(1);
-    expect(result.value).toEqual(new OrderDoesNotExistError());
-    expect(inMemoryOrdersRepository.items[0]).toMatchObject({
-      props: {
-        status: "pending",
-      },
-    });
+    expect(result.isLeft()).toEqual(true);
+    expect(inMemoryOrdersRepository.items).toHaveLength(0);
+    expect(result.value).toBeInstanceOf(OrderDoesNotExistError);
   });
 
-  it("It should not be possible to send order if there is no delivery man", async () => {
+  it("should not be possible to send order if there is no delivery man", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -154,6 +152,8 @@ describe("register order for recipient use case", () => {
       recipientId: recipient.id,
     });
 
+    inMemoryOrdersRepository.items.push(order);
+
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       orderId: order.id.toString(),
@@ -162,7 +162,7 @@ describe("register order for recipient use case", () => {
 
     expect(result.isLeft()).toEqual(true);
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
-    expect(result.value).toEqual(new DeliveryManDoesNotExistError());
+    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
         status: "pending",
@@ -170,7 +170,7 @@ describe("register order for recipient use case", () => {
     });
   });
 
-  it("It should not be possible to send order if there is no recipient", async () => {
+  it("should not be possible to send order if there is no recipient", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -185,6 +185,7 @@ describe("register order for recipient use case", () => {
     const order = makeOrder({
       recipientId: new UniqueEntityID("invalid-recipient-id"),
     });
+    inMemoryOrdersRepository.items.push(order);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
@@ -194,7 +195,7 @@ describe("register order for recipient use case", () => {
 
     expect(result.isLeft()).toEqual(true);
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
-    expect(result.value).toEqual(new RecipientDoesNotExistError());
+    expect(result.value).toBeInstanceOf(RecipientDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
         status: "pending",
@@ -202,7 +203,7 @@ describe("register order for recipient use case", () => {
     });
   });
 
-  it("It should not be possible to send order if there is no destination", async () => {
+  it("should not be possible to send order if there is no destination", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -220,6 +221,8 @@ describe("register order for recipient use case", () => {
       recipientId: recipient.id,
     });
 
+    inMemoryOrdersRepository.items.push(order);
+
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       orderId: order.id.toString(),
@@ -228,7 +231,7 @@ describe("register order for recipient use case", () => {
 
     expect(result.isLeft()).toEqual(true);
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
-    expect(result.value).toEqual(new DeliveryAddressDoesNotExistError());
+    expect(result.value).toBeInstanceOf(DeliveryAddressDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
         status: "pending",

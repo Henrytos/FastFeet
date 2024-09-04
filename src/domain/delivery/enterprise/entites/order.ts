@@ -14,11 +14,11 @@ export interface OrderProps {
 }
 
 export class Order extends Entity<OrderProps> {
-  get deliviryManId() {
+  get deliviryManId(): UniqueEntityID | undefined {
     return this.props.deliviryManId;
   }
 
-  set deliveryManId(deliviryManId: UniqueEntityID) {
+  set deliviryManId(deliviryManId: UniqueEntityID) {
     this.props.deliviryManId = deliviryManId;
     this.touch();
   }
@@ -51,8 +51,13 @@ export class Order extends Entity<OrderProps> {
     return this.props.deliveryAt;
   }
 
-  get withdrawnAt() {
+  get withdrawnAt(): Date | undefined {
     return this.props.withdrawnAt;
+  }
+
+  set withdrawnAt(withdrawnAt: Date) {
+    this.props.withdrawnAt = withdrawnAt;
+    this.touch();
   }
 
   touch() {

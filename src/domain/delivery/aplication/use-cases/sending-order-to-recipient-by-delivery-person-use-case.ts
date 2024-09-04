@@ -7,8 +7,9 @@ import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-er
 import { OrdersRepository } from "../repositories/orders-repository";
 import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
 import { RecipientsRepository } from "../repositories/recipients-repositorys";
-import { Order } from "../../enterprise/entites/order";
 import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
+import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
   administratorId: string;
@@ -17,6 +18,8 @@ interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
 }
 type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
   | AdministratorDoesNotExistError
+  | DeliveryManDoesNotExistError
+  | OrderDoesNotExistError
   | RecipientDoesNotExistError
   | DeliveryAddressDoesNotExistError,
   {}
@@ -43,7 +46,21 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
       return left(new AdministratorDoesNotExistError());
     }
 
-    const recipient = await this.recipientsRepository.findById(recipientId);
+    const deliveryMan = await this.deliveryMansRepository.findById(
+      deliveryManId
+    );
+    if (!deliveryMan) {
+      return left(new DeliveryManDoesNotExistError());
+    }
+
+    const order = await this.ordersRepository.findById(orderId);
+    if (!order) {
+      return left(new OrderDoesNotExistError());
+    }
+
+    const recipient = await this.recipientsRepository.findById(
+      order.recipientId.toString()
+    );
     if (!recipient) {
       return left(new RecipientDoesNotExistError());
     }
@@ -54,6 +71,14 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
     if (!deliveryAddress) {
       return left(new DeliveryAddressDoesNotExistError());
     }
+
+    order.status = "delivered";
+    order.deliviryManId = deliveryMan.id;
+    order.withdrawnAt = new Date();
+
+    this.ordersRepository.save(order);
+
+    //TODO: Send notification to recipient
 
     return right({});
   }
