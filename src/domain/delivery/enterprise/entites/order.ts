@@ -5,7 +5,7 @@ import { Optional } from "@/core/types/optional";
 interface OrderProps {
   deliviryManId?: UnqiueEntityID;
   recipientId: UnqiueEntityID;
-  status: "pending" | "delivered" | "withdrawn";
+  status: "pending" | "delivered" | "withdrawn" | "canceled";
   createdAt: Date;
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
@@ -18,6 +18,11 @@ export class Order extends Entity<OrderProps> {
     return this.props.deliviryManId;
   }
 
+  set deliveryManId(deliviryManId: UnqiueEntityID) {
+    this.props.deliviryManId = deliviryManId;
+    this.touch();
+  }
+
   get recipientId() {
     return this.props.recipientId;
   }
@@ -27,6 +32,11 @@ export class Order extends Entity<OrderProps> {
 
   get status() {
     return this.props.status;
+  }
+
+  set status(status: "pending" | "delivered" | "withdrawn" | "canceled") {
+    this.props.status = status;
+    this.touch();
   }
 
   get createdAt() {
@@ -43,6 +53,10 @@ export class Order extends Entity<OrderProps> {
 
   get withdrawnAt() {
     return this.props.withdrawnAt;
+  }
+
+  touch() {
+    this.props.updatedAt = new Date();
   }
 
   static create(props: Optional<OrderProps, "createdAt">, id?: UnqiueEntityID) {

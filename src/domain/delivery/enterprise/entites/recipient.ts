@@ -1,7 +1,7 @@
 import { Entity } from "@/core/entities/entity";
 import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
 
-interface RecipientProps {
+export interface RecipientProps {
   name: string;
   email: string;
   deliveryAddressId: UnqiueEntityID;
