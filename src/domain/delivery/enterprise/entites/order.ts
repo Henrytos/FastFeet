@@ -34,7 +34,7 @@ export class Order extends Entity<OrderProps> {
     return this.props.status;
   }
 
-  set status(status: "pending" | "delivered" | "withdrawn" | "canceled") {
+  set status(status: "pending" | "withdrawn" | "delivered" | "canceled") {
     this.props.status = status;
     this.touch();
   }

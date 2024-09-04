@@ -5,6 +5,7 @@ import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 
 describe("create deleviry man  use case", () => {
   let sut: DeleteDeliveryManByIdUseCase;
@@ -40,9 +41,27 @@ describe("create deleviry man  use case", () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(0);
   });
 
+  it("should not be possible to delete a adminitartor does not exist", async () => {
+    const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
+    const deliveryMan = makeDeliveryMan();
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
+
+    const result = await sut.execute({
+      administratorId: "invalid-administrator-id",
+      deliveryManId: deliveryMan.id.toString(),
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
+    expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
+  });
+
   it("should not be possible to delete a delivery man who does not exist", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
+    const deliveryMan = makeDeliveryMan();
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
@@ -50,7 +69,7 @@ describe("create deleviry man  use case", () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(inMemoryDeliveryMansRepository.items).toHaveLength(0);
+    expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
     expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
   });
 

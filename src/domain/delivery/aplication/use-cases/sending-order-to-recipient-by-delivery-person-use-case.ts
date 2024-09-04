@@ -72,7 +72,7 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
       return left(new DeliveryAddressDoesNotExistError());
     }
 
-    order.status = "delivered";
+    order.status = "withdrawn";
     order.deliviryManId = deliveryMan.id;
     order.withdrawnAt = new Date();
 

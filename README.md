@@ -41,7 +41,7 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 
 [ ] Deve ser possível marcar uma **encomenda** como aguardando (Disponível para retirada)
 
-[ ] Deve ser possível retirar uma **encomenda**
+[ x ] Deve ser possível retirar uma **encomenda**
 
 [ ] Deve ser possível marcar uma **encomenda** como entregue
 

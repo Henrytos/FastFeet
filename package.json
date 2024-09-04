@@ -4,7 +4,8 @@
   "description": "Desafio referente aos módulos: DDD no Node.js e NestJS",
   "main": "index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
   "author": "",

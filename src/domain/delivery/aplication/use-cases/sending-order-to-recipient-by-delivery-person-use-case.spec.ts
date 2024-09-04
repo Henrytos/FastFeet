@@ -73,6 +73,11 @@ describe("register order for recipient use case", () => {
 
     expect(result.isRight()).toEqual(true);
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
+    expect(inMemoryOrdersRepository.items[0]).toMatchObject({
+      props: {
+        status: "withdrawn",
+      },
+    });
   });
 
   it("should not be possible to send order if there is no administrator", async () => {
