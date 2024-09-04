@@ -1,4 +1,4 @@
-import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import {
   Recipient,
   RecipientProps,
@@ -8,11 +8,11 @@ import { randomUUID } from "crypto";
 
 export function makeRecipient(
   overwide: Partial<RecipientProps> = {},
-  id?: UnqiueEntityID
+  id?: UniqueEntityID
 ) {
   const recipient = Recipient.create(
     {
-      deliveryAddressId: new UnqiueEntityID(randomUUID()),
+      deliveryAddressId: new UniqueEntityID(randomUUID()),
       email: faker.internet.email(),
       name: faker.person.firstName(),
       ...overwide,

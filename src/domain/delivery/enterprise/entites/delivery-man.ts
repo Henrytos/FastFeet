@@ -1,12 +1,12 @@
 import { Entity } from "@/core/entities/entity";
-import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Cpf } from "./value-object/cpf";
 
 export interface DeliveryManProps {
   cpf: Cpf;
   password: string;
   name: string;
-  administratorId: UnqiueEntityID;
+  administratorId: UniqueEntityID;
 }
 
 export class DeliveryMan extends Entity<DeliveryManProps> {
@@ -26,7 +26,7 @@ export class DeliveryMan extends Entity<DeliveryManProps> {
     return this.props.administratorId;
   }
 
-  static create(props: DeliveryManProps, id?: UnqiueEntityID) {
+  static create(props: DeliveryManProps, id?: UniqueEntityID) {
     const deliveryMan = new DeliveryMan(props, id);
 
     return deliveryMan;

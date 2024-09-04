@@ -1,4 +1,4 @@
-import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import {
   Administrator,
   AdministratorProps,
@@ -8,7 +8,7 @@ import { faker } from "@faker-js/faker";
 
 export function makeAdministrator(
   overwide: Partial<AdministratorProps> = {},
-  id?: UnqiueEntityID
+  id?: UniqueEntityID
 ) {
   const administrator = Administrator.create(
     {

@@ -1,16 +1,16 @@
 import { Entity } from "@/core/entities/entity";
-import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 
-interface OrderProps {
-  deliviryManId?: UnqiueEntityID;
-  recipientId: UnqiueEntityID;
+export interface OrderProps {
+  deliviryManId?: UniqueEntityID;
+  recipientId: UniqueEntityID;
   status: "pending" | "delivered" | "withdrawn" | "canceled";
   createdAt: Date;
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
   withdrawnAt?: Date;
-  photoIds?: UnqiueEntityID[];
+  photoIds?: UniqueEntityID[];
 }
 
 export class Order extends Entity<OrderProps> {
@@ -18,7 +18,7 @@ export class Order extends Entity<OrderProps> {
     return this.props.deliviryManId;
   }
 
-  set deliveryManId(deliviryManId: UnqiueEntityID) {
+  set deliveryManId(deliviryManId: UniqueEntityID) {
     this.props.deliviryManId = deliviryManId;
     this.touch();
   }
@@ -59,7 +59,7 @@ export class Order extends Entity<OrderProps> {
     this.props.updatedAt = new Date();
   }
 
-  static create(props: Optional<OrderProps, "createdAt">, id?: UnqiueEntityID) {
+  static create(props: Optional<OrderProps, "createdAt">, id?: UniqueEntityID) {
     const order = new Order(
       {
         createdAt: new Date(),

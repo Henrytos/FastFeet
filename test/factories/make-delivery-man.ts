@@ -1,4 +1,4 @@
-import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import {
   DeliveryMan,
   DeliveryManProps,
@@ -9,13 +9,13 @@ import { randomUUID } from "crypto";
 
 export function makeDeliveryMan(
   overwide: Partial<DeliveryManProps> = {},
-  id?: UnqiueEntityID
+  id?: UniqueEntityID
 ) {
   const deliveryMan = DeliveryMan.create({
     cpf: Cpf.createFromValue(
       faker.number.int({ min: 10000000000, max: 99999999999 }).toString()
     ),
-    administratorId: new UnqiueEntityID(randomUUID()),
+    administratorId: new UniqueEntityID(randomUUID()),
     name: faker.person.firstName(),
     password: faker.internet.password(),
     ...overwide,

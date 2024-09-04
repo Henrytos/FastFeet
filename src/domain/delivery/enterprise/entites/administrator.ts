@@ -1,5 +1,5 @@
 import { Entity } from "@/core/entities/entity";
-import { UnqiueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Cpf } from "./value-object/cpf";
 
 export interface AdministratorProps {
@@ -21,7 +21,7 @@ export class Administrator extends Entity<AdministratorProps> {
     return this.props.name;
   }
 
-  static create(props: AdministratorProps, id?: UnqiueEntityID) {
+  static create(props: AdministratorProps, id?: UniqueEntityID) {
     const administrator = new Administrator(props, id);
 
     return administrator;
