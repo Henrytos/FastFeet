@@ -5,6 +5,8 @@ import { FakeHashGenerator } from "@/test/cryptography/fake-hash-generator";
 import { makeAdministrator } from "@/test/factories/make-administrator";
 import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
 import { Cpf } from "../../enterprise/entites/value-object/cpf";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 
 describe("change delivery man password use case", () => {
   let sut: ChangeDeliveryManPasswordUseCase;
@@ -72,6 +74,7 @@ describe("change delivery man password use case", () => {
         password: await fakeHashGenerator.hash("old password"),
       },
     });
+    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
   });
 
   it("should not be possible to change the delivery man's password if there is no administrator", async () => {
@@ -97,5 +100,6 @@ describe("change delivery man password use case", () => {
         password: await fakeHashGenerator.hash("old password"),
       },
     });
+    expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
   });
 });
