@@ -9,7 +9,7 @@ export interface OrderProps {
   createdAt: Date;
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
-  withdrawnAt?: Date;
+  withdrawnAt?: Date | null;
   photoIds?: UniqueEntityID[];
 }
 
@@ -47,11 +47,16 @@ export class Order extends Entity<OrderProps> {
     return this.props.updatedAt;
   }
 
-  get deliveryAt() {
+  get deliveryAt(): Date | null | undefined {
     return this.props.deliveryAt;
   }
 
-  get withdrawnAt(): Date | undefined {
+  set deliveryAt(deliveryAt: Date) {
+    this.props.deliveryAt = deliveryAt;
+    this.touch();
+  }
+
+  get withdrawnAt(): Date | undefined | null {
     return this.props.withdrawnAt;
   }
 
