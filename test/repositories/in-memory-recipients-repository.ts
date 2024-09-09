@@ -15,4 +15,8 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
     return recipient;
   }
+
+  async create(recipient: Recipient): Promise<void> {
+    this.items.push(recipient);
+  }
 }

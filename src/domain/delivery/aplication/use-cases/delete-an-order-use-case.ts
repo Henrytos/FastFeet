@@ -24,19 +24,19 @@ export class DeleteAnOrderUseCase {
     orderId,
     adiministratorId,
   }: DeleteAnOrderUseCaseRequest): Promise<DeleteAnOrderUseCaseResponse> {
-    const oreder = await this.ordersRepository.findById(orderId);
-    if (!oreder) {
+    const order = await this.ordersRepository.findById(orderId);
+    if (!order) {
       return left(new OrderDoesNotExistError());
     }
 
-    const administrator = await this.administratorsRepository.findById(
-      adiministratorId
+    const administratorDoesNotExist = !Boolean(
+      await this.administratorsRepository.findById(adiministratorId)
     );
-    if (!administrator) {
+    if (administratorDoesNotExist) {
       return left(new AdministratorDoesNotExistError());
     }
 
-    await this.ordersRepository.delete(oreder);
+    await this.ordersRepository.delete(order);
 
     // TODO: send email to the user
 

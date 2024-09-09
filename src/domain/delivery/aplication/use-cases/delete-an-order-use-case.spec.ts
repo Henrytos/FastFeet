@@ -21,7 +21,7 @@ describe("dleete an order use case", () => {
     );
   });
 
-  it("deveria ser possivel deletar um encomenda", async () => {
+  it("should be possible to delete an order", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -39,7 +39,7 @@ describe("dleete an order use case", () => {
     expect(inMemoryOrdersRepository.items.length).toEqual(0);
   });
 
-  it("não deveria ser possivel deletar um encomenda que não existe", async () => {
+  it("should not be possible to delete an order that does not exist", async () => {
     const order = makeOrder();
     inMemoryOrdersRepository.items.push(order);
     const administrator = makeAdministrator();
@@ -55,7 +55,7 @@ describe("dleete an order use case", () => {
     expect(inMemoryOrdersRepository.items.length).toEqual(1);
   });
 
-  it("não deveria ser possivel deletar uma encomenda se não sou adminitrador", async () => {
+  it("should not be possible to delete an order if I am not an administration", async () => {
     const order = makeOrder();
     inMemoryOrdersRepository.items.push(order);
 
