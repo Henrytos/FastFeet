@@ -35,7 +35,7 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 
 [ x ] Deve ser possível realizar o CRUD dos **entregadores**
 
-[ ] Deve ser possível realizar o CRUD das **encomendas**
+[ x ] Deve ser possível realizar o CRUD das **encomendas**
 
 [ ] Deve ser possível realizar o CRUD dos **destinatários**
 
@@ -70,7 +70,7 @@ address
 ### Regras de negócio
 
 
-[ ] Somente usuário do tipo **admin** pode realizar operações de CRUD nas **encomendas**
+[ x ] Somente usuário do tipo **admin** pode realizar operações de CRUD nas **encomendas**
 
 [ x ] Somente usuário do tipo **admin** pode realizar operações de CRUD dos **entregadores**
 
@@ -78,7 +78,7 @@ address
 
 [ ] Para marcar uma **encomenda** como entregue é obrigatório o envio de uma foto
 
-[ ] Somente o **entregador** que retirou a encomenda pode marcar ela como entregue
+[ x ] Somente o **entregador** que retirou a encomenda pode marcar ela como entregue
 
 [ x ] Somente o **admin** pode alterar a senha de um **usuário**
 
