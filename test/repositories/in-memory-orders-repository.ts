@@ -26,4 +26,17 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     this.items[index] = order;
   }
+
+  async delete(order: Order) {
+    const orderDoesExists = !this.findById(order.id.toString());
+    if (orderDoesExists) {
+      throw new Error("Order does not exist");
+    }
+
+    const index = this.items.findIndex((item) => {
+      return item.id.toValue() == order.id.toValue();
+    });
+
+    this.items.splice(index, 1);
+  }
 }
