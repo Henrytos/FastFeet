@@ -8,6 +8,7 @@ import { Recipient } from "../../enterprise/entites/recipient";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { AdministratorsRepository } from "../repositories/administrators-repository";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 
 interface RegisterRecipientUseCaseRequest {
   name: string;
@@ -24,8 +25,8 @@ type RegisterRecipientUseCaseResponse = Either<
 
 export class RegisterRecipientUseCase {
   constructor(
-    private deliveryAddressRepository: DeliveryAddressRepository,
     private recipientsRepository: RecipientsRepository,
+    private deliveryAddressRepository: DeliveryAddressRepository,
     private administratorsRepository: AdministratorsRepository
   ) {}
 
@@ -38,9 +39,15 @@ export class RegisterRecipientUseCase {
     const administratorDoesNotExists = !Boolean(
       await this.administratorsRepository.findById(aministratorId)
     );
-
     if (administratorDoesNotExists) {
       return left(new AdministratorDoesNotExistError());
+    }
+
+    const emailAlreadyExists = Boolean(
+      await this.recipientsRepository.findByEmail(email)
+    );
+    if (emailAlreadyExists) {
+      return left(new WrongCredentialsError());
     }
 
     const addressDoesNotExist = !Boolean(

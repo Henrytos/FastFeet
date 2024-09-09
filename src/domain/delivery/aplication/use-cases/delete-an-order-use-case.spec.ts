@@ -6,7 +6,7 @@ import { makeAdministrator } from "@/test/factories/make-administrator";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
 
-describe("dleete an order use case", () => {
+describe("delete an order use case", () => {
   let sut: DeleteAnOrderUseCase;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
