@@ -6,18 +6,23 @@ import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-de
 import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { InMemoryPhotosRepository } from "@/test/repositories/in-memory-photos-repository";
+import { makePhoto } from "@/test/factories/make-photo";
 
 describe("mark an order as delivered use case", () => {
   let sut: MarkAnOrderAsDeliveredUseCase;
   let inMemoryOrdersRespository: InMemoryOrdersRepository;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
+  let inMemoryPhotosRepository: InMemoryPhotosRepository;
 
   beforeEach(() => {
     inMemoryOrdersRespository = new InMemoryOrdersRepository();
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
+    inMemoryPhotosRepository = new InMemoryPhotosRepository();
     sut = new MarkAnOrderAsDeliveredUseCase(
       inMemoryOrdersRespository,
-      inMemoryDeliveryMansRepository
+      inMemoryDeliveryMansRepository,
+      inMemoryPhotosRepository
     );
   });
 
@@ -31,9 +36,13 @@ describe("mark an order as delivered use case", () => {
     });
     inMemoryOrdersRespository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
+      photoIds: [photo.id.toString()],
     });
 
     expect(result.isRight()).toBe(true);
@@ -59,6 +68,7 @@ describe("mark an order as delivered use case", () => {
     const result = await sut.execute({
       orderId: "invalid-order-id",
       deliveryManId: deliveryMan.id.toString(),
+      photoIds: [],
     });
 
     expect(result.isLeft()).toBe(true);
@@ -85,6 +95,7 @@ describe("mark an order as delivered use case", () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: "invalid-delivery-man-id",
+      photoIds: [],
     });
 
     expect(result.isLeft()).toBe(true);
@@ -111,6 +122,7 @@ describe("mark an order as delivered use case", () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
+      photoIds: [],
     });
 
     expect(result.isLeft()).toBe(true);
@@ -137,6 +149,7 @@ describe("mark an order as delivered use case", () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
+      photoIds: [],
     });
 
     expect(result.isLeft()).toBe(true);
@@ -163,6 +176,7 @@ describe("mark an order as delivered use case", () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
+      photoIds: [],
     });
 
     expect(result.isLeft()).toBe(true);
