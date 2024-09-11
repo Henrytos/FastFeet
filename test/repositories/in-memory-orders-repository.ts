@@ -39,4 +39,17 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     this.items.splice(index, 1);
   }
+
+  async fetchOrdersByRecipientId(
+    recipientId: string,
+    page: number
+  ): Promise<Order[]> {
+    const orders = this.items
+      .filter((item) => {
+        return item.recipientId.toString() == recipientId;
+      })
+      .slice((page - 1) * 20, (page - 1) * 20 + 20);
+
+    return orders;
+  }
 }
