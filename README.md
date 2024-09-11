@@ -76,7 +76,7 @@ address
 
 [ ] Somente usuário do tipo **admin** pode realizar operações de CRUD dos **destinatários**
 
-[ ] Para marcar uma **encomenda** como entregue é obrigatório o envio de uma foto
+[ x ] Para marcar uma **encomenda** como entregue é obrigatório o envio de uma foto
 
 [ x ] Somente o **entregador** que retirou a encomenda pode marcar ela como entregue
 
