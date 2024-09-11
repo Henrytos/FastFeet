@@ -26,8 +26,12 @@ export class Order extends Entity<OrderProps> {
   get recipientId() {
     return this.props.recipientId;
   }
-  get photoIds() {
+  get photoIds(): UniqueEntityID[] | null | undefined {
     return this.props.photoIds;
+  }
+
+  set photoIds(photoIds: UniqueEntityID[]) {
+    this.props.photoIds = photoIds;
   }
 
   get status() {
