@@ -4,6 +4,9 @@ import { DeliveryAddress } from "@/domain/delivery/enterprise/entites/delivery-a
 export class InMemoryDeliveryAddressRepository
   implements DeliveryAddressRepository
 {
+  deleteManyByRecipientId(recipientId: string): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
   public items: DeliveryAddress[] = [];
   async findById(id: string): Promise<DeliveryAddress | null> {
     const deliveryAddress = this.items.find((item) => {

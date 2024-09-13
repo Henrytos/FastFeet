@@ -52,4 +52,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     return orders;
   }
+
+  async deleteManyByRecipientId(recipientId: string): Promise<void> {
+    const ordersFiltered = this.items.filter((item) => {
+      return item.recipientId.toString() !== recipientId;
+    });
+
+    this.items = ordersFiltered;
+  }
 }

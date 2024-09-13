@@ -66,7 +66,7 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
     }
 
     const deliveryAddress = await this.deliveryAddressRepository.findById(
-      recipient.deliveryAddressId.toValue()
+      recipient.deliveryAddressId.toString()
     );
     if (!deliveryAddress) {
       return left(new DeliveryAddressDoesNotExistError());
