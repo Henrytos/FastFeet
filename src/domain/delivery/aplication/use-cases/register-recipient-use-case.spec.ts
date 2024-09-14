@@ -8,16 +8,22 @@ import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-
 import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does-not-exist-error";
 import { makeRecipient } from "@/test/factories/make-recipient";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
 
 describe("register recipient use case", () => {
   let sut: RegisterRecipientUseCase;
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository;
+  let inMemoryOrdersRepository: InMemoryOrdersRepository;
   let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
 
   beforeEach(() => {
-    inMemoryRecipientsRepository = new InMemoryRecipientsRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
+      inMemoryOrdersRepository,
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
 
     sut = new RegisterRecipientUseCase(
@@ -34,7 +40,6 @@ describe("register recipient use case", () => {
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
     const result = await sut.execute({
-      addressId: deliveryAddress.id.toString(),
       aministratorId: administrator.id.toString(),
       email: "jonhdoes@gmail.com",
       name: "jonh doe",
@@ -55,7 +60,6 @@ describe("register recipient use case", () => {
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
     const result = await sut.execute({
-      addressId: deliveryAddress.id.toString(),
       aministratorId: "invalid-administrator-id",
       email: "jonhdoes@gmail.com",
       name: "jonh doe",
@@ -64,22 +68,6 @@ describe("register recipient use case", () => {
     expect(result.isLeft()).toEqual(true);
     expect(inMemoryRecipientsRepository.items.length).toEqual(0);
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
-  });
-
-  it("should not be possible to register a destination without address", async () => {
-    const administrator = makeAdministrator();
-    inMemoryAdministratorsRepository.items.push(administrator);
-
-    const result = await sut.execute({
-      addressId: "invalid-address-id",
-      aministratorId: administrator.id.toString(),
-      email: "jonhdoes@gmail.com",
-      name: "jonh doe",
-    });
-
-    expect(result.isLeft()).toEqual(true);
-    expect(inMemoryRecipientsRepository.items.length).toEqual(0);
-    expect(result.value).toBeInstanceOf(DeliveryAddressDoesNotExistError);
   });
 
   it("should not be possible to register a destination with same email", async () => {
@@ -95,7 +83,6 @@ describe("register recipient use case", () => {
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({
-      addressId: deliveryAddress.id.toString(),
       aministratorId: administrator.id.toString(),
       email: "jonhdoes@gmail.com",
       name: "jonh doe",

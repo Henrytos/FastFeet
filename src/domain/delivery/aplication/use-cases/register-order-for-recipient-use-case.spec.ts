@@ -23,7 +23,10 @@ describe("register order for recipient use case", () => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository();
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
-    inMemoryRecipientsRepository = new InMemoryRecipientsRepository();
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
+      inMemoryOrdersRepository,
+      inMemoryDeliveryAddressRepository
+    );
     sut = new RegisterOrderForRecipientUseCase(
       inMemoryOrdersRepository,
       inMemoryAdministratorsRepository,
@@ -39,14 +42,13 @@ describe("register order for recipient use case", () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
-    const recipient = makeRecipient({
-      deliveryAddressId: deliveryAddress.id,
-    });
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       recipientId: recipient.id.toString(),
+      deliveryAddressId: deliveryAddress.id.toString(),
     });
 
     expect(result.isRight()).toEqual(true);
@@ -62,6 +64,7 @@ describe("register order for recipient use case", () => {
     const result = await sut.execute({
       administratorId: "invalide-administrator-id",
       recipientId: recipient.id.toString(),
+      deliveryAddressId: deliveryAddress.id.toString(),
     });
 
     expect(result.isLeft()).toEqual(true);
@@ -79,6 +82,7 @@ describe("register order for recipient use case", () => {
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       recipientId: "invalid-recipient-id",
+      deliveryAddressId: deliveryAddress.id.toString(),
     });
 
     expect(result.isLeft()).toEqual(true);
@@ -90,14 +94,13 @@ describe("register order for recipient use case", () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
-    const deliveryAddress = makeDeliveryAddress();
-    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
-    const recipient = makeRecipient({});
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       recipientId: recipient.id.toString(),
+      deliveryAddressId: "invalid-delivery-address-id",
     });
 
     expect(result.isLeft()).toEqual(true);

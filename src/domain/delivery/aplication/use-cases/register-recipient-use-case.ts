@@ -13,7 +13,6 @@ import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 interface RegisterRecipientUseCaseRequest {
   name: string;
   email: string;
-  addressId: string;
   aministratorId: string;
 }
 type RegisterRecipientUseCaseResponse = Either<
@@ -33,7 +32,6 @@ export class RegisterRecipientUseCase {
   async execute({
     name,
     email,
-    addressId,
     aministratorId,
   }: RegisterRecipientUseCaseRequest): Promise<RegisterRecipientUseCaseResponse> {
     const administratorDoesNotExists = !Boolean(
@@ -50,17 +48,9 @@ export class RegisterRecipientUseCase {
       return left(new WrongCredentialsError());
     }
 
-    const addressDoesNotExist = !Boolean(
-      await this.deliveryAddressRepository.findById(addressId)
-    );
-    if (addressDoesNotExist) {
-      return left(new DeliveryAddressDoesNotExistError());
-    }
-
     const recipient = Recipient.create({
       email,
       name,
-      deliveryAddressId: new UniqueEntityID(addressId),
     });
 
     await this.recipientsRepository.create(recipient);

@@ -7,8 +7,8 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
   public items: Recipient[] = [];
 
   constructor(
-    private deliveryAddressRepository: DeliveryAddressRepository,
-    private ordersRepository: OrdersRepository
+    private ordersRepository: OrdersRepository,
+    private deliveryAddress: DeliveryAddressRepository
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
@@ -46,9 +46,14 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
     this.items.splice(index, 1);
 
-    await this.deliveryAddressRepository.deleteManyByRecipientId(
+    const order = await this.ordersRepository.findByRecipientId(
       recipient.id.toString()
     );
+
+    if (order?.deliveryAddressId) {
+      await this.deliveryAddress.delete(order.deliveryAddressId.toString());
+    }
+
     await this.ordersRepository.deleteManyByRecipientId(
       recipient.id.toString()
     );

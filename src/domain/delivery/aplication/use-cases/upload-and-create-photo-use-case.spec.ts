@@ -1,5 +1,5 @@
 import { InMemoryPhotosRepository } from "@/test/repositories/in-memory-photos-repository";
-import { UploadAndCreatePhotoUseCase } from "./upload-ande-create-photo-use-case";
+import { UploadAndCreatePhotoUseCase } from "./upload-and-create-photo-use-case";
 import { FakeUploader } from "@/test/storage/fake-uploader";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 

@@ -12,6 +12,7 @@ import { Order } from "../../enterprise/entites/order";
 interface RegisterOrderForRecipientUseCaseRequest {
   administratorId: string;
   recipientId: string;
+  deliveryAddressId: string;
 }
 type RegisterOrderForRecipientUseCaseResponse = Either<
   | AdministratorDoesNotExistError
@@ -31,6 +32,7 @@ export class RegisterOrderForRecipientUseCase {
   async execute({
     administratorId,
     recipientId,
+    deliveryAddressId,
   }: RegisterOrderForRecipientUseCaseRequest): Promise<RegisterOrderForRecipientUseCaseResponse> {
     const administrator = await this.administratorsRepository.findById(
       administratorId
@@ -45,7 +47,7 @@ export class RegisterOrderForRecipientUseCase {
     }
 
     const deliveryAddress = await this.deliveryAddressRepository.findById(
-      recipient.deliveryAddressId.toValue()
+      deliveryAddressId
     );
     if (!deliveryAddress) {
       return left(new DeliveryAddressDoesNotExistError());

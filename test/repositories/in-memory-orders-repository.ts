@@ -60,4 +60,16 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     this.items = ordersFiltered;
   }
+
+  async findByRecipientId(recipientId: string): Promise<Order | null> {
+    const order = this.items.find((item) => {
+      return item.recipientId.toString() === recipientId;
+    });
+
+    if (!order) {
+      return null;
+    }
+
+    return order;
+  }
 }

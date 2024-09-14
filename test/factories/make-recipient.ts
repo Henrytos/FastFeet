@@ -12,7 +12,6 @@ export function makeRecipient(
 ) {
   const recipient = Recipient.create(
     {
-      deliveryAddressId: new UniqueEntityID(randomUUID()),
       email: faker.internet.email(),
       name: faker.person.firstName(),
       ...overwide,

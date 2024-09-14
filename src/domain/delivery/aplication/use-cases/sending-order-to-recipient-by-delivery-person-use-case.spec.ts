@@ -32,7 +32,10 @@ describe("register order for recipient use case", () => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
-    inMemoryRecipientsRepository = new InMemoryRecipientsRepository();
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
+      inMemoryOrdersRepository,
+      inMemoryDeliveryAddressRepository
+    );
     sut = new SendingOrderToRecipientByDeliveryManUseCase(
       inMemoryOrdersRepository,
       inMemoryAdministratorsRepository,
@@ -54,13 +57,13 @@ describe("register order for recipient use case", () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
-    const recipient = makeRecipient({
-      deliveryAddressId: deliveryAddress.id,
-    });
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const order = makeOrder({
       recipientId: recipient.id,
+
+      deliviryAddressId: deliveryAddress.id,
     });
 
     inMemoryOrdersRepository.items.push(order);
@@ -87,13 +90,12 @@ describe("register order for recipient use case", () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
-    const recipient = makeRecipient({
-      deliveryAddressId: deliveryAddress.id,
-    });
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const order = makeOrder({
       recipientId: recipient.id,
+      deliviryAddressId: deliveryAddress.id,
     });
     inMemoryOrdersRepository.items.push(order);
 
@@ -125,9 +127,7 @@ describe("register order for recipient use case", () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
-    const recipient = makeRecipient({
-      deliveryAddressId: deliveryAddress.id,
-    });
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
@@ -148,13 +148,13 @@ describe("register order for recipient use case", () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
-    const recipient = makeRecipient({
-      deliveryAddressId: deliveryAddress.id,
-    });
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const order = makeOrder({
       recipientId: recipient.id,
+
+      deliviryAddressId: deliveryAddress.id,
     });
 
     inMemoryOrdersRepository.items.push(order);
@@ -217,13 +217,12 @@ describe("register order for recipient use case", () => {
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
-    const recipient = makeRecipient({
-      deliveryAddressId: new UniqueEntityID("invalid-delivery-address-id"),
-    });
+    const recipient = makeRecipient();
     inMemoryRecipientsRepository.items.push(recipient);
 
     const order = makeOrder({
       recipientId: recipient.id,
+      deliviryAddressId: new UniqueEntityID("invalid-delivery-address-id"),
     });
 
     inMemoryOrdersRepository.items.push(order);

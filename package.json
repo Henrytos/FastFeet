@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+     "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@types/node": "^22.5.1",
+    "@vitest/coverage-v8": "^2.1.1",
     "faker": "^6.6.6",
     "vitest": "^2.0.5"
   },

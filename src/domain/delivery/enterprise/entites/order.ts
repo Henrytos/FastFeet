@@ -5,6 +5,7 @@ import { Optional } from "@/core/types/optional";
 export interface OrderProps {
   deliviryManId?: UniqueEntityID;
   recipientId: UniqueEntityID;
+  deliviryAddressId?: UniqueEntityID;
   status: "pending" | "delivered" | "withdrawn" | "canceled";
   createdAt: Date;
   updatedAt?: Date | null;
@@ -32,6 +33,14 @@ export class Order extends Entity<OrderProps> {
 
   set photoIds(photoIds: UniqueEntityID[]) {
     this.props.photoIds = photoIds;
+  }
+
+  get deliveryAddressId(): UniqueEntityID | undefined {
+    return this.props.deliviryAddressId;
+  }
+
+  set deliveryAddressId(deliveryAddressId: UniqueEntityID) {
+    this.props.deliviryAddressId = deliveryAddressId;
   }
 
   get status() {

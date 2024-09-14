@@ -5,15 +5,21 @@ import { makeRecipient } from "@/test/factories/make-recipient";
 import { makeOrder } from "@/test/factories/make-order";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 describe("fetch order by recipient id use case", () => {
   let sut: FetchOrderByRecipientIdUseCase;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
+  let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository;
 
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository();
-    inMemoryRecipientsRepository = new InMemoryRecipientsRepository();
+    inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
+      inMemoryOrdersRepository,
+      inMemoryDeliveryAddressRepository
+    );
     sut = new FetchOrderByRecipientIdUseCase(
       inMemoryRecipientsRepository,
       inMemoryOrdersRepository
