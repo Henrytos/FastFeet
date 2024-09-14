@@ -62,7 +62,6 @@ describe("register order for recipient use case", () => {
 
     const order = makeOrder({
       recipientId: recipient.id,
-
       deliviryAddressId: deliveryAddress.id,
     });
 

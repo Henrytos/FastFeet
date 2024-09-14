@@ -5,7 +5,6 @@ import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-er
 import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
 import { RecipientsRepository } from "../repositories/recipients-repositorys";
 import { Recipient } from "../../enterprise/entites/recipient";
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { AdministratorsRepository } from "../repositories/administrators-repository";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
