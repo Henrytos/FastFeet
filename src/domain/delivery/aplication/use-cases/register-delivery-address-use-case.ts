@@ -1,8 +1,12 @@
-import { Either, right } from "@/core/either";
+import { Either, left, right } from "@/core/either";
 import { AdministratorsRepository } from "../repositories/administrators-repository";
 import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { DeliveryAddress } from "../../enterprise/entites/delivery-address";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 interface RegisterDeliveryAddressUseCaseRequest {
+  administratorId: string;
   state: string;
   city: string;
   neighborhood: string;
@@ -11,17 +15,51 @@ interface RegisterDeliveryAddressUseCaseRequest {
   number: string;
   latitude: number;
   longitude: number;
-  administratorId: string;
 }
 
-type RegisterDeliveryAddressUseCaseResponse = Either<null, {}>;
+type RegisterDeliveryAddressUseCaseResponse = Either<
+  AdministratorDoesNotExistError,
+  {
+    deliveryAddress: DeliveryAddress;
+  }
+>;
 export class RegisterDeliveryAddressUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
     private readonly deliveryAddressRepository: DeliveryAddressRepository
   ) {}
 
-  async execute({}: RegisterDeliveryAddressUseCaseRequest): Promise<RegisterDeliveryAddressUseCaseResponse> {
-    return right({});
+  async execute({
+    administratorId,
+    state,
+    city,
+    neighborhood,
+    street,
+    zip,
+    number,
+    latitude,
+    longitude,
+  }: RegisterDeliveryAddressUseCaseRequest): Promise<RegisterDeliveryAddressUseCaseResponse> {
+    const administrator = await this.administratorsRepository.findById(
+      administratorId
+    );
+    if (!administrator) {
+      return left(new AdministratorDoesNotExistError());
+    }
+
+    const deliveryAddress = DeliveryAddress.create({
+      state,
+      city,
+      neighborhood,
+      street,
+      zip,
+      number,
+      latitude,
+      longitude,
+    });
+
+    this.deliveryAddressRepository.create(deliveryAddress);
+
+    return right({ deliveryAddress });
   }
 }

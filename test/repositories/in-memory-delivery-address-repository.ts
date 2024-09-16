@@ -1,5 +1,4 @@
 import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
-import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
 import { DeliveryAddress } from "@/domain/delivery/enterprise/entites/delivery-address";
 
 export class InMemoryDeliveryAddressRepository
@@ -26,5 +25,9 @@ export class InMemoryDeliveryAddressRepository
     }
 
     this.items.splice(index, 1);
+  }
+
+  async create(deliveryAddress: DeliveryAddress): Promise<void> {
+    this.items.push(deliveryAddress);
   }
 }
