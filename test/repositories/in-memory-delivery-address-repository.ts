@@ -1,4 +1,5 @@
 import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
+import { DeliveryAddressDoesNotExistError } from "@/domain/delivery/aplication/use-cases/errors/delivery-address-does-not-exist-error";
 import { DeliveryAddress } from "@/domain/delivery/enterprise/entites/delivery-address";
 
 export class InMemoryDeliveryAddressRepository
@@ -21,7 +22,7 @@ export class InMemoryDeliveryAddressRepository
     const index = this.items.findIndex((item) => item.id.toString() === id);
 
     if (index == -1) {
-      throw new Error("Delivery address not found");
+      throw new DeliveryAddressDoesNotExistError();
     }
 
     this.items.splice(index, 1);
@@ -29,5 +30,17 @@ export class InMemoryDeliveryAddressRepository
 
   async create(deliveryAddress: DeliveryAddress): Promise<void> {
     this.items.push(deliveryAddress);
+  }
+
+  async save(deliveryAddress: DeliveryAddress): Promise<void> {
+    const index = this.items.findIndex((item)=>{
+      return item.id.toValue() === deliveryAddress.id.toValue();
+    })
+
+    if(index == -1){
+      throw new DeliveryAddressDoesNotExistError();
+    }
+
+    this.items[index] = deliveryAddress; 
   }
 }

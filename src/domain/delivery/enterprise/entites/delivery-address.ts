@@ -1,4 +1,5 @@
 import { Entity } from "@/core/entities/entity";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 
 export interface DeliveryAddressProps {
   state: string;
@@ -44,8 +45,8 @@ export class DeliveryAddress extends Entity<DeliveryAddressProps> {
     return this.props.longitude;
   }
 
-  static create(props: DeliveryAddressProps) {
-    const deliveryAddress = new DeliveryAddress(props);
+  static create(props: DeliveryAddressProps, id?:UniqueEntityID) {
+    const deliveryAddress = new DeliveryAddress(props, id);
 
     return deliveryAddress;
   }
