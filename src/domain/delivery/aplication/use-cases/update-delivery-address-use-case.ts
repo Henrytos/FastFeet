@@ -8,14 +8,14 @@ import { DeliveryAddress } from "../../enterprise/entites/delivery-address";
 interface UpdateDeliveryAddressUseCaseRequest {
   adminitratorId: string;
   deliveryAddresId: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  zip: string;
-  number: string;
-  latitude: number;
-  longitude: number;
+  state?: string | null;
+  city?: string | null;
+  neighborhood?: string | null;
+  street?: string | null;
+  zip?: string | null;
+  number?: string | null;
+  latitude?: number | null;
+  longitude?: number | null;
 }
 
 type UpdateDeliveryAddressUseCaseResponse = Either<
@@ -57,14 +57,14 @@ export class UpdateDeliveryAddressUseCase {
     }
 
     const deliveryAddressUpdated = DeliveryAddress.create({
-      state ,
-      city ,
-      neighborhood ,
-      street ,
-      zip ,
-      number ,
-      latitude ,
-      longitude ,
+      state: state ?? deliveryAddress.state,
+      city: city ?? deliveryAddress.city ,
+      neighborhood: neighborhood ?? deliveryAddress.neighborhood ,
+      street: street ?? deliveryAddress.street ,
+      zip: zip ?? deliveryAddress.zip ,
+      number: number ?? deliveryAddress.number ,
+      latitude:latitude || deliveryAddress.latitude ,
+      longitude: longitude || deliveryAddress.longitude,
     },deliveryAddress.id)
 
     this.deliveryAddressRepository.save(deliveryAddressUpdated)
