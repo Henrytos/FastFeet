@@ -18,7 +18,7 @@ describe("register delivery address use case", () => {
     );
   });
 
-  it("deveria ser possivel cadastrar endereço", async () => {
+  it("should be possible to register address", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorRepository.items.push(administrator);
 
@@ -45,7 +45,7 @@ describe("register delivery address use case", () => {
     });
   });
 
-  it("não deveria ser possivel cadastrar endereço se não existe um administrator", async () => {
+  it("should not be possible to register address if there is no administrator", async () => {
     const result = await sut.execute({
       administratorId: "invalid-administrator-id",
       city: "city",

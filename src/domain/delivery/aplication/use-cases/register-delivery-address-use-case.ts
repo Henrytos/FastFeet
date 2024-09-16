@@ -3,7 +3,6 @@ import { AdministratorsRepository } from "../repositories/administrators-reposit
 import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { DeliveryAddress } from "../../enterprise/entites/delivery-address";
-import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 interface RegisterDeliveryAddressUseCaseRequest {
   administratorId: string;
