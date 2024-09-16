@@ -6,7 +6,7 @@ import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does
 import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
 import { OrdersRepository } from "../repositories/orders-repository";
 import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
-import { RecipientsRepository } from "../repositories/recipients-repositorys";
+import { RecipientsRepository } from "../repositories/recipients-repository";
 import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
 import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";

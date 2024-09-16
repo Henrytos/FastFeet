@@ -3,7 +3,7 @@ import { Either, left, right } from "@/core/either";
 import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does-not-exist-error";
 import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
 import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
-import { RecipientsRepository } from "../repositories/recipients-repositorys";
+import { RecipientsRepository } from "../repositories/recipients-repository";
 import { Recipient } from "../../enterprise/entites/recipient";
 import { AdministratorsRepository } from "../repositories/administrators-repository";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";

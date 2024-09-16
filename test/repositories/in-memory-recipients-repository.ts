@@ -1,6 +1,6 @@
 import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
 import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
-import { RecipientsRepository } from "@/domain/delivery/aplication/repositories/recipients-repositorys";
+import { RecipientsRepository } from "@/domain/delivery/aplication/repositories/recipients-repository";
 import { Recipient } from "@/domain/delivery/enterprise/entites/recipient";
 
 export class InMemoryRecipientsRepository implements RecipientsRepository {
