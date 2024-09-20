@@ -1,10 +1,49 @@
-import { Either, right } from "@/core/either";
+import { Either, left, right } from "@/core/either";
+import { RecipientsRepository } from "../repositories/recipients-repository";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
+import { aw } from "vitest/dist/chunks/reporters.WnPwkmgA";
 
-interface UpdateRecipientUseCaseRequest {}
+interface UpdateRecipientUseCaseRequest {
+  administratorId: string;
+  recipientId: string;
+  name: string;
+  email: string;
+}
 
-type UpdateRecipientUseCaseResponse = Either<null, {}>;
+type UpdateRecipientUseCaseResponse = Either<
+  AdministratorDoesNotExistError,
+  {}
+>;
 export class UpdateRecipientUseCase {
-  async execute({}: UpdateRecipientUseCaseRequest): Promise<UpdateRecipientUseCaseResponse> {
+  constructor(
+    private administratorsRepository: AdministratorsRepository,
+    private recipientsRepository: RecipientsRepository
+  ) {}
+  async execute({
+    administratorId,
+    recipientId,
+    name,
+    email,
+  }: UpdateRecipientUseCaseRequest): Promise<UpdateRecipientUseCaseResponse> {
+    const administrator = await this.administratorsRepository.findById(
+      administratorId
+    );
+    if (!administrator) {
+      return left(new AdministratorDoesNotExistError());
+    }
+
+    const recipient = await this.recipientsRepository.findById(recipientId);
+    if (!recipient) {
+      return left(new RecipientDoesNotExistError());
+    }
+
+    recipient.name = name;
+    recipient.email = email;
+
+    await this.recipientsRepository.save(recipient);
+
     return right({});
   }
 }

@@ -8,11 +8,18 @@ export interface RecipientProps {
 
 export class Recipient extends Entity<RecipientProps> {
   get name(): string {
-    return this.name;
+    return this.props.name;
+  }
+  set name(name: string) {
+    this.props.name = name;
   }
 
   get email(): string {
     return this.props.email;
+  }
+
+  set email(email: string) {
+    this.props.email = email;
   }
 
   static create(props: RecipientProps, id?: UniqueEntityID) {

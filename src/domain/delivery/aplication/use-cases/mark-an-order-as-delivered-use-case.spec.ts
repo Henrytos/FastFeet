@@ -33,6 +33,7 @@ describe("mark an order as delivered use case", () => {
     const order = makeOrder({
       status: "withdrawn",
       deliviryManId: deliveryMan.id,
+      withdrawnAt: new Date(new Date().getDay() - 1),
     });
     inMemoryOrdersRespository.items.push(order);
 

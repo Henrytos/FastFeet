@@ -4,7 +4,6 @@ import {
   RecipientProps,
 } from "@/domain/delivery/enterprise/entites/recipient";
 import { faker } from "@faker-js/faker";
-import { randomUUID } from "crypto";
 
 export function makeRecipient(
   overwide: Partial<RecipientProps> = {},

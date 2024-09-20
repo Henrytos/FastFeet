@@ -1,6 +1,7 @@
 import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
+import { OrderCreatedEvent } from "../events/order-created-event";
 
 export interface OrderProps {
   deliviryManId?: UniqueEntityID;
@@ -65,6 +66,12 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   set deliveryAt(deliveryAt: Date) {
+    if (!this.withdrawnAt) {
+      throw new Error("Order is already withdrawn");
+    }
+    if (this.withdrawnAt > deliveryAt) {
+      throw new Error("Delivery date must be after withdrawn date");
+    }
     this.props.deliveryAt = deliveryAt;
     this.touch();
   }
@@ -92,6 +99,11 @@ export class Order extends AggregateRoot<OrderProps> {
       },
       id
     );
+
+    const isNewOrder = !id;
+    if (isNewOrder) {
+      order.addDomainEvent(new OrderCreatedEvent(order));
+    }
 
     return order;
   }

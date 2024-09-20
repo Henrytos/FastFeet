@@ -1,3 +1,4 @@
+import { DomainEvents } from "@/core/events/domain-events";
 import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
 import { Order } from "@/domain/delivery/enterprise/entites/order";
 export class InMemoryOrdersRepository implements OrdersRepository {
@@ -5,6 +6,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async create(order: Order): Promise<void> {
     this.items.push(order);
+    DomainEvents.dispatchEventsForAggregate(order.id);
   }
 
   async findById(id: string): Promise<Order | null> {

@@ -19,56 +19,52 @@ interface UpdateDeliveryAddressUseCaseRequest {
 }
 
 type UpdateDeliveryAddressUseCaseResponse = Either<
-    DeliveryAddressDoesNotExistError | 
-    AdministratorDoesNotExistError, 
-    {
-    
-    }
-  >;
+  DeliveryAddressDoesNotExistError | AdministratorDoesNotExistError,
+  {}
+>;
 
 export class UpdateDeliveryAddressUseCase {
   constructor(
-    private adminitratorsRepository:AdministratorsRepository ,
-    private deliveryAddressRepository:DeliveryAddressRepository
-  ){}
+    private adminitratorsRepository: AdministratorsRepository,
+    private deliveryAddressRepository: DeliveryAddressRepository
+  ) {}
 
   async execute({
     adminitratorId,
-    deliveryAddresId ,
-    state ,
-    city ,
-    neighborhood ,
-    street ,
-    zip ,
-    number ,
-    latitude ,
-    longitude ,
+    deliveryAddresId,
+    state,
+    city,
+    neighborhood,
+    street,
+    zip,
+    number,
+    latitude,
+    longitude,
   }: UpdateDeliveryAddressUseCaseRequest): Promise<UpdateDeliveryAddressUseCaseResponse> {
-
-    const adminitrator = await this.adminitratorsRepository.findById(adminitratorId)
-    if(!adminitrator){
-      return left(new AdministratorDoesNotExistError())
+    const adminitrator = await this.adminitratorsRepository.findById(
+      adminitratorId
+    );
+    if (!adminitrator) {
+      return left(new AdministratorDoesNotExistError());
     }
 
-
-    const deliveryAddress = await this.deliveryAddressRepository.findById(deliveryAddresId)
-    if(!deliveryAddress){
-      return left(new DeliveryAddressDoesNotExistError())
+    const deliveryAddress = await this.deliveryAddressRepository.findById(
+      deliveryAddresId
+    );
+    if (!deliveryAddress) {
+      return left(new DeliveryAddressDoesNotExistError());
     }
 
-    const deliveryAddressUpdated = DeliveryAddress.create({
-      state: state ?? deliveryAddress.state,
-      city: city ?? deliveryAddress.city ,
-      neighborhood: neighborhood ?? deliveryAddress.neighborhood ,
-      street: street ?? deliveryAddress.street ,
-      zip: zip ?? deliveryAddress.zip ,
-      number: number ?? deliveryAddress.number ,
-      latitude:latitude || deliveryAddress.latitude ,
-      longitude: longitude || deliveryAddress.longitude,
-    },deliveryAddress.id)
+    deliveryAddress.state = state ?? deliveryAddress.state;
+    deliveryAddress.city = city ?? deliveryAddress.city;
+    deliveryAddress.neighborhood = neighborhood ?? deliveryAddress.neighborhood;
+    deliveryAddress.street = street ?? deliveryAddress.street;
+    deliveryAddress.zip = zip ?? deliveryAddress.zip;
+    deliveryAddress.number = number ?? deliveryAddress.number;
+    deliveryAddress.latitude = latitude ?? deliveryAddress.latitude;
+    deliveryAddress.longitude = longitude ?? deliveryAddress.longitude;
 
-    this.deliveryAddressRepository.save(deliveryAddressUpdated)
-    
+    this.deliveryAddressRepository.save(deliveryAddress);
 
     return right({});
   }

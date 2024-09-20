@@ -58,4 +58,14 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
       recipient.id.toString()
     );
   }
+
+  async save(recipient: Recipient): Promise<void> {
+    const index = this.items.indexOf(recipient);
+
+    if (index == -1) {
+      throw new Error("Recipient not found");
+    }
+
+    this.items[index] = recipient;
+  }
 }

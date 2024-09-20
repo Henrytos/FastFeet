@@ -5,4 +5,5 @@ export interface RecipientsRepository {
   create(recipient: Recipient): Promise<void>;
   findByEmail(email: string): Promise<Recipient | null>;
   delete(recipient: Recipient): Promise<void>;
+  save(recipient: Recipient): Promise<void>;
 }
