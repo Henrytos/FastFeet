@@ -4,6 +4,8 @@ import { Optional } from "@/core/types/optional";
 import { OrderCreatedEvent } from "../events/order-created-event";
 import { OrderMakeDeliveredEvent } from "../events/order-make-delivered-event";
 import { DomainEvents } from "@/core/events/domain-events";
+import { OrderWithdrawnEvent } from "../events/order-withdrawn-event";
+import { OrderCanceledEvent } from "../events/order-canceled-event";
 
 export interface OrderProps {
   deliviryManId?: UniqueEntityID;
@@ -51,9 +53,21 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   set status(status: "pending" | "withdrawn" | "delivered" | "canceled") {
-    if (status == "delivered") {
-      this.addDomainEvent(new OrderMakeDeliveredEvent(this));
+    switch (status) {
+      case "pending":
+        this.addDomainEvent(new OrderCreatedEvent(this));
+        break;
+      case "delivered":
+        this.addDomainEvent(new OrderMakeDeliveredEvent(this));
+        break;
+      case "withdrawn":
+        this.addDomainEvent(new OrderWithdrawnEvent(this));
+        break;
+      case "canceled":
+        this.addDomainEvent(new OrderCanceledEvent(this));
+        break;
     }
+
     this.props.status = status;
 
     this.touch();
@@ -107,10 +121,7 @@ export class Order extends AggregateRoot<OrderProps> {
       id
     );
 
-    const isNewOrder = !id;
-    if (isNewOrder) {
-      order.addDomainEvent(new OrderCreatedEvent(order));
-    }
+    order.addDomainEvent(new OrderCreatedEvent(order));
 
     return order;
   }

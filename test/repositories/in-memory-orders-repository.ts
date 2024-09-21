@@ -6,7 +6,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async create(order: Order): Promise<void> {
     this.items.push(order);
-    DomainEvents.dispatchEventsForAggregate(order.id);
+
+    switch (order.status) {
+      case "pending":
+        DomainEvents.dispatchEventsForAggregate(order.id);
+        break;
+    }
   }
 
   async findById(id: string): Promise<Order | null> {
@@ -28,8 +33,20 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     this.items[index] = order;
 
-    if (order.status == "delivered") {
-      DomainEvents.dispatchEventsForAggregate(order.id);
+    switch (order.status) {
+      case "pending":
+        DomainEvents.dispatchEventsForAggregate(order.id);
+        break;
+      case "withdrawn":
+        DomainEvents.dispatchEventsForAggregate(order.id);
+        break;
+      case "delivered":
+        DomainEvents.dispatchEventsForAggregate(order.id);
+        break;
+      case "canceled":
+        DomainEvents.dispatchEventsForAggregate(order.id);
+
+        break;
     }
   }
 

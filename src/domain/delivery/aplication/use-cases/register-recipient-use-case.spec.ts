@@ -5,7 +5,6 @@ import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory
 import { makeAdministrator } from "@/test/factories/make-administrator";
 import { makeDeliveryAddress } from "@/test/factories/make-delivery-address";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
-import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does-not-exist-error";
 import { makeRecipient } from "@/test/factories/make-recipient";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";

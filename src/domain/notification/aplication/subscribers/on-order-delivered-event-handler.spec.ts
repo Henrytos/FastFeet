@@ -1,10 +1,5 @@
 import { InMemoryNotificationsRepository } from "@/test/repositories/in-memory-notifications-repository";
-import {
-  SendNotificationUseCase,
-  SendNotificationUseCaseRequest,
-  SendNotificationUseCaseResponse,
-} from "../use-cases/send-notification-use-case";
-import { OnOrderCreatedSubscriber } from "./on-order-created";
+import { SendNotificationUseCase } from "../use-cases/send-notification-use-case";
 import { makeOrder } from "@/test/factories/make-order";
 import { makeRecipient } from "@/test/factories/make-recipient";
 import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
@@ -13,6 +8,11 @@ import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory
 import { waitFor } from "@/test/utils/wait-for";
 
 import { SpyInstance } from "vitest";
+import {
+  MarkAnOrderAsDeliveredUseCaseRequest,
+  MarkAnOrderAsDeliveredUseCaseResponse,
+} from "@/domain/delivery/aplication/use-cases/mark-an-order-as-delivered-use-case";
+import { OnOrderDeliveredEventHandler } from "./on-order-delivered-event-handler";
 
 let sendNotificationUseCase: SendNotificationUseCase;
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -22,11 +22,11 @@ let inMemoryOrdersRepository: InMemoryOrdersRepository;
 let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
 
 let sendNotificationExecuteSpy: SpyInstance<
-  [SendNotificationUseCaseRequest],
-  SendNotificationUseCaseResponse
+  [MarkAnOrderAsDeliveredUseCaseRequest],
+  MarkAnOrderAsDeliveredUseCaseResponse
 >;
 
-describe("On Answer Created", () => {
+describe("On Answer mark Delivered", () => {
   beforeEach(() => {
     inMemoryOrdersRepository = new InMemoryOrdersRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
@@ -39,17 +39,19 @@ describe("On Answer Created", () => {
     sendNotificationUseCase = new SendNotificationUseCase(
       inMemoryNotificationsRepository
     );
-    new OnOrderCreatedSubscriber(sendNotificationUseCase);
+    new OnOrderDeliveredEventHandler(sendNotificationUseCase);
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, "execute");
   });
 
-  it("should  send a notification when an order is created", async () => {
+  it("should order delivered", async () => {
     const recipient = makeRecipient();
     inMemoryRecipientsRepository.create(recipient);
     const order = makeOrder({
       recipientId: recipient.id,
+      status: "withdrawn",
     });
-    inMemoryOrdersRepository.create(order);
+    order.status = "delivered";
+    await inMemoryOrdersRepository.save(order);
 
     waitFor(() => {
       expect(sendNotificationExecuteSpy).toHaveBeenCalled();
