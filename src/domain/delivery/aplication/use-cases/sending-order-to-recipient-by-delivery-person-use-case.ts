@@ -85,8 +85,6 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
 
     this.ordersRepository.save(order);
 
-    //TODO: Send notification to recipient
-
     return right({});
   }
 }

@@ -42,7 +42,6 @@ export class CancelingRecipientOrderUseCase {
 
     order.status = "canceled";
     await this.orderRespository.save(order);
-    //TODO: send notification to recipient1
 
     return right({});
   }

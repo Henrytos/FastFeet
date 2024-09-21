@@ -69,7 +69,6 @@ export class MarkAnOrderAsDeliveredUseCase {
     order.photoIds = photoIds.map((id) => new UniqueEntityID(id));
 
     await this.orderRespository.save(order);
-    //TODO: send notification to recipient
 
     return right({});
   }

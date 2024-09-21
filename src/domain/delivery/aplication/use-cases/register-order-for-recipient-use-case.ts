@@ -58,7 +58,6 @@ export class RegisterOrderForRecipientUseCase {
       recipientId: recipient.id,
     });
 
-    // TODO: Send email to recipient
     this.ordersRepository.create(newOrderForRecipient);
     return right({});
   }
