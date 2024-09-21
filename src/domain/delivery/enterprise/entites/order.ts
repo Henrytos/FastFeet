@@ -2,6 +2,8 @@ import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 import { OrderCreatedEvent } from "../events/order-created-event";
+import { OrderMakeDeliveredEvent } from "../events/order-make-delivered-event";
+import { DomainEvents } from "@/core/events/domain-events";
 
 export interface OrderProps {
   deliviryManId?: UniqueEntityID;
@@ -49,7 +51,11 @@ export class Order extends AggregateRoot<OrderProps> {
   }
 
   set status(status: "pending" | "withdrawn" | "delivered" | "canceled") {
+    if (status == "delivered") {
+      this.addDomainEvent(new OrderMakeDeliveredEvent(this));
+    }
     this.props.status = status;
+
     this.touch();
   }
 
@@ -73,6 +79,7 @@ export class Order extends AggregateRoot<OrderProps> {
       throw new Error("Delivery date must be after withdrawn date");
     }
     this.props.deliveryAt = deliveryAt;
+
     this.touch();
   }
 

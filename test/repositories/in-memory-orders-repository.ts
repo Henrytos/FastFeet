@@ -27,6 +27,10 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     });
 
     this.items[index] = order;
+
+    if (order.status == "delivered") {
+      DomainEvents.dispatchEventsForAggregate(order.id);
+    }
   }
 
   async delete(order: Order) {

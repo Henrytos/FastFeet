@@ -7,12 +7,15 @@ import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { PhotosRepository } from "../repositories/photos-repository";
 
-interface MarkAnOrderAsDeliveredUseCaseRequest {
+export interface MarkAnOrderAsDeliveredUseCaseRequest {
   orderId: string;
   deliveryManId: string;
   photoIds: string[];
 }
-type MarkAnOrderAsDeliveredUseCaseResponse = Either<OrderDoesNotExistError, {}>;
+export type MarkAnOrderAsDeliveredUseCaseResponse = Either<
+  OrderDoesNotExistError,
+  {}
+>;
 
 export class MarkAnOrderAsDeliveredUseCase {
   constructor(

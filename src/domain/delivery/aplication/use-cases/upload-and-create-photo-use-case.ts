@@ -1,6 +1,6 @@
 import { Either, left, right } from "@/core/either";
 import { Uploader } from "../storage/uploader";
-import { Photo } from "../../enterprise/photo";
+import { Photo } from "../../enterprise/entites/photo";
 import { PhotosRepository } from "../repositories/photos-repository";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 

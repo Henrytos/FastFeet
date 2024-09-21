@@ -1,5 +1,5 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { Photo, PhotoProps } from "@/domain/delivery/enterprise/photo";
+import { Photo, PhotoProps } from "@/domain/delivery/enterprise/entites/photo";
 import { faker } from "@faker-js/faker";
 
 export function makePhoto(
