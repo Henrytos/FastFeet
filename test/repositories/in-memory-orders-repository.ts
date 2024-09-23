@@ -1,8 +1,12 @@
 import { DomainEvents } from "@/core/events/domain-events";
-import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
+import {  OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
 import { Order } from "@/domain/delivery/enterprise/entites/order";
+import { Coordinate, getDistanceBetweenCoordinates } from "../utils/get-distance-between-coordinate";
+import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
+
+  constructor(private deliveryAddressRepository:DeliveryAddressRepository){}
 
   async create(order: Order): Promise<void> {
     this.items.push(order);
@@ -94,5 +98,9 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     }
 
     return order;
+  }
+  async findManyNearby({ latitude ,longitude}: Coordinate): Promise<Order[]> {
+
+  
   }
 }
