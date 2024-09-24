@@ -28,7 +28,9 @@ let sendNotificationExecuteSpy: SpyInstance<
 
 describe("On Answer mark Delivered", () => {
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,

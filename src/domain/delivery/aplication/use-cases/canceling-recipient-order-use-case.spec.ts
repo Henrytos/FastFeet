@@ -6,15 +6,20 @@ import { makeOrder } from "@/test/factories/make-order";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
 import { NotAllowedError } from "@/core/errors/not-allowed-error";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 describe("cancelling recipient order  use case", () => {
   let sut: CancelingRecipientOrderUseCase;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
+  let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryOrdersRespository: InMemoryOrdersRepository;
 
   beforeEach(() => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
-    inMemoryOrdersRespository = new InMemoryOrdersRepository();
+    inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+    inMemoryOrdersRespository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     sut = new CancelingRecipientOrderUseCase(
       inMemoryAdministratorsRepository,
       inMemoryOrdersRespository

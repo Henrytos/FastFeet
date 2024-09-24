@@ -5,14 +5,19 @@ import { makeOrder } from "@/test/factories/make-order";
 import { makeAdministrator } from "@/test/factories/make-administrator";
 import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 describe("delete an order use case", () => {
   let sut: DeleteAnOrderUseCase;
+  let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
 
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
 
     sut = new DeleteAnOrderUseCase(

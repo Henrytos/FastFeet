@@ -8,15 +8,20 @@ import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exi
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { InMemoryPhotosRepository } from "@/test/repositories/in-memory-photos-repository";
 import { makePhoto } from "@/test/factories/make-photo";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 describe("mark an order as delivered use case", () => {
   let sut: MarkAnOrderAsDeliveredUseCase;
+  let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryOrdersRespository: InMemoryOrdersRepository;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
   let inMemoryPhotosRepository: InMemoryPhotosRepository;
 
   beforeEach(() => {
-    inMemoryOrdersRespository = new InMemoryOrdersRepository();
+    inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+    inMemoryOrdersRespository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     inMemoryPhotosRepository = new InMemoryPhotosRepository();
     sut = new MarkAnOrderAsDeliveredUseCase(

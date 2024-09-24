@@ -19,7 +19,9 @@ describe("update recipient use case", () => {
   beforeEach(() => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
       inMemoryDeliveryAddressRepository

@@ -17,7 +17,9 @@ describe("delete recipient use case", () => {
 
   beforeEach(() => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
 
     inMemomoryRecipientsRepository = new InMemoryRecipientsRepository(

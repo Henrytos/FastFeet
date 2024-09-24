@@ -28,7 +28,9 @@ describe("register order for recipient use case", () => {
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository;
 
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();

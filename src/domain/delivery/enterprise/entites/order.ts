@@ -3,7 +3,6 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
 import { OrderCreatedEvent } from "../events/order-created-event";
 import { OrderMakeDeliveredEvent } from "../events/order-make-delivered-event";
-import { DomainEvents } from "@/core/events/domain-events";
 import { OrderWithdrawnEvent } from "../events/order-withdrawn-event";
 import { OrderCanceledEvent } from "../events/order-canceled-event";
 

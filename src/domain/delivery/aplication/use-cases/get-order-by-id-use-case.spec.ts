@@ -2,13 +2,19 @@ import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-r
 import { GetOrderByIdUseCase } from "./get-order-by-id-use-case";
 import { makeOrder } from "@/test/factories/make-order";
 import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
 
 describe("get order by id use case", () => {
   let sut: GetOrderByIdUseCase;
+  let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
 
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
+    inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     sut = new GetOrderByIdUseCase(inMemoryOrdersRepository);
   });
 

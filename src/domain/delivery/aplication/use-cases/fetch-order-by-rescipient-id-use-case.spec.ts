@@ -14,8 +14,11 @@ describe("fetch order by recipient id use case", () => {
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository;
 
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository();
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
+
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository
+    );
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
       inMemoryDeliveryAddressRepository

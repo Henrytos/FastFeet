@@ -1,12 +1,16 @@
 import { DomainEvents } from "@/core/events/domain-events";
-import {  OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
+import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
 import { Order } from "@/domain/delivery/enterprise/entites/order";
-import { Coordinate, getDistanceBetweenCoordinates } from "../utils/get-distance-between-coordinate";
+import {
+  Coordinate,
+  getDistanceBetweenCoordinates,
+} from "../utils/get-distance-between-coordinate";
 import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
+import { Console } from "console";
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
-  constructor(private deliveryAddressRepository:DeliveryAddressRepository){}
+  constructor(private deliveryAddressRepository: DeliveryAddressRepository) {}
 
   async create(order: Order): Promise<void> {
     this.items.push(order);
@@ -67,7 +71,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.items.splice(index, 1);
   }
 
-  async fetchOrdersByRecipientId(
+  async findManyOrdersByRecipientId(
     recipientId: string,
     page: number
   ): Promise<Order[]> {
@@ -99,8 +103,44 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     return order;
   }
-  async findManyNearby({ latitude ,longitude}: Coordinate): Promise<Order[]> {
+  async findManyNearby({ latitude, longitude }: Coordinate): Promise<Order[]> {
+    const ordersWithAddress = this.items.filter((item) => {
+      if (item.deliveryAddressId == undefined) {
+        return false;
+      }
 
-  
+      if (item.deliveryAddressId.toString() == "undefined") {
+        return false;
+      }
+
+      return true;
+    });
+
+    const orders = ordersWithAddress.filter(async (item) => {
+      if (item.deliveryAddressId == undefined) {
+        return false;
+      }
+      if (item.deliveryAddressId.toString() == "") {
+        return false;
+      }
+
+      const deliveryAddress = await this.deliveryAddressRepository.findById(
+        item.deliveryAddressId.toString()
+      );
+
+      if (!deliveryAddress) {
+        return false;
+      }
+      const distance = getDistanceBetweenCoordinates(
+        { latitude, longitude },
+        {
+          latitude: deliveryAddress.latitude,
+          longitude: deliveryAddress.longitude,
+        }
+      );
+      return distance < 0.1; // 10km
+    });
+
+    return orders;
   }
 }
