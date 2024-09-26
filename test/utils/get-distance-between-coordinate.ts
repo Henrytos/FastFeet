@@ -5,7 +5,7 @@ export interface Coordinate {
 
 export function getDistanceBetweenCoordinates(
   from: Coordinate,
-  to: Coordinate
+  to: Coordinate,
 ) {
   if (from.latitude === to.latitude && from.longitude === to.longitude) {
     return 0;
