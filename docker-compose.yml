@@ -1,13 +1,12 @@
-
 version: '3'
 
 services:
   postgres:
-    container_name: postgres-fastfeet
-    image: bitnami/postgresql
+    container_name: fastfeet
+    image: postgres:latest
     ports:
-      - "5432:5432"
+      - 5432:5432
     environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=fastfeet
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: fastfeet
