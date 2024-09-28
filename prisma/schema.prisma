@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  DELIVERY_MAN
+}
+
+model User {
+  id           String  @id @default(uuid())
+  role         Role    @default(DELIVERY_MAN)
+  name         String
+  cpf          String  @unique
+  passwordHash String
+  orders       Order[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("users")
+}
+
+enum OrderStatus {
+  PENDING
+  WITHDRAWN
+  DELIVERED
+  CANCELED
+}
+
+model Order {
+  id String @id @default(uuid())
+
+  deliveryManId String
+  deliveryMan   User   @relation(fields: [deliveryManId], references: [id])
+
+  recipientId String
+  recipient   Recipient @relation(fields: [recipientId], references: [id])
+
+  orderStatus OrderStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("orders")
+}
+
+model Recipient {
+  id      String    @id @default(uuid())
+  name    String
+  address Address[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+  Order     Order[]
+
+  @@map("recipients")
+}
+
+model Address {
+  id           String @id @default(uuid())
+  state        String
+  city         String
+  neighborhood String
+  street       String
+  zip          String
+  number       String
+  latitude     String
+  logitude     String
+
+  recipientId String
+  recipient   Recipient @relation(fields: [recipientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("addresses")
+}

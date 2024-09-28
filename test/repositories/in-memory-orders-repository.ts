@@ -1,12 +1,12 @@
-import { DomainEvents } from "@/core/events/domain-events";
-import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
-import { Order } from "@/domain/delivery/enterprise/entites/order";
+import { DomainEvents } from '@/core/events/domain-events';
+import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
+import { Order } from '@/domain/delivery/enterprise/entities/order';
 import {
   Coordinate,
   getDistanceBetweenCoordinates,
-} from "../utils/get-distance-between-coordinate";
-import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
-import { Console } from "console";
+} from '../utils/get-distance-between-coordinate';
+import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
+import { Console } from 'console';
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
@@ -16,7 +16,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.items.push(order);
 
     switch (order.status) {
-      case "pending":
+      case 'pending':
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
     }
@@ -42,16 +42,16 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.items[index] = order;
 
     switch (order.status) {
-      case "pending":
+      case 'pending':
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
-      case "withdrawn":
+      case 'withdrawn':
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
-      case "delivered":
+      case 'delivered':
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
-      case "canceled":
+      case 'canceled':
         DomainEvents.dispatchEventsForAggregate(order.id);
 
         break;
@@ -61,7 +61,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   async delete(order: Order) {
     const orderDoesExists = !this.findById(order.id.toString());
     if (orderDoesExists) {
-      throw new Error("Order does not exist");
+      throw new Error('Order does not exist');
     }
 
     const index = this.items.findIndex((item) => {
@@ -73,7 +73,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async findManyOrdersByRecipientId(
     recipientId: string,
-    page: number
+    page: number,
   ): Promise<Order[]> {
     const orders = this.items
       .filter((item) => {
@@ -109,7 +109,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
         return false;
       }
 
-      if (item.deliveryAddressId.toString() == "undefined") {
+      if (item.deliveryAddressId.toString() == 'undefined') {
         return false;
       }
 
@@ -120,12 +120,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
       if (item.deliveryAddressId == undefined) {
         return false;
       }
-      if (item.deliveryAddressId.toString() == "") {
+      if (item.deliveryAddressId.toString() == '') {
         return false;
       }
 
       const deliveryAddress = await this.deliveryAddressRepository.findById(
-        item.deliveryAddressId.toString()
+        item.deliveryAddressId.toString(),
       );
 
       if (!deliveryAddress) {
@@ -136,7 +136,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
         {
           latitude: deliveryAddress.latitude,
           longitude: deliveryAddress.longitude,
-        }
+        },
       );
       return distance < 0.1; // 10km
     });

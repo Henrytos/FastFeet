@@ -1,6 +1,6 @@
-import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
-import { DeliveryAddressDoesNotExistError } from "@/domain/delivery/aplication/use-cases/errors/delivery-address-does-not-exist-error";
-import { DeliveryAddress } from "@/domain/delivery/enterprise/entites/delivery-address";
+import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
+import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error';
+import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address';
 
 export class InMemoryDeliveryAddressRepository
   implements DeliveryAddressRepository
@@ -33,14 +33,14 @@ export class InMemoryDeliveryAddressRepository
   }
 
   async save(deliveryAddress: DeliveryAddress): Promise<void> {
-    const index = this.items.findIndex((item)=>{
+    const index = this.items.findIndex((item) => {
       return item.id.toValue() === deliveryAddress.id.toValue();
-    })
+    });
 
-    if(index == -1){
+    if (index == -1) {
       throw new DeliveryAddressDoesNotExistError();
     }
 
-    this.items[index] = deliveryAddress; 
+    this.items[index] = deliveryAddress;
   }
 }

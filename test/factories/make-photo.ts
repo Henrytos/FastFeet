@@ -1,10 +1,10 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { Photo, PhotoProps } from "@/domain/delivery/enterprise/entites/photo";
-import { faker } from "@faker-js/faker";
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { Photo, PhotoProps } from '@/domain/delivery/enterprise/entities/photo';
+import { faker } from '@faker-js/faker';
 
 export function makePhoto(
   overwide: Partial<PhotoProps> = {},
-  id?: UniqueEntityID
+  id?: UniqueEntityID,
 ): Photo {
   const photo = Photo.create(
     {
@@ -12,7 +12,7 @@ export function makePhoto(
       url: faker.internet.url(),
       ...overwide,
     },
-    id
+    id,
   );
 
   return photo;

@@ -55,7 +55,7 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 
 [ x ] Deve ser possível notificar o **destinatário** a cada alteração no status da **encomenda**
 
-#### entitites 
+#### entities 
 delivery man :entregador
 manageror administrator: admin
 order: encomenda

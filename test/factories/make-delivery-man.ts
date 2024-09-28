@@ -1,19 +1,19 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import {
   DeliveryMan,
   DeliveryManProps,
-} from "@/domain/delivery/enterprise/entites/delivery-man";
-import { Cpf } from "@/domain/delivery/enterprise/entites/value-object/cpf";
-import { faker } from "@faker-js/faker";
-import { randomUUID } from "crypto";
+} from '@/domain/delivery/enterprise/entities/delivery-man';
+import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
+import { faker } from '@faker-js/faker';
+import { randomUUID } from 'crypto';
 
 export function makeDeliveryMan(
   overwide: Partial<DeliveryManProps> = {},
-  id?: UniqueEntityID
+  id?: UniqueEntityID,
 ) {
   const deliveryMan = DeliveryMan.create({
     cpf: Cpf.createFromValue(
-      faker.number.int({ min: 10000000000, max: 99999999999 }).toString()
+      faker.number.int({ min: 10000000000, max: 99999999999 }).toString(),
     ),
     administratorId: new UniqueEntityID(randomUUID()),
     name: faker.person.firstName(),

@@ -1,13 +1,13 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import {
   Recipient,
   RecipientProps,
-} from "@/domain/delivery/enterprise/entites/recipient";
-import { faker } from "@faker-js/faker";
+} from '@/domain/delivery/enterprise/entities/recipient';
+import { faker } from '@faker-js/faker';
 
 export function makeRecipient(
   overwide: Partial<RecipientProps> = {},
-  id?: UniqueEntityID
+  id?: UniqueEntityID,
 ) {
   const recipient = Recipient.create(
     {
@@ -15,7 +15,7 @@ export function makeRecipient(
       name: faker.person.firstName(),
       ...overwide,
     },
-    id
+    id,
   );
   return recipient;
 }

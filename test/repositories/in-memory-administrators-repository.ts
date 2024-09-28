@@ -1,6 +1,6 @@
-import { AdministratorsRepository } from "@/domain/delivery/aplication/repositories/administrators-repository";
-import { Administrator } from "@/domain/delivery/enterprise/entites/administrator";
-import { Cpf } from "@/domain/delivery/enterprise/entites/value-object/cpf";
+import { AdministratorsRepository } from '@/domain/delivery/application/repositories/administrators-repository';
+import { Administrator } from '@/domain/delivery/enterprise/entities/administrator';
+import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
 
 export class InMemoryAdministratorsRepository
   implements AdministratorsRepository
@@ -9,7 +9,7 @@ export class InMemoryAdministratorsRepository
 
   async findByCpf(cpf: Cpf): Promise<Administrator | null> {
     const administrator = this.items.find(
-      (item) => item.cpf.value == cpf.value
+      (item) => item.cpf.value == cpf.value,
     );
 
     if (!administrator) {

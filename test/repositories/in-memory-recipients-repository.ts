@@ -1,19 +1,19 @@
-import { DeliveryAddressRepository } from "@/domain/delivery/aplication/repositories/delivery-address-repository";
-import { OrdersRepository } from "@/domain/delivery/aplication/repositories/orders-repository";
-import { RecipientsRepository } from "@/domain/delivery/aplication/repositories/recipients-repository";
-import { Recipient } from "@/domain/delivery/enterprise/entites/recipient";
+import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
+import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
+import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository';
+import { Recipient } from '@/domain/delivery/enterprise/entities/recipient';
 
 export class InMemoryRecipientsRepository implements RecipientsRepository {
   public items: Recipient[] = [];
 
   constructor(
     private ordersRepository: OrdersRepository,
-    private deliveryAddress: DeliveryAddressRepository
+    private deliveryAddress: DeliveryAddressRepository,
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
     const recipient = this.items.find(
-      (recipient) => recipient.id.toString() === id
+      (recipient) => recipient.id.toString() === id,
     );
 
     if (!recipient) {
@@ -41,13 +41,13 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     const index = this.items.indexOf(recipient);
 
     if (index == -1) {
-      throw new Error("Recipient not found");
+      throw new Error('Recipient not found');
     }
 
     this.items.splice(index, 1);
 
     const order = await this.ordersRepository.findByRecipientId(
-      recipient.id.toString()
+      recipient.id.toString(),
     );
 
     if (order?.deliveryAddressId) {
@@ -55,7 +55,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     }
 
     await this.ordersRepository.deleteManyByRecipientId(
-      recipient.id.toString()
+      recipient.id.toString(),
     );
   }
 
@@ -63,7 +63,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     const index = this.items.indexOf(recipient);
 
     if (index == -1) {
-      throw new Error("Recipient not found");
+      throw new Error('Recipient not found');
     }
 
     this.items[index] = recipient;

@@ -1,13 +1,13 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import {
   DeliveryAddress,
   DeliveryAddressProps,
-} from "@/domain/delivery/enterprise/entites/delivery-address";
-import { faker } from "@faker-js/faker";
+} from '@/domain/delivery/enterprise/entities/delivery-address';
+import { faker } from '@faker-js/faker';
 
 export function makeDeliveryAddress(
   overwide: Partial<DeliveryAddressProps> = {},
-  id?: UniqueEntityID
+  id?: UniqueEntityID,
 ) {
   const deliveryAddress = DeliveryAddress.create({
     state: faker.lorem.paragraph(),

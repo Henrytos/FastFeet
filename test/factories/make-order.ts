@@ -1,12 +1,12 @@
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { Order, OrderProps } from "@/domain/delivery/enterprise/entites/order";
-import { randomUUID } from "crypto";
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { Order, OrderProps } from '@/domain/delivery/enterprise/entities/order';
+import { randomUUID } from 'crypto';
 
 export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
   const order = Order.create(
     {
       recipientId: new UniqueEntityID(randomUUID()),
-      status: "pending",
+      status: 'pending',
       createdAt: new Date(),
       deliveryAt: null,
       deliviryManId: new UniqueEntityID(randomUUID()),
@@ -15,7 +15,7 @@ export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
       withdrawnAt: null,
       ...overwide,
     },
-    id
+    id,
   );
 
   return order;
