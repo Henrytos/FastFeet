@@ -1,13 +1,13 @@
 import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository';
 import { RegisterDeliveryManUseCase } from './register-delivery-man-use-case';
 import { FakeHashGenerator } from '@/test/cryptography/fake-hash-generator';
-import { HashGenerator } from '../cryptography/hash-generator';
 import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
 import { makeAdministrator } from '@/test/factories/make-administrator';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
+import { HashGenerator } from '../cryptography/hash-generator';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 
 describe('create delivery man  use case', () => {
   let sut: RegisterDeliveryManUseCase;
