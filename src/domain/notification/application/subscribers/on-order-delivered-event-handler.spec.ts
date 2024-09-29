@@ -6,7 +6,10 @@ import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-r
 import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository';
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
 import { waitFor } from '@/test/utils/wait-for';
-
+/********* 
+  For Resolve this error read
+  https://vitest.dev/guide/migration.html#mock-types-4400
+ *********/
 import { SpyInstance } from 'vitest';
 import {
   MarkAnOrderAsDeliveredUseCaseRequest,

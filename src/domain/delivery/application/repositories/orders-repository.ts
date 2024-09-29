@@ -1,5 +1,5 @@
 import { Coordinate } from '@/test/utils/get-distance-between-coordinate';
-import { Order } from '../../enterprise/entities/order';
+import { Order } from '@/domain/delivery/enterprise/entities/order';
 
 export interface OrdersRepository {
   create(order: Order): Promise<void>;

@@ -19,15 +19,15 @@ enum Role {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  role         Role    @default(DELIVERY_MAN)
+  id           String @id @default(uuid())
+  role         Role   @default(DELIVERY_MAN)
   name         String
-  cpf          String  @unique
+  cpf          String @unique
   passwordHash String
-  orders       Order[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
+  Order     Order[]
 
   @@map("users")
 }
@@ -42,24 +42,39 @@ enum OrderStatus {
 model Order {
   id String @id @default(uuid())
 
-  deliveryManId String
-  deliveryMan   User   @relation(fields: [deliveryManId], references: [id])
+  orderStatus OrderStatus @default(PENDING) @map("order_status")
 
-  recipientId String
-  recipient   Recipient @relation(fields: [recipientId], references: [id])
+  deliveryManId String?   @map("delivery_man_id")
+  deliveryMan   User?     @relation(fields: [deliveryManId], references: [id])
+  recipientId   String    @map("recipient_id")
+  recipient     Recipient @relation(fields: [recipientId], references: [id])
+  photos        Photo[]
 
-  orderStatus OrderStatus @default(PENDING)
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  deliveryAt  DateTime? @map("delivery_at")
+  withdrawnAt DateTime? @map("withdrawn_at")
+  updatedAt   DateTime  @updatedAt() @map("updated_at")
 
   @@map("orders")
 }
 
+model Photo {
+  id       String @id @default(uuid())
+  filename String
+  url      String
+  orderId  String @map("order_id")
+  order    Order  @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt() @map("updated_at")
+
+  @@map("photos")
+}
+
 model Recipient {
-  id      String    @id @default(uuid())
-  name    String
-  address Address[]
+  id    String @id @default(uuid())
+  name  String
+  email String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
@@ -78,9 +93,6 @@ model Address {
   number       String
   latitude     String
   logitude     String
-
-  recipientId String
-  recipient   Recipient @relation(fields: [recipientId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")

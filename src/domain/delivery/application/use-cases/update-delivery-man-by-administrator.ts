@@ -2,9 +2,7 @@ import { Either, left, right } from '@/core/either';
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { DeliveryMan } from '../../enterprise/entities/delivery-man';
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { AdministratorsRepository } from '../repositories/administrators-repository';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
@@ -49,14 +47,9 @@ export class UpdateDeliveryManByAdministratorUseCase {
       return left(new DeliveryManDoesNotExistError());
     }
 
-    if (deliveryMan.administratorId.toString() != administratorId) {
-      return left(new WrongCredentialsError());
-    }
-
     const passwordHash = await this.hashGenerator.hash(password);
     const updatedDeliveryMan = DeliveryMan.create(
       {
-        administratorId: new UniqueEntityID(administratorId),
         cpf: Cpf.createFromValue(cpf),
         name,
         password: passwordHash,

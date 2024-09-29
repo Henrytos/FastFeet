@@ -1,4 +1,4 @@
-import { Photo } from '../../enterprise/entities/photo';
+import { Photo } from '@/domain/delivery/enterprise/entities/photo';
 
 export interface PhotosRepository {
   create(photo: Photo): Promise<void>;

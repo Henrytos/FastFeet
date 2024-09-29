@@ -15,12 +15,12 @@ type GetRecipientByIdUseCaseResponse = Either<
 >;
 
 export class GetRecipientByIdUseCase {
-  constructor(private recipientsRespository: RecipientsRepository) {}
+  constructor(private recipientsRepository: RecipientsRepository) {}
 
   async execute({
     recipientId,
   }: GetRecipientByIdUseCaseRequest): Promise<GetRecipientByIdUseCaseResponse> {
-    const recipient = await this.recipientsRespository.findById(recipientId);
+    const recipient = await this.recipientsRepository.findById(recipientId);
     if (!recipient) {
       return left(new RecipientDoesNotExistError());
     }

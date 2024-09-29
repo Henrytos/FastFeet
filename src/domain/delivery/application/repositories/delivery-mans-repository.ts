@@ -1,5 +1,5 @@
-import { DeliveryMan } from '../../enterprise/entities/delivery-man';
-import { Cpf } from '../../enterprise/entities/value-object/cpf';
+import { DeliveryMan } from '@/domain/delivery/enterprise/entities/delivery-man';
+import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
 
 export interface DeliveryMansRepository {
   create(deliveryMan: DeliveryMan): Promise<void>;

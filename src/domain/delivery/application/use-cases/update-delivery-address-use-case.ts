@@ -6,8 +6,8 @@ import { AdministratorDoesNotExistError } from './errors/administrator-does-not-
 import { DeliveryAddress } from '../../enterprise/entities/delivery-address';
 
 interface UpdateDeliveryAddressUseCaseRequest {
-  adminitratorId: string;
-  deliveryAddresId: string;
+  administratorId: string;
+  deliveryAddressId: string;
   state?: string | null;
   city?: string | null;
   neighborhood?: string | null;
@@ -25,13 +25,13 @@ type UpdateDeliveryAddressUseCaseResponse = Either<
 
 export class UpdateDeliveryAddressUseCase {
   constructor(
-    private adminitratorsRepository: AdministratorsRepository,
+    private administratorsRepository: AdministratorsRepository,
     private deliveryAddressRepository: DeliveryAddressRepository,
   ) {}
 
   async execute({
-    adminitratorId,
-    deliveryAddresId,
+    administratorId,
+    deliveryAddressId,
     state,
     city,
     neighborhood,
@@ -41,14 +41,14 @@ export class UpdateDeliveryAddressUseCase {
     latitude,
     longitude,
   }: UpdateDeliveryAddressUseCaseRequest): Promise<UpdateDeliveryAddressUseCaseResponse> {
-    const adminitrator =
-      await this.adminitratorsRepository.findById(adminitratorId);
-    if (!adminitrator) {
+    const administrator =
+      await this.administratorsRepository.findById(administratorId);
+    if (!administrator) {
       return left(new AdministratorDoesNotExistError());
     }
 
     const deliveryAddress =
-      await this.deliveryAddressRepository.findById(deliveryAddresId);
+      await this.deliveryAddressRepository.findById(deliveryAddressId);
     if (!deliveryAddress) {
       return left(new DeliveryAddressDoesNotExistError());
     }

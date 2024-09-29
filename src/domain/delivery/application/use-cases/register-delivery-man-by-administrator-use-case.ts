@@ -43,7 +43,6 @@ export class RegisterDeliveryManByAdministratorUseCase {
       cpf: Cpf.createFromValue(cpf),
       name,
       password: passwordHash,
-      administratorId: administrator.id,
     });
 
     await this.deliveryMansRepository.create(deliveryMan);

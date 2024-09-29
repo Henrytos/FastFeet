@@ -7,7 +7,7 @@ import { AdministratorDoesNotExistError } from './errors/administrator-does-not-
 import { AdministratorsRepository } from '../repositories/administrators-repository';
 
 interface GetDeliveryManByIdUseCaseRequest {
-  deleviryManId: string;
+  deliveryManId: string;
   administratorId: string;
 }
 type GetDeliveryManByIdUseCaseResponse = Either<
@@ -22,7 +22,7 @@ export class GetDeliveryManByIdUseCase {
   ) {}
 
   async execute({
-    deleviryManId,
+    deliveryManId,
     administratorId,
   }: GetDeliveryManByIdUseCaseRequest): Promise<GetDeliveryManByIdUseCaseResponse> {
     const administrator =
@@ -33,14 +33,10 @@ export class GetDeliveryManByIdUseCase {
     }
 
     const deliveryMan =
-      await this.deliveryMansRepository.findById(deleviryManId);
+      await this.deliveryMansRepository.findById(deliveryManId);
 
     if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError());
-    }
-
-    if (deliveryMan.administratorId.toString() != administratorId) {
-      return left(new WrongCredentialsError());
     }
 
     return right({ deliveryMan });

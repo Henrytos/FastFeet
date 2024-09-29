@@ -13,7 +13,7 @@ describe('Read notification use case', () => {
     sut = new ReadNotificationUseCase(inMemoryNotificationsRepository);
   });
 
-  it('deveria ser possivel ler notificação ', async () => {
+  it('should be possible to read notification', async () => {
     const notification = makeNotification();
     inMemoryNotificationsRepository.items.push(notification);
     const result = await sut.execute({
@@ -24,7 +24,7 @@ describe('Read notification use case', () => {
     expect(result.isRight()).toEqual(true);
   });
 
-  it('não deveria ser possivel ler notificação se não existe ', async () => {
+  it('should not be possible to read notification if it does not exist ', async () => {
     const notification = makeNotification();
 
     const result = await sut.execute({
@@ -36,7 +36,7 @@ describe('Read notification use case', () => {
     expect(result.value).toBeInstanceOf(NotificationDoesNotExistsError);
   });
 
-  it('não deveria ser possivel ler notificação se voce não for destinatario ', async () => {
+  it('should not be possible to read notification if you are not intended ', async () => {
     const notification = makeNotification({
       readAt: undefined,
     });

@@ -11,17 +11,17 @@ import { Cpf } from '../../enterprise/entities/value-object/cpf';
 
 describe('authenticate administrator use case', () => {
   let sut: AuthenticateAdministratorUseCase;
-  let inMemoryadministratorsRepository: InMemoryAdministratorsRepository;
+  let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
   let fakeEncrypter: Encrypter;
   let fakeHashComparer: HashComparer;
 
   beforeEach(() => {
-    inMemoryadministratorsRepository = new InMemoryAdministratorsRepository();
+    inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository();
     fakeEncrypter = new FakeEncrypter();
     fakeHashComparer = new FakeHashComparer();
 
     sut = new AuthenticateAdministratorUseCase(
-      inMemoryadministratorsRepository,
+      inMemoryAdministratorsRepository,
       fakeEncrypter,
       fakeHashComparer,
     );
@@ -32,7 +32,7 @@ describe('authenticate administrator use case', () => {
       password: '123456',
       cpf: Cpf.createFromValue('12345678900'),
     });
-    inMemoryadministratorsRepository.items.push(administrator);
+    inMemoryAdministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({
       password: '123456',
@@ -50,7 +50,7 @@ describe('authenticate administrator use case', () => {
       password: '123456',
       cpf: Cpf.createFromValue('12345678900'),
     });
-    inMemoryadministratorsRepository.items.push(administrator);
+    inMemoryAdministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({
       password: '654321',
@@ -66,7 +66,7 @@ describe('authenticate administrator use case', () => {
       password: '123456',
       cpf: Cpf.createFromValue('12345678900'),
     });
-    inMemoryadministratorsRepository.items.push(administrator);
+    inMemoryAdministratorsRepository.items.push(administrator);
 
     const result = await sut.execute({
       password: '123456',

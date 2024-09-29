@@ -20,7 +20,7 @@ type UploadAndCreatePhotoUseCaseResponse = Either<
 export class UploadAndCreatePhotoUseCase {
   constructor(
     private uploader: Uploader,
-    private photosRespository: PhotosRepository,
+    private photosRepository: PhotosRepository,
   ) {}
 
   async execute({
@@ -40,7 +40,7 @@ export class UploadAndCreatePhotoUseCase {
 
     const newPhoto = Photo.create({ url, fileName });
 
-    await this.photosRespository.create(newPhoto);
+    await this.photosRepository.create(newPhoto);
 
     return right({ url });
   }

@@ -10,7 +10,6 @@ import { RecipientsRepository } from '../repositories/recipients-repository';
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
   administratorId: string;

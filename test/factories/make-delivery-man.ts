@@ -5,7 +5,6 @@ import {
 } from '@/domain/delivery/enterprise/entities/delivery-man';
 import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
 import { faker } from '@faker-js/faker';
-import { randomUUID } from 'crypto';
 
 export function makeDeliveryMan(
   overwide: Partial<DeliveryManProps> = {},
@@ -15,7 +14,6 @@ export function makeDeliveryMan(
     cpf: Cpf.createFromValue(
       faker.number.int({ min: 10000000000, max: 99999999999 }).toString(),
     ),
-    administratorId: new UniqueEntityID(randomUUID()),
     name: faker.person.firstName(),
     password: faker.internet.password(),
     ...overwide,

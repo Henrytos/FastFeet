@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either';
 import { Notification } from '../../enterprise/entities/notification';
-import { NotificationsReposirory } from '../repositories/notifications-repository';
+import { NotificationsRepository } from '../repositories/notifications-repository';
 import { NotificationDoesNotExistsError } from './errors/notification-does-not-exists-error';
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error';
 
@@ -17,7 +17,7 @@ export type ReadNotificationUseCaseResponse = Either<
 >;
 
 export class ReadNotificationUseCase {
-  constructor(private notificationsRepository: NotificationsReposirory) {}
+  constructor(private notificationsRepository: NotificationsRepository) {}
 
   async execute({
     notificationId,

@@ -7,6 +7,10 @@ export class InMemoryAdministratorsRepository
 {
   public items: Administrator[] = [];
 
+  async create(administrator: Administrator): Promise<void> {
+    this.items.push(administrator);
+  }
+
   async findByCpf(cpf: Cpf): Promise<Administrator | null> {
     const administrator = this.items.find(
       (item) => item.cpf.value == cpf.value,

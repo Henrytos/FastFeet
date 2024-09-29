@@ -1,13 +1,13 @@
 import { Either, left, right } from '@/core/either';
 
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
+import { AdministratorsRepository } from '@/domain/delivery/application/repositories/administrators-repository';
 import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does-not-exist-error';
 import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
-import { OrdersRepository } from '../repositories/orders-repository';
-import { DeliveryAddressRepository } from '../repositories/delivery-address-repository';
-import { RecipientsRepository } from '../repositories/recipients-repository';
-import { Order } from '../../enterprise/entities/order';
+import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
+import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
+import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository';
+import { Order } from '@/domain/delivery/enterprise/entities/order';
 
 interface RegisterOrderForRecipientUseCaseRequest {
   administratorId: string;

@@ -31,13 +31,12 @@ describe('change delivery man password use case', () => {
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryMan = makeDeliveryMan({
-      administratorId: administrator.id,
       password: await fakeHashGenerator.hash('old password'),
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
-      adminstratorId: administrator.id.toString(),
+      administratorId: administrator.id.toString(),
       password: 'new password',
       cpf: deliveryMan.cpf.value,
     });
@@ -56,13 +55,12 @@ describe('change delivery man password use case', () => {
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryMan = makeDeliveryMan({
-      administratorId: administrator.id,
       password: await fakeHashGenerator.hash('old password'),
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
-      adminstratorId: administrator.id.toString(),
+      administratorId: administrator.id.toString(),
       password: 'new password',
       cpf: Cpf.create('12345678901').value,
     });
@@ -82,13 +80,12 @@ describe('change delivery man password use case', () => {
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryMan = makeDeliveryMan({
-      administratorId: administrator.id,
       password: await fakeHashGenerator.hash('old password'),
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
-      adminstratorId: 'invalid-administrator-id',
+      administratorId: 'invalid-administrator-id',
       password: 'new password',
       cpf: deliveryMan.cpf.value,
     });

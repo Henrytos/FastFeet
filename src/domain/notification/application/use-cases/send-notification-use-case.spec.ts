@@ -1,7 +1,7 @@
-import { InMemoryNotificationsRepository } from "@/test/repositories/in-memory-notifications-repository";
-import { SendNotificationUseCase } from "./send-notification-use-case";
+import { InMemoryNotificationsRepository } from '@/test/repositories/in-memory-notifications-repository';
+import { SendNotificationUseCase } from './send-notification-use-case';
 
-describe("send notification use case", () => {
+describe('send notification use case', () => {
   let sut: SendNotificationUseCase;
   let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
 
@@ -10,11 +10,11 @@ describe("send notification use case", () => {
     sut = new SendNotificationUseCase(inMemoryNotificationsRepository);
   });
 
-  it("deveria ser possivel enviar notificação ao destinatario", async () => {
+  it('should be possible to send notification to the destination', async () => {
     const result = await sut.execute({
-      recipientId: "1",
-      title: "example-test",
-      content: "example-content",
+      recipientId: '1',
+      title: 'example-test',
+      content: 'example-content',
     });
 
     expect(result.isRight()).toBeTruthy();

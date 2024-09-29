@@ -1,9 +1,9 @@
-import { Either, left, right } from "@/core/either";
-import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
-import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
-import { WrongCredentialsError } from "./errors/wrong-credentials-error";
-import { AdministratorsRepository } from "../repositories/administrators-repository";
-import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { Either, left, right } from '@/core/either';
+import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
+import { WrongCredentialsError } from './errors/wrong-credentials-error';
+import { AdministratorsRepository } from '../repositories/administrators-repository';
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 
 interface DeleteDeliveryManByIdUseCaseRequest {
   deliveryManId: string;
@@ -17,31 +17,25 @@ type DeleteDeliveryManByIdUseCaseResponse = Either<
 export class DeleteDeliveryManByIdUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository
+    private deliveryMansRepository: DeliveryMansRepository,
   ) {}
 
   async execute({
     deliveryManId,
     administratorId,
   }: DeleteDeliveryManByIdUseCaseRequest): Promise<DeleteDeliveryManByIdUseCaseResponse> {
-    const administrator = await this.administratorsRepository.findById(
-      administratorId
-    );
+    const administrator =
+      await this.administratorsRepository.findById(administratorId);
 
     if (!administrator) {
       return left(new AdministratorDoesNotExistError());
     }
 
-    const deliveryMan = await this.deliveryMansRepository.findById(
-      deliveryManId
-    );
+    const deliveryMan =
+      await this.deliveryMansRepository.findById(deliveryManId);
 
     if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError());
-    }
-
-    if (deliveryMan.administratorId.toString() != administratorId) {
-      return left(new WrongCredentialsError());
     }
 
     await this.deliveryMansRepository.delete(deliveryMan);

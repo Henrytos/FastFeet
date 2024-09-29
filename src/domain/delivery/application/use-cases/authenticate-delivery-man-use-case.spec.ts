@@ -1,10 +1,8 @@
-import { AuthenticateAdministratorUseCase } from './authenticate-administrator-use-case';
 import { FakeEncrypter } from '@/test/cryptography/fake-encrypter';
 import { FakeHashComparer } from '@/test/cryptography/fake-hash-comparer';
 import { Encrypter } from '../cryptography/encrypter';
 import { HashComparer } from '../cryptography/hash-comparer';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
 import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
@@ -13,17 +11,17 @@ import { AuthenticateDeliveryManUseCase } from './authenticate-delivery-man-use-
 
 describe('authenticate administrator use case', () => {
   let sut: AuthenticateDeliveryManUseCase;
-  let inMemorydeliverymansRepository: InMemoryDeliveryMansRepository;
+  let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
   let fakeEncrypter: Encrypter;
   let fakeHashComparer: HashComparer;
 
   beforeEach(() => {
-    inMemorydeliverymansRepository = new InMemoryDeliveryMansRepository();
+    inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     fakeEncrypter = new FakeEncrypter();
     fakeHashComparer = new FakeHashComparer();
 
     sut = new AuthenticateDeliveryManUseCase(
-      inMemorydeliverymansRepository,
+      inMemoryDeliveryMansRepository,
       fakeEncrypter,
       fakeHashComparer,
     );
@@ -34,7 +32,7 @@ describe('authenticate administrator use case', () => {
       password: '123456',
       cpf: Cpf.createFromValue('12345678900'),
     });
-    inMemorydeliverymansRepository.items.push(deliveryMan);
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
       password: '123456',
@@ -52,7 +50,7 @@ describe('authenticate administrator use case', () => {
       password: '123456',
       cpf: Cpf.createFromValue('12345678900'),
     });
-    inMemorydeliverymansRepository.items.push(deliveryMan);
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
       password: '654321',
@@ -68,7 +66,7 @@ describe('authenticate administrator use case', () => {
       password: '123456',
       cpf: Cpf.createFromValue('12345678900'),
     });
-    inMemorydeliverymansRepository.items.push(deliveryMan);
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
       password: '123456',

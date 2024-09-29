@@ -1,4 +1,4 @@
-import { DeliveryAddress } from '../../enterprise/entities/delivery-address';
+import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address';
 
 export interface DeliveryAddressRepository {
   findById(id: string): Promise<DeliveryAddress | null>;

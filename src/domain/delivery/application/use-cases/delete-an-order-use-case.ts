@@ -1,12 +1,12 @@
-import { Either, left, right } from "@/core/either";
-import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
-import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
-import { OrdersRepository } from "../repositories/orders-repository";
-import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { Either, left, right } from '@/core/either';
+import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
+import { OrdersRepository } from '../repositories/orders-repository';
+import { AdministratorsRepository } from '../repositories/administrators-repository';
 
 interface DeleteAnOrderUseCaseRequest {
   orderId: string;
-  adiministratorId: string;
+  administratorId: string;
 }
 
 type DeleteAnOrderUseCaseResponse = Either<
@@ -17,12 +17,12 @@ type DeleteAnOrderUseCaseResponse = Either<
 export class DeleteAnOrderUseCase {
   constructor(
     private ordersRepository: OrdersRepository,
-    private administratorsRepository: AdministratorsRepository
+    private administratorsRepository: AdministratorsRepository,
   ) {}
 
   async execute({
     orderId,
-    adiministratorId,
+    administratorId,
   }: DeleteAnOrderUseCaseRequest): Promise<DeleteAnOrderUseCaseResponse> {
     const order = await this.ordersRepository.findById(orderId);
     if (!order) {
@@ -30,7 +30,7 @@ export class DeleteAnOrderUseCase {
     }
 
     const administratorDoesNotExist = !Boolean(
-      await this.administratorsRepository.findById(adiministratorId)
+      await this.administratorsRepository.findById(administratorId),
     );
     if (administratorDoesNotExist) {
       return left(new AdministratorDoesNotExistError());

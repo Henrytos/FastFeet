@@ -1,9 +1,8 @@
-import { Either, left, right } from "@/core/either";
-import { RecipientsRepository } from "../repositories/recipients-repository";
-import { AdministratorsRepository } from "../repositories/administrators-repository";
-import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
-import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
-import { aw } from "vitest/dist/chunks/reporters.WnPwkmgA";
+import { Either, left, right } from '@/core/either';
+import { RecipientsRepository } from '../repositories/recipients-repository';
+import { AdministratorsRepository } from '../repositories/administrators-repository';
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
+import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
 
 interface UpdateRecipientUseCaseRequest {
   administratorId: string;
@@ -19,7 +18,7 @@ type UpdateRecipientUseCaseResponse = Either<
 export class UpdateRecipientUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
-    private recipientsRepository: RecipientsRepository
+    private recipientsRepository: RecipientsRepository,
   ) {}
   async execute({
     administratorId,
@@ -27,9 +26,8 @@ export class UpdateRecipientUseCase {
     name,
     email,
   }: UpdateRecipientUseCaseRequest): Promise<UpdateRecipientUseCaseResponse> {
-    const administrator = await this.administratorsRepository.findById(
-      administratorId
-    );
+    const administrator =
+      await this.administratorsRepository.findById(administratorId);
     if (!administrator) {
       return left(new AdministratorDoesNotExistError());
     }

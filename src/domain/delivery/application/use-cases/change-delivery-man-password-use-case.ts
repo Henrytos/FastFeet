@@ -7,7 +7,7 @@ import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exi
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
 
 interface ChangeDeliveryManPasswordUseCaseRequest {
-  adminstratorId: string;
+  administratorId: string;
   cpf: string;
   password: string;
 }
@@ -25,12 +25,12 @@ export class ChangeDeliveryManPasswordUseCase {
   ) {}
 
   async execute({
-    adminstratorId,
+    administratorId,
     cpf,
     password,
   }: ChangeDeliveryManPasswordUseCaseRequest): Promise<ChangeDeliveryManPasswordUseCaseResponse> {
     const administrator =
-      await this.administratorsRepository.findById(adminstratorId);
+      await this.administratorsRepository.findById(administratorId);
     if (!administrator) {
       return left(new AdministratorDoesNotExistError());
     }

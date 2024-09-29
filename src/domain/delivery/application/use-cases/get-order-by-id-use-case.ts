@@ -15,12 +15,12 @@ type GetOrderByIdUseCaseResponse = Either<
 >;
 
 export class GetOrderByIdUseCase {
-  constructor(private ordersRespository: OrdersRepository) {}
+  constructor(private ordersRepository: OrdersRepository) {}
 
   async execute({
     orderId,
   }: GetOrderByIdUseCaseRequest): Promise<GetOrderByIdUseCaseResponse> {
-    const order = await this.ordersRespository.findById(orderId);
+    const order = await this.ordersRepository.findById(orderId);
     if (!order) {
       return left(new OrderDoesNotExistError());
     }

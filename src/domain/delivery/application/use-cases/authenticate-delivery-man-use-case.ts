@@ -21,7 +21,7 @@ type AuthenticateDeliveryManUseCaseResponse = Either<
 
 export class AuthenticateDeliveryManUseCase {
   constructor(
-    private deliverymansRepository: DeliveryMansRepository,
+    private deliveryMansRepository: DeliveryMansRepository,
     private encrypter: Encrypter,
     private hashComparer: HashComparer,
   ) {}
@@ -30,7 +30,7 @@ export class AuthenticateDeliveryManUseCase {
     cpf,
     password,
   }: AuthenticateDeliveryManUseCaseRequest): Promise<AuthenticateDeliveryManUseCaseResponse> {
-    const administrator = await this.deliverymansRepository.findByCpf(
+    const administrator = await this.deliveryMansRepository.findByCpf(
       Cpf.createFromValue(cpf),
     );
 
