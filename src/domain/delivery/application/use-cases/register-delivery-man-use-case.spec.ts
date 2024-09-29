@@ -1,13 +1,16 @@
 import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository';
-import { RegisterDeliveryManByAdministratorUseCase } from './register-delivery-man-by-administrator-use-case';
+import { RegisterDeliveryManUseCase } from './register-delivery-man-use-case';
 import { FakeHashGenerator } from '@/test/cryptography/fake-hash-generator';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
 import { makeAdministrator } from '@/test/factories/make-administrator';
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
+import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
+import { Cpf } from '../../enterprise/entities/value-object/cpf';
+import { WrongCredentialsError } from './errors/wrong-credentials-error';
 
 describe('create delivery man  use case', () => {
-  let sut: RegisterDeliveryManByAdministratorUseCase;
+  let sut: RegisterDeliveryManUseCase;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
   let fakeHashGenerator: HashGenerator;
@@ -17,7 +20,7 @@ describe('create delivery man  use case', () => {
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository();
     fakeHashGenerator = new FakeHashGenerator();
 
-    sut = new RegisterDeliveryManByAdministratorUseCase(
+    sut = new RegisterDeliveryManUseCase(
       inMemoryAdministratorsRepository,
       inMemoryDeliveryMansRepository,
       fakeHashGenerator,
@@ -42,6 +45,27 @@ describe('create delivery man  use case', () => {
         name: 'john doe',
       },
     });
+  });
+
+  it('', async () => {
+    const deliveryMan = makeDeliveryMan({
+      cpf: Cpf.createFromValue('12345678911'),
+    });
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
+
+    const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
+
+    const result = await sut.execute({
+      administratorId: administrator.id.toString(),
+      cpf: deliveryMan.cpf.value,
+      name: 'john doe',
+      password: '123456',
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(WrongCredentialsError);
+    expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
   });
 
   it('should not be possible to create without being administrator', async () => {

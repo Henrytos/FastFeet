@@ -1,23 +1,26 @@
 import { Either, left, right } from '@/core/either';
+
 import { AdministratorsRepository } from '../repositories/administrators-repository';
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
+
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { DeliveryMan } from '../../enterprise/entities/delivery-man';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
+import { WrongCredentialsError } from './errors/wrong-credentials-error';
 
-interface RegisterDeliveryManByAdministratorUseCaseRequest {
+interface RegisterDeliveryManUseCaseRequest {
   cpf: string;
   name: string;
   password: string;
   administratorId: string;
 }
-type RegisterDeliveryManByAdministratorUseCaseResponse = Either<
-  AdministratorDoesNotExistError,
+type RegisterDeliveryManUseCaseResponse = Either<
+  AdministratorDoesNotExistError | WrongCredentialsError,
   {}
 >;
 
-export class RegisterDeliveryManByAdministratorUseCase {
+export class RegisterDeliveryManUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
     private deliveryMansRepository: DeliveryMansRepository,
@@ -29,12 +32,19 @@ export class RegisterDeliveryManByAdministratorUseCase {
     name,
     password,
     administratorId,
-  }: RegisterDeliveryManByAdministratorUseCaseRequest): Promise<RegisterDeliveryManByAdministratorUseCaseResponse> {
+  }: RegisterDeliveryManUseCaseRequest): Promise<RegisterDeliveryManUseCaseResponse> {
     const administrator =
       await this.administratorsRepository.findById(administratorId);
 
     if (!administrator) {
       return left(new AdministratorDoesNotExistError());
+    }
+
+    const deliveryManAlreadyExists =
+      await this.deliveryMansRepository.findByCpf(Cpf.create(cpf));
+
+    if (deliveryManAlreadyExists) {
+      return left(new WrongCredentialsError());
     }
 
     const passwordHash = await this.hashGenerator.hash(password);
