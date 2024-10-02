@@ -21,12 +21,12 @@ beforeEach(() => {
   const databaseUrlTest = randomDatabaseUrlBySchema(databaseUrl, schema);
   process.env.DATABASE_URL = databaseUrlTest;
   execSync('npx prisma migrate deploy');
-  console.log(process.env.DATABASE_URL);
+
 });
 
 afterEach(async () => {
   const url = new URL(process.env.DATABASE_URL);
   await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
   await prisma.$disconnect();
-  console.log(process.env.DATABASE_URL);
+
 });

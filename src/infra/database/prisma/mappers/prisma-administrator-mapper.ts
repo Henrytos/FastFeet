@@ -3,7 +3,6 @@ import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
 import {
   Prisma,
   User as PrismaAdministrator,
-  PrismaClient,
 } from '@prisma/client';
 
 export class PrismaAdministratorMapper {

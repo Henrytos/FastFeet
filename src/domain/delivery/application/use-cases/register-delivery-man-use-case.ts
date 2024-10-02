@@ -8,6 +8,7 @@ import { DeliveryMan } from '../../enterprise/entities/delivery-man';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
+import { Injectable } from '@nestjs/common';
 
 interface RegisterDeliveryManUseCaseRequest {
   cpf: string;
@@ -20,6 +21,7 @@ type RegisterDeliveryManUseCaseResponse = Either<
   {}
 >;
 
+@Injectable()
 export class RegisterDeliveryManUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
