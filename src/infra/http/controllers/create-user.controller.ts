@@ -15,7 +15,7 @@ import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-ca
 
 const createUserBodySchema = z.object({
   name: z.string(),
-  cpf: z.string().min(11).max(11),
+  cpf: z.string(),
   password: z.string(),
 });
 
@@ -32,10 +32,10 @@ export class CreateUserController {
   @HttpCode(201)
   async handlerCreateAdmin(
     @Body(new ZodValidationPipe(createUserBodySchema))
-    body: CreateUserBodySchema,
+    body: any,
   ) {
     const { name, cpf, password } = body;
-
+   
     const result = await this.administratorRegistrationUseCase.execute({
       name,
       cpf,
@@ -50,7 +50,8 @@ export class CreateUserController {
           throw new BadRequestException(result.value.message);
       }
     }
-  }
+
+}
 
   @Post('/user')
   @HttpCode(201)
