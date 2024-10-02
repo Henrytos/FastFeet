@@ -59,11 +59,11 @@ model Order {
 }
 
 model Photo {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   filename String
   url      String
-  orderId  String @map("order_id")
-  order    Order  @relation(fields: [orderId], references: [id])
+  orderId  String? @map("order_id")
+  order    Order?  @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
