@@ -6,7 +6,9 @@
  *
  * @param expectations A function containing all tests assertions
  * @param maxDuration Maximum wait time before rejecting
+ * aidcçao de comentario
  */
+
 export async function waitFor(
   assertions: () => void,
   maxDuration = 1000
