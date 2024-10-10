@@ -10,7 +10,7 @@ import { PhotosRepository } from '../repositories/photos-repository';
 export interface MarkAnOrderAsDeliveredUseCaseRequest {
   orderId: string;
   deliveryManId: string;
-  photoIds: string[];
+  photoId: string;
 }
 export type MarkAnOrderAsDeliveredUseCaseResponse = Either<
   OrderDoesNotExistError,
@@ -27,7 +27,7 @@ export class MarkAnOrderAsDeliveredUseCase {
   async execute({
     orderId,
     deliveryManId,
-    photoIds,
+    photoId,
   }: MarkAnOrderAsDeliveredUseCaseRequest): Promise<MarkAnOrderAsDeliveredUseCaseResponse> {
     const order = await this.orderRepository.findById(orderId);
     if (!order) {
@@ -52,19 +52,19 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new WrongCredentialsError());
     }
 
-    if (photoIds.length === 0) {
+    if (photoId.length === 0) {
       return left(new WrongCredentialsError());
     }
 
     const doesPhotosExists =
-      await this.photosRepository.existsPhotoByIds(photoIds);
+      await this.photosRepository.existsPhotoById(photoId);
     if (!doesPhotosExists) {
       return left(new WrongCredentialsError());
     }
 
     order.status = 'delivered';
     order.deliveryAt = new Date();
-    order.photoIds = photoIds.map((id) => new UniqueEntityID(id));
+    order.photoId = new UniqueEntityID(photoId);
 
     await this.orderRepository.save(order);
 

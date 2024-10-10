@@ -15,7 +15,7 @@ export interface OrderProps {
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
   withdrawnAt?: Date | null;
-  photoIds?: UniqueEntityID[];
+  photoId?: UniqueEntityID | null;
 }
 
 export class Order extends AggregateRoot<OrderProps> {
@@ -31,12 +31,12 @@ export class Order extends AggregateRoot<OrderProps> {
   get recipientId() {
     return this.props.recipientId;
   }
-  get photoIds(): UniqueEntityID[] | null | undefined {
-    return this.props.photoIds;
+  get photoId(): UniqueEntityID | null | undefined {
+    return this.props.photoId;
   }
 
-  set photoIds(photoIds: UniqueEntityID[]) {
-    this.props.photoIds = photoIds;
+  set photoId(photoId: UniqueEntityID) {
+    this.props.photoId = photoId;
   }
 
   get deliveryAddressId(): UniqueEntityID | undefined {

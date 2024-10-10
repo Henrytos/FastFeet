@@ -8,11 +8,7 @@ export class InMemoryPhotosRepository implements PhotosRepository {
     this.items.push(photo);
   }
 
-  async existsPhotoByIds(photoIds: string[]): Promise<boolean> {
-    const photoMatchIds = this.items.map((item) => {
-      return photoIds.includes(item.id.toValue());
-    });
-
-    return photoMatchIds.length === photoIds.length;
+  async existsPhotoById(photoId: string): Promise<boolean> {
+    return this.items.some((photo) => photo.id.toString() === photoId);
   }
 }

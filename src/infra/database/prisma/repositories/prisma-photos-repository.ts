@@ -9,10 +9,10 @@ import { Photo } from '@/domain/delivery/enterprise/entities/photo';
 export class PrismaPhotosRepository implements PhotosRepository {
   constructor(private prisma: PrismaService) {}
 
-  async existsPhotoByIds(photoIds: string[]): Promise<boolean> {
+  async existsPhotoById(photoId: string): Promise<boolean> {
     const count = await this.prisma.photo.count({
       where: {
-        id: { in: photoIds },
+        id: photoId,
       },
     });
 

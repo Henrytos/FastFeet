@@ -48,7 +48,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoIds: [photo.id.toString()],
+      photoId: photo.id.toString(),
     });
 
     expect(result.isRight()).toBe(true);
@@ -74,7 +74,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: 'invalid-order-id',
       deliveryManId: deliveryMan.id.toString(),
-      photoIds: [],
+      photoId: '',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -101,7 +101,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: 'invalid-delivery-man-id',
-      photoIds: [],
+      photoId: '',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -128,7 +128,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoIds: [],
+      photoId: '',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -155,7 +155,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoIds: [],
+      photoId: '',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -182,7 +182,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoIds: [],
+      photoId: '',
     });
 
     expect(result.isLeft()).toBe(true);
