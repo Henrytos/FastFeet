@@ -62,7 +62,7 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
       recipient.id.toString(),
     );
 
-    await this.deliveryAddressRepository.delete(recipient);
+    // await this.deliveryAddressRepository.delete(recipient);
   }
 
   async save(recipient: Recipient): Promise<void> {

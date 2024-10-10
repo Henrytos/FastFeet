@@ -9,18 +9,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-}
-
-enum Role {
-  ADMIN
-  DELIVERY_MAN
 }
 
 model User {
   id           String @id @default(uuid())
-  role         Role   @default(DELIVERY_MAN)
+  role         String @default("DELIVERY_MAN")
   name         String
   cpf          String @unique
   passwordHash String
@@ -32,17 +27,10 @@ model User {
   @@map("users")
 }
 
-enum OrderStatus {
-  PENDING
-  WITHDRAWN
-  DELIVERED
-  CANCELED
-}
-
 model Order {
   id String @id @default(uuid())
 
-  orderStatus OrderStatus @default(PENDING) @map("order_status")
+  orderStatus String @default("PENDING") @map("order_status")
 
   deliveryManId String?   @map("delivery_man_id")
   deliveryMan   User?     @relation(fields: [deliveryManId], references: [id])

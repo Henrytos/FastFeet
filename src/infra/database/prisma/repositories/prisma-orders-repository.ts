@@ -4,7 +4,7 @@ import { Order } from '@/domain/delivery/enterprise/entities/order';
 import {
   Coordinate,
   getDistanceBetweenCoordinates,
-} from '../utils/get-distance-between-coordinate';
+} from '@/test/utils/get-distance-between-coordinate';
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
 import { Console } from 'console';
 export class InMemoryOrdersRepository implements OrdersRepository {

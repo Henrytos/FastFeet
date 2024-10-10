@@ -9,7 +9,6 @@ export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
       status: 'pending',
       createdAt: new Date(),
       deliveryAt: null,
-      deliviryManId: new UniqueEntityID(randomUUID()),
       photoIds: [],
       updatedAt: new Date(),
       withdrawnAt: null,

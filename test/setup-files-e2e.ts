@@ -1,32 +1,32 @@
 import { PrismaClient } from '@prisma/client';
 import { execSync } from 'child_process';
 import { randomUUID } from 'crypto';
+import { unlinkSync } from 'fs'; // Para deletar o arquivo de banco
 import 'dotenv/config';
+import path from 'path';
 
-function randomDatabaseUrlBySchema(databaseUrl: string, schema: string) {
-  const url = new URL(databaseUrl);
-  url.searchParams.set('schema', schema);
-  return url.toString();
-}
-
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) {
-  throw new Error('No DATABASE_URL environment variable found');
+function randomDatabaseUrlForSqlite() {
+  const dbName = `file:./test-${randomUUID()}.db`; // Cria um nome de arquivo único
+  return dbName;
 }
 
 const prisma = new PrismaClient();
-const schema = randomUUID();
 
 beforeEach(() => {
-  const databaseUrlTest = randomDatabaseUrlBySchema(databaseUrl, schema);
+  const databaseUrlTest = randomDatabaseUrlForSqlite();
   process.env.DATABASE_URL = databaseUrlTest;
-  execSync('npx prisma migrate deploy');
 
+  execSync('npx prisma migrate deploy');
 });
 
 afterEach(async () => {
-  const url = new URL(process.env.DATABASE_URL);
-  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
+  const databaseUrlTest = process.env.DATABASE_URL;
+
   await prisma.$disconnect();
 
+  const dbFilePath = databaseUrlTest?.replace('file:', '') || '';
+  if (dbFilePath) {
+    const pathFilename = path.resolve(__dirname, '../', 'prisma', dbFilePath);
+    unlinkSync(pathFilename);
+  }
 });
