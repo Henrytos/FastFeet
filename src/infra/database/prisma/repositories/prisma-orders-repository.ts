@@ -1,146 +1,67 @@
-import { DomainEvents } from '@/core/events/domain-events';
 import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
 import { Order } from '@/domain/delivery/enterprise/entities/order';
-import {
-  Coordinate,
-  getDistanceBetweenCoordinates,
-} from '@/test/utils/get-distance-between-coordinate';
-import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { Console } from 'console';
-export class InMemoryOrdersRepository implements OrdersRepository {
-  public items: Order[] = [];
+import { Coordinate } from '@/test/utils/get-distance-between-coordinate';
+import { PrismaOrderMapper } from '../mappers/prisma-oreder-mapper';
+import { PrismaService } from '../prisma.service';
+import { Injectable } from '@nestjs/common';
 
-  constructor(private deliveryAddressRepository: DeliveryAddressRepository) {}
+@Injectable()
+export class PrismaOrdersRepository implements OrdersRepository {
+  constructor(private prisma: PrismaService) {}
 
   async create(order: Order): Promise<void> {
-    this.items.push(order);
-
-    switch (order.status) {
-      case 'pending':
-        DomainEvents.dispatchEventsForAggregate(order.id);
-        break;
-    }
+    const data = PrismaOrderMapper.toPrisma(order);
+    await this.prisma.order.create({ data });
   }
 
   async findById(id: string): Promise<Order | null> {
-    const order = this.items.find((item) => {
-      return item.id.toString() == id;
+    const order = await this.prisma.order.findUnique({ where: { id } });
+    return PrismaOrderMapper.toDomain(order);
+  }
+
+  async findByRecipientId(recipientId: string): Promise<Order | null> {
+    const order = await this.prisma.order.findFirst({
+      where: { recipientId },
     });
 
     if (!order) {
       return null;
     }
 
-    return order;
-  }
-
-  async save(order: Order): Promise<void> {
-    const index = this.items.findIndex((item) => {
-      return item.id.toValue() == order.id.toValue();
-    });
-
-    this.items[index] = order;
-
-    switch (order.status) {
-      case 'pending':
-        DomainEvents.dispatchEventsForAggregate(order.id);
-        break;
-      case 'withdrawn':
-        DomainEvents.dispatchEventsForAggregate(order.id);
-        break;
-      case 'delivered':
-        DomainEvents.dispatchEventsForAggregate(order.id);
-        break;
-      case 'canceled':
-        DomainEvents.dispatchEventsForAggregate(order.id);
-
-        break;
-    }
-  }
-
-  async delete(order: Order) {
-    const orderDoesExists = !this.findById(order.id.toString());
-    if (orderDoesExists) {
-      throw new Error('Order does not exist');
-    }
-
-    const index = this.items.findIndex((item) => {
-      return item.id.toValue() == order.id.toValue();
-    });
-
-    this.items.splice(index, 1);
+    return PrismaOrderMapper.toDomain(order);
   }
 
   async findManyOrdersByRecipientId(
     recipientId: string,
     page: number,
   ): Promise<Order[]> {
-    const orders = this.items
-      .filter((item) => {
-        return item.recipientId.toString() == recipientId;
-      })
-      .slice((page - 1) * 20, (page - 1) * 20 + 20);
+    const orders = await this.prisma.order.findMany({
+      where: { recipientId },
+      skip: page * 10,
+      take: 10,
+    });
 
-    return orders;
+    return orders.map(PrismaOrderMapper.toDomain);
+  }
+
+  async findManyNearby(coordinate: Coordinate): Promise<Order[]> {
+    throw new Error('Method not implemented.');
   }
 
   async deleteManyByRecipientId(recipientId: string): Promise<void> {
-    const ordersFiltered = this.items.filter((item) => {
-      return item.recipientId.toString() !== recipientId;
-    });
-
-    this.items = ordersFiltered;
+    await this.prisma.order.deleteMany({ where: { recipientId } });
   }
 
-  async findByRecipientId(recipientId: string): Promise<Order | null> {
-    const order = this.items.find((item) => {
-      return item.recipientId.toString() === recipientId;
+  async save(order: Order): Promise<void> {
+    const data = PrismaOrderMapper.toPrisma(order);
+
+    await this.prisma.order.update({
+      where: { id: data.id },
+      data,
     });
-
-    if (!order) {
-      return null;
-    }
-
-    return order;
   }
-  async findManyNearby({ latitude, longitude }: Coordinate): Promise<Order[]> {
-    const ordersWithAddress = this.items.filter((item) => {
-      if (item.deliveryAddressId == undefined) {
-        return false;
-      }
 
-      if (item.deliveryAddressId.toString() == 'undefined') {
-        return false;
-      }
-
-      return true;
-    });
-
-    const orders = ordersWithAddress.filter(async (item) => {
-      if (item.deliveryAddressId == undefined) {
-        return false;
-      }
-      if (item.deliveryAddressId.toString() == '') {
-        return false;
-      }
-
-      const deliveryAddress = await this.deliveryAddressRepository.findById(
-        item.deliveryAddressId.toString(),
-      );
-
-      if (!deliveryAddress) {
-        return false;
-      }
-      const distance = getDistanceBetweenCoordinates(
-        { latitude, longitude },
-        {
-          latitude: deliveryAddress.latitude,
-          longitude: deliveryAddress.longitude,
-        },
-      );
-      return distance < 0.1; // 10km
-    });
-
-    return orders;
+  async delete(order: Order): Promise<void> {
+    await this.prisma.order.delete({ where: { id: order.id.toValue() } });
   }
 }

@@ -1,46 +1,49 @@
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error';
 import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address';
+import { PrismaService } from '../prisma.service';
+import { Injectable } from '@nestjs/common';
+import { PrismaDeliveryAddressMapper } from '../mappers/prisma-delivery-address-mapper';
 
-export class InMemoryDeliveryAddressRepository
+@Injectable()
+export class PrismaDeliveryAddressRepository
   implements DeliveryAddressRepository
 {
-  public items: DeliveryAddress[] = [];
+  constructor(private prisma: PrismaService) {}
+
   async findById(id: string): Promise<DeliveryAddress | null> {
-    const deliveryAddress = this.items.find((item) => {
-      return item.id.toString() === id;
+    const deliveryAddress = await this.prisma.address.findUnique({
+      where: { id },
     });
 
     if (!deliveryAddress) {
       return null;
     }
 
-    return deliveryAddress;
+    return PrismaDeliveryAddressMapper.toDomain(deliveryAddress);
   }
 
   async delete(id: string): Promise<void> {
-    const index = this.items.findIndex((item) => item.id.toString() === id);
-
-    if (index == -1) {
-      throw new DeliveryAddressDoesNotExistError();
-    }
-
-    this.items.splice(index, 1);
+    await this.prisma.address.delete({
+      where: {
+        id,
+      },
+    });
   }
 
   async create(deliveryAddress: DeliveryAddress): Promise<void> {
-    this.items.push(deliveryAddress);
+    const data = PrismaDeliveryAddressMapper.toPrisma(deliveryAddress);
+
+    await this.prisma.address.create({ data });
   }
 
   async save(deliveryAddress: DeliveryAddress): Promise<void> {
-    const index = this.items.findIndex((item) => {
-      return item.id.toValue() === deliveryAddress.id.toValue();
+    const data = PrismaDeliveryAddressMapper.toPrisma(deliveryAddress);
+
+    await this.prisma.address.update({
+      where: {
+        id: deliveryAddress.id.toString(),
+      },
+      data,
     });
-
-    if (index == -1) {
-      throw new DeliveryAddressDoesNotExistError();
-    }
-
-    this.items[index] = deliveryAddress;
   }
 }

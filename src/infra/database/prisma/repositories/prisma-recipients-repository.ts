@@ -4,7 +4,9 @@ import { PrismaService } from '../prisma.service';
 import { PrismaRecipientMapper } from '../mappers/prisma-recipient-mapper';
 import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class PrismaRecipientsRepository implements RecipientsRepository {
   constructor(
     private prisma: PrismaService,

@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,9 +14,10 @@ model User {
   cpf          String @unique
   passwordHash String
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
-  Order     Order[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt() @map("updated_at")
+  orders        Order[]
+  notifications Notification[]
 
   @@map("users")
 }
@@ -30,13 +25,19 @@ model User {
 model Order {
   id String @id @default(uuid())
 
-  orderStatus String @default("PENDING") @map("order_status")
+  // values:'pending' | 'withdrawn' | 'delivered' | 'canceled'
+  orderStatus   String  @default("pending") @map("order_status")
+  deliveryManId String? @map("delivery_man_id")
+  deliveryMan   User?   @relation(fields: [deliveryManId], references: [id])
 
-  deliveryManId String?   @map("delivery_man_id")
-  deliveryMan   User?     @relation(fields: [deliveryManId], references: [id])
-  recipientId   String    @map("recipient_id")
-  recipient     Recipient @relation(fields: [recipientId], references: [id])
-  photos        Photo[]
+  recipientId String    @map("recipient_id")
+  recipient   Recipient @relation(fields: [recipientId], references: [id])
+
+  photoId String?
+  photo   Photo?  @relation(fields: [photoId], references: [id])
+
+  addressId String
+  address   Address? @relation(fields: [addressId], references: [id])
 
   createdAt   DateTime  @default(now()) @map("created_at")
   deliveryAt  DateTime? @map("delivery_at")
@@ -51,10 +52,10 @@ model Photo {
   filename String
   url      String
   orderId  String? @map("order_id")
-  order    Order?  @relation(fields: [orderId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
+  orders    Order[]
 
   @@map("photos")
 }
@@ -66,7 +67,7 @@ model Recipient {
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt() @map("updated_at")
-  Order     Order[]
+  orders    Order[]
 
   @@map("recipients")
 }
@@ -80,10 +81,21 @@ model Address {
   zip          String
   number       String
   latitude     String
-  logitude     String
+  longitude    String
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt() @map("updated_at")
+  orders Order[]
 
   @@map("addresses")
+}
+
+model Notification {
+  id      String @id @default(uuid())
+  title   String
+  content String
+
+  recipient   User?   @relation(fields: [recipientId], references: [id])
+  recipientId String?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  readAt    DateTime? @map("read_at")
 }
