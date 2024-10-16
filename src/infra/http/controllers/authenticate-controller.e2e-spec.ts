@@ -10,7 +10,6 @@ import { name } from 'typescipt';
 describe('CreateAccountController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
-  let hashGenerator: HashGeneratorService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -38,6 +37,14 @@ describe('CreateAccountController (e2e)', () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('token');
+    expect(response.body).toHaveProperty('accessToken');
+
+    const userOnDatabase = await prisma.user.findUnique({
+      where: {
+        cpf: '12345678901',
+      },
+    });
+
+    expect(response.body.accessToken).toBeTruthy();
   });
 });

@@ -49,6 +49,7 @@ export class AuthenticateDeliveryManUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: administrator.id.toString(),
+      role: 'DELIVERY_MAN',
     });
 
     return right({ accessToken });

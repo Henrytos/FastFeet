@@ -49,6 +49,7 @@ export class AuthenticateAdministratorUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: administrator.id.toString(),
+      role: 'ADMINISTRATOR',
     });
 
     return right({ accessToken });
