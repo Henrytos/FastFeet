@@ -4,13 +4,18 @@ import { AdministratorRegistrationUseCase } from '@/domain/delivery/application/
 
 import { CryptographyModule } from '@/infra/cryptography/cryptography.module';
 import { DatabaseModule } from '@/infra/database/database.module';
-import { CreateUserController } from './controllers/create-user.controller';
+import { CreateAccountController } from './controllers/create-account.controller';
 import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-cases/register-delivery-man-use-case';
-import { AuthController } from './controllers/sing-in.controller';
+import { AuthenticateController } from './controllers/authenticate.controller';
+import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
-  controllers: [CreateUserController, AuthController],
-  providers: [AdministratorRegistrationUseCase, RegisterDeliveryManUseCase],
+  controllers: [AuthenticateController, CreateAccountController],
+  providers: [
+    AdministratorRegistrationUseCase,
+    RegisterDeliveryManUseCase,
+    AuthenticateAdministratorUseCase,
+  ],
 })
 export class HttpModule {}

@@ -11,7 +11,6 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
   constructor(
     private prisma: PrismaService,
     private ordersRepository: OrdersRepository,
-    private deliveryAddressRepository: DeliveryAddressRepository,
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
@@ -63,8 +62,6 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
     await this.ordersRepository.deleteManyByRecipientId(
       recipient.id.toString(),
     );
-
-    // await this.deliveryAddressRepository.delete(recipient);
   }
 
   async save(recipient: Recipient): Promise<void> {

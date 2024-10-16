@@ -6,12 +6,14 @@ import {
   Controller,
   HttpCode,
   Post,
-  ValidationPipe,
 } from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error';
 import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-cases/register-delivery-man-use-case';
+import { Public } from '@/infra/auth/public';
+import { CurrentUser } from '@/infra/auth/current-user';
+import { UserPayload } from '@/infra/auth/jwt.strategy';
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -21,8 +23,9 @@ const createUserBodySchema = z.object({
 
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>;
 
-@Controller('/sessions')
-export class CreateUserController {
+@Public()
+@Controller('/accounts')
+export class CreateAccountController {
   constructor(
     private administratorRegistrationUseCase: AdministratorRegistrationUseCase,
     private registerDeliveryManUseCase: RegisterDeliveryManUseCase,
@@ -32,10 +35,10 @@ export class CreateUserController {
   @HttpCode(201)
   async handlerCreateAdmin(
     @Body(new ZodValidationPipe(createUserBodySchema))
-    body: any,
+    body: CreateUserBodySchema,
   ) {
     const { name, cpf, password } = body;
-   
+
     const result = await this.administratorRegistrationUseCase.execute({
       name,
       cpf,
@@ -50,22 +53,21 @@ export class CreateUserController {
           throw new BadRequestException(result.value.message);
       }
     }
-
-}
+  }
 
   @Post('/user')
   @HttpCode(201)
   async handlerCreateUser(
     @Body(new ZodValidationPipe(createUserBodySchema))
     body: CreateUserBodySchema,
+    @CurrentUser() currentUser: UserPayload,
   ) {
     const { name, cpf, password } = body;
-    const administratorId = '32132';
     const result = await this.registerDeliveryManUseCase.execute({
       name,
       cpf,
       password,
-      administratorId,
+      administratorId: currentUser.sub,
     });
 
     if (result.isLeft()) {

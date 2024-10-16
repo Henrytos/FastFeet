@@ -5,6 +5,7 @@ import { AdministratorsRepository } from '../repositories/administrators-reposit
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
+import { Injectable } from '@nestjs/common';
 
 interface AuthenticateAdministratorUseCaseRequest {
   cpf: string;
@@ -17,6 +18,7 @@ type AuthenticateAdministratorUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class AuthenticateAdministratorUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
@@ -29,7 +31,7 @@ export class AuthenticateAdministratorUseCase {
     password,
   }: AuthenticateAdministratorUseCaseRequest): Promise<AuthenticateAdministratorUseCaseResponse> {
     const administrator = await this.administratorsRepository.findByCpf(
-      Cpf.createFromValue(cpf),
+      Cpf.create(cpf),
     );
 
     if (!administrator) {
