@@ -9,10 +9,15 @@ import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-ca
 import { AuthenticateController } from './controllers/authenticate.controller';
 import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case';
 import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case';
+import { GetProfileController } from './controllers/get-profile-controller';
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
-  controllers: [AuthenticateController, CreateAccountController],
+  controllers: [
+    AuthenticateController,
+    CreateAccountController,
+    GetProfileController,
+  ],
   providers: [
     AdministratorRegistrationUseCase,
     RegisterDeliveryManUseCase,
