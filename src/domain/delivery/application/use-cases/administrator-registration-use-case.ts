@@ -43,7 +43,7 @@ export class AdministratorRegistrationUseCase {
     const administrator = Administrator.create({
       name,
       password: passwordHash,
-      cpf: Cpf.create(cpf),
+      cpf: Cpf.createFromValue(cpf),
     });
 
     this.administratorsRepository.create(administrator);

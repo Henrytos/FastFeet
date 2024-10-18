@@ -2,23 +2,24 @@ import { Either, left, right } from '@/core/either';
 import { Encrypter } from '../cryptography/encrypter';
 import { HashComparer } from '../cryptography/hash-comparer';
 
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
+import { Injectable } from '@nestjs/common';
 
 interface AuthenticateDeliveryManUseCaseRequest {
   cpf: string;
   password: string;
 }
 type AuthenticateDeliveryManUseCaseResponse = Either<
-  AdministratorDoesNotExistError | WrongCredentialsError,
+  DeliveryManDoesNotExistError | WrongCredentialsError,
   {
     accessToken: string;
   }
 >;
 
+@Injectable()
 export class AuthenticateDeliveryManUseCase {
   constructor(
     private deliveryMansRepository: DeliveryMansRepository,
@@ -30,17 +31,17 @@ export class AuthenticateDeliveryManUseCase {
     cpf,
     password,
   }: AuthenticateDeliveryManUseCaseRequest): Promise<AuthenticateDeliveryManUseCaseResponse> {
-    const administrator = await this.deliveryMansRepository.findByCpf(
-      Cpf.createFromValue(cpf),
+    const deliveryMan = await this.deliveryMansRepository.findByCpf(
+      Cpf.create(cpf),
     );
 
-    if (!administrator) {
+    if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError());
     }
 
     const passwordMatch = await this.hashComparer.comparer(
       password,
-      administrator.password,
+      deliveryMan.password,
     );
 
     if (!passwordMatch) {
@@ -48,7 +49,7 @@ export class AuthenticateDeliveryManUseCase {
     }
 
     const accessToken = await this.encrypter.encrypt({
-      sub: administrator.id.toString(),
+      sub: deliveryMan.id.toString(),
       role: 'DELIVERY_MAN',
     });
 

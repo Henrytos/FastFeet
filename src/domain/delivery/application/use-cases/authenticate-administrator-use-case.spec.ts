@@ -36,7 +36,7 @@ describe('authenticate administrator use case', () => {
 
     const result = await sut.execute({
       password: '123456',
-      cpf: '12345678900',
+      cpf: Cpf.createFromValue('12345678900').value,
     });
 
     expect(result.isRight()).toBe(true);
@@ -54,7 +54,7 @@ describe('authenticate administrator use case', () => {
 
     const result = await sut.execute({
       password: '654321',
-      cpf: '12345678900',
+      cpf: Cpf.createFromValue('12345678900').value,
     });
 
     expect(result.isLeft()).toBe(true);
