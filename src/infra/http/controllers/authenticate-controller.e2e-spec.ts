@@ -38,13 +38,5 @@ describe('CreateAccountController (e2e)', () => {
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty('accessToken');
-
-    const userOnDatabase = await prisma.user.findUnique({
-      where: {
-        cpf: '12345678901',
-      },
-    });
-
-    expect(response.body.accessToken).toBeTruthy();
   });
 });

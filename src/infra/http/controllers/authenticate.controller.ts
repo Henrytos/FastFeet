@@ -3,6 +3,7 @@ import { Public } from '@/infra/auth/public';
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
+import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case';
 
 const authenticateBodySchema = z.object({
   cpf: z.string(),
@@ -13,7 +14,10 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
 @Public()
 @Controller('/sessions')
 export class AuthenticateController {
-  constructor(private authenticateUseCase: AuthenticateAdministratorUseCase) {}
+  constructor(
+    private authenticateAdministratorUseCase: AuthenticateAdministratorUseCase,
+    private authenticateDeliveryManUseCase: AuthenticateDeliveryManUseCase,
+  ) {}
 
   @Post()
   async handler(
@@ -22,14 +26,36 @@ export class AuthenticateController {
   ) {
     const { cpf, password } = body;
 
-    const result = await this.authenticateUseCase.execute({ cpf, password });
+    const resultAuthenticateUseCaseAdministrator =
+      await this.authenticateAdministratorUseCase.execute({
+        cpf,
+        password,
+      });
 
-    if (result.isLeft()) {
-      throw new Error(result.value.message);
+    if (resultAuthenticateUseCaseAdministrator.isLeft()) {
+      throw new Error(resultAuthenticateUseCaseAdministrator.value.message);
     }
 
-    return {
-      accessToken: result.value.accessToken,
-    };
+    if (resultAuthenticateUseCaseAdministrator.isRight()) {
+      return {
+        accessToken: resultAuthenticateUseCaseAdministrator.value.accessToken,
+      };
+    }
+
+    const resultAuthenticateUseCaseDeliveryMan =
+      await this.authenticateDeliveryManUseCase.execute({
+        cpf,
+        password,
+      });
+
+    if (resultAuthenticateUseCaseDeliveryMan.isLeft()) {
+      throw new Error(resultAuthenticateUseCaseDeliveryMan.value.message);
+    }
+
+    if (resultAuthenticateUseCaseDeliveryMan.isRight()) {
+      return {
+        accessToken: resultAuthenticateUseCaseDeliveryMan.value.accessToken,
+      };
+    }
   }
 }
