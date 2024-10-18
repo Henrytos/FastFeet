@@ -1,5 +1,4 @@
 import { AppModule } from '@/infra/app.module';
-import { HashGeneratorService } from '@/infra/cryptography/hash-generator.service';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';

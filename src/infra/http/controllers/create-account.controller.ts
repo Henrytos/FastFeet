@@ -23,7 +23,6 @@ const createUserBodySchema = z.object({
 
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>;
 
-@Public()
 @Controller('/accounts')
 export class CreateAccountController {
   constructor(
@@ -31,6 +30,7 @@ export class CreateAccountController {
     private registerDeliveryManUseCase: RegisterDeliveryManUseCase,
   ) {}
 
+  @Public()
   @Post('/admin')
   @HttpCode(201)
   async handlerCreateAdmin(

@@ -35,6 +35,7 @@ export class RegisterDeliveryManUseCase {
     password,
     administratorId,
   }: RegisterDeliveryManUseCaseRequest): Promise<RegisterDeliveryManUseCaseResponse> {
+    administratorId;
     const administrator =
       await this.administratorsRepository.findById(administratorId);
 

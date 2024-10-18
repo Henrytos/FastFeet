@@ -24,9 +24,21 @@ export class PrismaAdministratorsRepository
 
     return PrismaAdministratorMapper.toDomain(administrator);
   }
-  findById(id: string): Promise<Administrator | null> {
-    throw new Error('Method not implemented.');
+
+  async findById(id: string): Promise<Administrator | null> {
+    const administrator = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!administrator) {
+      return null;
+    }
+
+    return PrismaAdministratorMapper.toDomain(administrator);
   }
+
   async create(administrator: Administrator): Promise<void> {
     const data = PrismaAdministratorMapper.toPrisma(administrator);
 
