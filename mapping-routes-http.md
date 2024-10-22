@@ -25,10 +25,10 @@
 - **[ ] GET /users/{id}**: Visualizar um usuário específico.
 
 ### Atualizar Usuário
-- **[ ] PUT /users/{id}**: Atualizar informações de um usuário.
+- **[ x ] PUT /users/{id}**: Atualizar informações de um usuário.
 
 ### Excluir Usuário
-- **[ ] DELETE /users/{id}**: Excluir um usuário.
+- **[ x ] DELETE /users/{id}**: Excluir um usuário.
 
 ### Alterar Senha
 - **[ ] PATCH /users/{id}/password**: Alterar a senha de um usuário (somente o admin pode realizar essa operação).

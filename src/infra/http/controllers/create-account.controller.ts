@@ -5,6 +5,7 @@ import {
   ConflictException,
   Controller,
   HttpCode,
+  HttpStatus,
   Post,
 } from '@nestjs/common';
 import { z } from 'zod';
@@ -56,7 +57,7 @@ export class CreateAccountController {
   }
 
   @Post('/user')
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async handlerCreateUser(
     @Body(new ZodValidationPipe(createUserBodySchema))
     body: CreateUserBodySchema,

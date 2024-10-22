@@ -1,6 +1,13 @@
 import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case';
 import { Public } from '@/infra/auth/public';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case';
@@ -20,6 +27,7 @@ export class AuthenticateController {
   ) {}
 
   @Post()
+  @HttpCode(HttpStatus.OK)
   async handler(
     @Body(new ZodValidationPipe(authenticateBodySchema))
     body: AuthenticateBodySchema,

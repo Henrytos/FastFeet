@@ -5,6 +5,7 @@ import { DeliveryMansRepository } from '../repositories/delivery-mans-repository
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
+import { Injectable } from '@nestjs/common';
 
 interface ChangeDeliveryManPasswordUseCaseRequest {
   administratorId: string;
@@ -17,6 +18,7 @@ type ChangeDeliveryManPasswordUseCaseResponse = Either<
   {}
 >;
 
+@Injectable()
 export class ChangeDeliveryManPasswordUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,

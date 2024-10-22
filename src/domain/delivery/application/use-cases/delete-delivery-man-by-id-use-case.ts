@@ -4,6 +4,7 @@ import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exi
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { AdministratorsRepository } from '../repositories/administrators-repository';
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
+import { Injectable } from '@nestjs/common';
 
 interface DeleteDeliveryManByIdUseCaseRequest {
   deliveryManId: string;
@@ -14,6 +15,7 @@ type DeleteDeliveryManByIdUseCaseResponse = Either<
   {}
 >;
 
+@Injectable()
 export class DeleteDeliveryManByIdUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,

@@ -6,6 +6,7 @@ import { DeliveryMan } from '../../enterprise/entities/delivery-man';
 import { HashGenerator } from '../cryptography/hash-generator';
 import { AdministratorsRepository } from '../repositories/administrators-repository';
 import { Cpf } from '../../enterprise/entities/value-object/cpf';
+import { Injectable } from '@nestjs/common';
 
 interface UpdateDeliveryManByAdministratorUseCaseRequest {
   deliveryManId: string;
@@ -19,6 +20,7 @@ type UpdateDeliveryManByAdministratorUseCaseResponse = Either<
   {}
 >;
 
+@Injectable()
 export class UpdateDeliveryManByAdministratorUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
