@@ -30,6 +30,13 @@ describe('update delivery address use case', () => {
       deliveryAddressId: deliveryAddress.id.toString(),
       administratorId: administrator.id.toString(),
       city: 'Rio De janeiro',
+      latitude: 123,
+      longitude: 123,
+      neighborhood: 'Copacabana',
+      number: '123',
+      state: 'RJ',
+      street: 'Rua 1',
+      zip: '123',
     });
 
     expect(result.isRight()).toEqual(true);
