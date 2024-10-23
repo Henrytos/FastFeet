@@ -11,6 +11,12 @@ export default defineConfig({
       reporter: ['text', 'json-summary', 'json'],
       reportOnFailure: true,
       include: ['src/domain/**/application/use-cases/*.ts'],
+      thresholds: {
+        lines: 60,
+        branches: 60,
+        functions: 60,
+        statements: 60,
+      },
     },
   },
   plugins: [tsconfigPaths()],
