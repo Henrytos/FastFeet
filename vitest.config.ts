@@ -8,9 +8,10 @@ export default defineConfig({
       provider: 'v8',
       reportsDirectory: './test/coverage/unit',
       exclude: ['node_modules', 'test'],
+      reporter: ['text', 'json-summary', 'json'],
+      reportOnFailure: true,
+      include: ['src/domain/**/application/use-cases/*.ts'],
     },
   },
   plugins: [tsconfigPaths()],
 });
-
-
