@@ -33,4 +33,6 @@ jobs:
       if: always() 
       uses:  davelosert/vitest-coverage-report-action@v2
       with:
-        json-summary: ./test/coverage/coverage-summary.json
+        name: 'Backend'
+        json-summary-path: './test/coverage/coverage-summary.json'
+        json-final-path: './test/coverage/coverage-summary.json'
