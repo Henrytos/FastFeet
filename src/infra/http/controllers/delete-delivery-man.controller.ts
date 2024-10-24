@@ -15,7 +15,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-@Controller('/users/{deliveryManId}')
+@Controller('/users/:deliveryManId')
 export class DeleteDeliveryManController {
   constructor(private deleteDeliveryManUseCase: DeleteDeliveryManByIdUseCase) {}
 

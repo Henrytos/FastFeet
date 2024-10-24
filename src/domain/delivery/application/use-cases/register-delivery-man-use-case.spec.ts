@@ -47,7 +47,7 @@ describe('create delivery man  use case', () => {
     });
   });
 
-  it('', async () => {
+  it('should not be possible to create delivery with repeated CPF', async () => {
     const deliveryMan = makeDeliveryMan({
       cpf: Cpf.createFromValue('12345678911'),
     });

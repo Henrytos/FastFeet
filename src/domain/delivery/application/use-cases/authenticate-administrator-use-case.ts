@@ -30,9 +30,11 @@ export class AuthenticateAdministratorUseCase {
     cpf,
     password,
   }: AuthenticateAdministratorUseCaseRequest): Promise<AuthenticateAdministratorUseCaseResponse> {
+    console.log('cpf use case', cpf);
     const administrator = await this.administratorsRepository.findByCpf(
       Cpf.create(cpf),
     );
+    console.log('administrator use case', administrator);
 
     if (!administrator) {
       return left(new AdministratorDoesNotExistError());
