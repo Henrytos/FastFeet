@@ -33,7 +33,6 @@ export class AuthenticateController {
     body: AuthenticateBodySchema,
   ) {
     const { cpf, password } = body;
-    console.log(cpf);
     const resultAuthenticateUseCaseAdministrator =
       await this.authenticateAdministratorUseCase.execute({
         cpf,

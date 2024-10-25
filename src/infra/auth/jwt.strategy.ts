@@ -3,10 +3,11 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { EnvService } from '../env/env.service';
 import { z } from 'zod';
+import { Role } from '@prisma/client';
 
 const tokenPayloadSchema = z.object({
   sub: z.string().uuid(),
-  role: z.string(),
+  role: z.enum([Role.ADMINISTRATOR, Role.DELIVERY_MAN]),
 });
 
 export type UserPayload = z.infer<typeof tokenPayloadSchema>;
