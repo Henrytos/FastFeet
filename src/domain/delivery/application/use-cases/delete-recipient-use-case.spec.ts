@@ -7,6 +7,8 @@ import { makeRecipient } from '@/test/factories/make-recipient';
 import { makeAdministrator } from '@/test/factories/make-administrator';
 import { makeDeliveryAddress } from '@/test/factories/make-delivery-address';
 import { makeOrder } from '@/test/factories/make-order';
+import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
 
 describe('delete recipient use case', () => {
   let sut: DeleteRecipientUseCase;
@@ -60,7 +62,35 @@ describe('delete recipient use case', () => {
     expect(inMemoryDeliveryAddressRepository.items).toHaveLength(0);
   });
 
-  it('should delete a recipient', async () => {
+  it('should not be possible to delete intersect if administrator does not exist', async () => {
+    const deliveryAddress = makeDeliveryAddress();
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
+
+    const recipient = makeRecipient();
+    inMemoryRecipientsRepository.items.push(recipient);
+
+    const administrator = makeAdministrator();
+    inMemoryAdministratorsRepository.items.push(administrator);
+
+    const order = makeOrder({
+      deliveryAddressId: deliveryAddress.id,
+      recipientId: recipient.id,
+    });
+    inMemoryOrdersRepository.items.push(order);
+
+    const result = await sut.execute({
+      administratorId: 'invalid-administrator-id',
+      recipientId: recipient.id.toString(),
+    });
+
+    expect(result.isLeft()).toEqual(true);
+    expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
+    expect(inMemoryRecipientsRepository.items).toHaveLength(1);
+    expect(inMemoryOrdersRepository.items).toHaveLength(1);
+    expect(inMemoryDeliveryAddressRepository.items).toHaveLength(1);
+  });
+
+  it('should not be possible to delete intersect if it does not exist', async () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
@@ -78,12 +108,13 @@ describe('delete recipient use case', () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      recipientId: recipient.id.toString(),
+      recipientId: 'invalid-recipient-id',
     });
 
-    expect(result.isRight()).toEqual(true);
-    expect(inMemoryRecipientsRepository.items).toHaveLength(0);
-    expect(inMemoryOrdersRepository.items).toHaveLength(0);
-    expect(inMemoryDeliveryAddressRepository.items).toHaveLength(0);
+    expect(result.isLeft()).toEqual(true);
+    expect(result.value).toBeInstanceOf(RecipientDoesNotExistError);
+    expect(inMemoryRecipientsRepository.items).toHaveLength(1);
+    expect(inMemoryOrdersRepository.items).toHaveLength(1);
+    expect(inMemoryDeliveryAddressRepository.items).toHaveLength(1);
   });
 });

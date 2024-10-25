@@ -8,7 +8,7 @@ export default defineConfig({
       provider: 'v8',
       reportsDirectory: './test/coverage/unit',
       exclude: ['node_modules', 'test'],
-      reporter: ['text', 'json-summary', 'json'],
+      reporter: ['text', 'json-summary', 'json', 'html'],
       reportOnFailure: true,
       include: ['src/domain/**/application/use-cases/*.ts'],
       thresholds: {

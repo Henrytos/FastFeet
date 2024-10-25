@@ -56,9 +56,8 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new WrongCredentialsError());
     }
 
-    const doesPhotosExists =
-      await this.photosRepository.existsPhotoById(photoId);
-    if (!doesPhotosExists) {
+    const photo = await this.photosRepository.findById(photoId);
+    if (!photo) {
       return left(new WrongCredentialsError());
     }
 

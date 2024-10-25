@@ -74,7 +74,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: 'invalid-order-id',
       deliveryManId: deliveryMan.id.toString(),
-      photoId: '',
+      photoId: 'example-photo-id',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -88,7 +88,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(OrderDoesNotExistError);
   });
 
-  it('should not be possible to make an order delivered if it was not you who withdrew', async () => {
+  it('should not be possible to make an order delivered if delivery man not exists', async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -101,7 +101,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: 'invalid-delivery-man-id',
-      photoId: '',
+      photoId: 'example-photo-id',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -113,6 +113,36 @@ describe('mark an order as delivered use case', () => {
       },
     });
     expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
+  });
+
+  it('não deveria ser possivel marcar encomenda como entregue por outro entregador', async () => {
+    const deliveryMan = makeDeliveryMan();
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
+
+    const order = makeOrder({
+      status: 'withdrawn',
+      deliveryManId: deliveryMan.id,
+    });
+    inMemoryOrdersRepository.items.push(order);
+
+    const invalidDeliveryMan = makeDeliveryMan();
+    inMemoryDeliveryMansRepository.items.push(invalidDeliveryMan);
+
+    const result = await sut.execute({
+      orderId: order.id.toString(),
+      deliveryManId: invalidDeliveryMan.id.toString(),
+      photoId: 'example-photo-id',
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(inMemoryOrdersRepository.items).toHaveLength(1);
+    expect(inMemoryOrdersRepository.items[0]).toMatchObject({
+      props: {
+        status: 'withdrawn',
+        deliveryAt: null,
+      },
+    });
+    expect(result.value).toBeInstanceOf(WrongCredentialsError);
   });
 
   it('should not mark an order delivered if it has status canceled', async () => {
@@ -128,7 +158,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: '',
+      photoId: 'example-photo-id',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -155,7 +185,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: '',
+      photoId: 'example-photo-id',
     });
 
     expect(result.isLeft()).toBe(true);
@@ -182,7 +212,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: '',
+      photoId: 'example-photo-id',
     });
 
     expect(result.isLeft()).toBe(true);
