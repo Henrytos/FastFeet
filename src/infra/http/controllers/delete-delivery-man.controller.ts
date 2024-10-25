@@ -13,13 +13,18 @@ import {
   Param,
   ParseUUIDPipe,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
+import { RolesGuards } from '../guards/roles.guards';
+import { Roles } from '../guards/roles.decorator';
 
 @Controller('/users/:deliveryManId')
 export class DeleteDeliveryManController {
   constructor(private deleteDeliveryManUseCase: DeleteDeliveryManByIdUseCase) {}
 
   @Delete()
+  @Roles('ADMINISTRATOR')
+  @UseGuards(RolesGuards)
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,

@@ -16,9 +16,12 @@ import { ChangeDeliveryManPasswordController } from './controllers/change-delive
 import { DeleteDeliveryManByIdUseCase } from '@/domain/delivery/application/use-cases/delete-delivery-man-by-id-use-case';
 import { UpdateDeliveryManByAdministratorUseCase } from '@/domain/delivery/application/use-cases/update-delivery-man-by-administrator';
 import { ChangeDeliveryManPasswordUseCase } from '@/domain/delivery/application/use-cases/change-delivery-man-password-use-case';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuards } from './guards/roles.guards';
+import { GuardsModule } from './guards/guards.module';
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule],
+  imports: [DatabaseModule, CryptographyModule, GuardsModule],
   controllers: [
     AuthenticateController,
     CreateAccountController,
