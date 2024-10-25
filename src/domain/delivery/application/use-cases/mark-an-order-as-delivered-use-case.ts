@@ -6,6 +6,7 @@ import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exi
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { PhotosRepository } from '../repositories/photos-repository';
+import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error';
 
 export interface MarkAnOrderAsDeliveredUseCaseRequest {
   orderId: string;
@@ -13,7 +14,10 @@ export interface MarkAnOrderAsDeliveredUseCaseRequest {
   photoId: string;
 }
 export type MarkAnOrderAsDeliveredUseCaseResponse = Either<
-  OrderDoesNotExistError,
+  | OrderDoesNotExistError
+  | PhotoDoesNotExistError
+  | DeliveryManDoesNotExistError
+  | WrongCredentialsError,
   {}
 >;
 
@@ -52,13 +56,9 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new WrongCredentialsError());
     }
 
-    if (photoId.length === 0) {
-      return left(new WrongCredentialsError());
-    }
-
     const photo = await this.photosRepository.findById(photoId);
     if (!photo) {
-      return left(new WrongCredentialsError());
+      return left(new PhotoDoesNotExistError());
     }
 
     order.status = 'delivered';

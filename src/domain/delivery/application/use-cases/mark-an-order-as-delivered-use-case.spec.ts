@@ -9,6 +9,7 @@ import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { InMemoryPhotosRepository } from '@/test/repositories/in-memory-photos-repository';
 import { makePhoto } from '@/test/factories/make-photo';
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
+import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error';
 
 describe('mark an order as delivered use case', () => {
   let sut: MarkAnOrderAsDeliveredUseCase;
@@ -71,10 +72,13 @@ describe('mark an order as delivered use case', () => {
     });
     inMemoryOrdersRepository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const result = await sut.execute({
       orderId: 'invalid-order-id',
       deliveryManId: deliveryMan.id.toString(),
-      photoId: 'example-photo-id',
+      photoId: photo.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -98,10 +102,13 @@ describe('mark an order as delivered use case', () => {
     });
     inMemoryOrdersRepository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: 'invalid-delivery-man-id',
-      photoId: 'example-photo-id',
+      photoId: photo.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -115,7 +122,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
   });
 
-  it('não deveria ser possivel marcar encomenda como entregue por outro entregador', async () => {
+  it('should not be possible to mark order as delivered by another delivery man', async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -125,13 +132,16 @@ describe('mark an order as delivered use case', () => {
     });
     inMemoryOrdersRepository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const invalidDeliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(invalidDeliveryMan);
 
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: invalidDeliveryMan.id.toString(),
-      photoId: 'example-photo-id',
+      photoId: photo.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -155,10 +165,13 @@ describe('mark an order as delivered use case', () => {
     });
     inMemoryOrdersRepository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: 'example-photo-id',
+      photoId: photo.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -182,10 +195,13 @@ describe('mark an order as delivered use case', () => {
     });
     inMemoryOrdersRepository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: 'example-photo-id',
+      photoId: photo.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -209,10 +225,13 @@ describe('mark an order as delivered use case', () => {
     });
     inMemoryOrdersRepository.items.push(order);
 
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: 'example-photo-id',
+      photoId: photo.id.toString(),
     });
 
     expect(result.isLeft()).toBe(true);
@@ -224,5 +243,35 @@ describe('mark an order as delivered use case', () => {
       },
     });
     expect(result.value).toBeInstanceOf(WrongCredentialsError);
+  });
+
+  it('should not be possible brand as delivered without sending a photo of the delivery', async () => {
+    const deliveryMan = makeDeliveryMan();
+    inMemoryDeliveryMansRepository.items.push(deliveryMan);
+
+    const order = makeOrder({
+      status: 'withdrawn',
+      deliveryManId: deliveryMan.id,
+      withdrawnAt: new Date(new Date().getDay() - 1),
+    });
+    inMemoryOrdersRepository.items.push(order);
+
+    const photo = makePhoto();
+    inMemoryPhotosRepository.items.push(photo);
+
+    const result = await sut.execute({
+      orderId: order.id.toString(),
+      deliveryManId: deliveryMan.id.toString(),
+      photoId: 'invalid-photo-id',
+    });
+
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(PhotoDoesNotExistError);
+    expect(inMemoryOrdersRepository.items).toHaveLength(1);
+    expect(inMemoryOrdersRepository.items[0]).toMatchObject({
+      props: {
+        status: 'withdrawn',
+      },
+    });
   });
 });

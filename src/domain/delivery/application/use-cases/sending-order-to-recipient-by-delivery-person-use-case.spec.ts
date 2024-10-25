@@ -212,6 +212,7 @@ describe('register order for recipient use case', () => {
 
     const order = makeOrder({
       recipientId: recipient.id,
+      deliveryAddressId: new UniqueEntityID('invalid-delivery-address-id'),
     });
 
     inMemoryOrdersRepository.items.push(order);
