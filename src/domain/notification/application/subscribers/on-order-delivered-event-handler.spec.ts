@@ -16,6 +16,7 @@ import {
   MarkAnOrderAsDeliveredUseCaseResponse,
 } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case';
 import { OnOrderDeliveredEventHandler } from './on-order-delivered-event-handler';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 let sendNotificationUseCase: SendNotificationUseCase;
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -53,9 +54,9 @@ describe('On Answer mark Delivered', () => {
     inMemoryRecipientsRepository.create(recipient);
     const order = makeOrder({
       recipientId: recipient.id,
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
     });
-    order.status = 'delivered';
+    order.status = ORDER_STATUS.DELIVERED;
     await inMemoryOrdersRepository.save(order);
 
     waitFor(() => {

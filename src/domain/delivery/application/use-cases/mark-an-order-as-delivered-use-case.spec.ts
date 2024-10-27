@@ -10,6 +10,7 @@ import { InMemoryPhotosRepository } from '@/test/repositories/in-memory-photos-r
 import { makePhoto } from '@/test/factories/make-photo';
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 describe('mark an order as delivered use case', () => {
   let sut: MarkAnOrderAsDeliveredUseCase;
@@ -37,7 +38,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
       withdrawnAt: new Date(new Date().getDay() - 1),
     });
@@ -56,7 +57,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'delivered',
+        status: ORDER_STATUS.DELIVERED,
         deliveryAt: expect.any(Date),
       },
     });
@@ -67,7 +68,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
     });
     inMemoryOrdersRepository.items.push(order);
@@ -85,7 +86,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'withdrawn',
+        status: ORDER_STATUS.WITHDRAWN,
         deliveryAt: null,
       },
     });
@@ -97,7 +98,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
     });
     inMemoryOrdersRepository.items.push(order);
@@ -115,7 +116,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'withdrawn',
+        status: ORDER_STATUS.WITHDRAWN,
         deliveryAt: null,
       },
     });
@@ -127,7 +128,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
     });
     inMemoryOrdersRepository.items.push(order);
@@ -148,7 +149,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'withdrawn',
+        status: ORDER_STATUS.WITHDRAWN,
         deliveryAt: null,
       },
     });
@@ -160,7 +161,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'canceled',
+      status: ORDER_STATUS.CANCELED,
       deliveryManId: deliveryMan.id,
     });
     inMemoryOrdersRepository.items.push(order);
@@ -178,7 +179,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'canceled',
+        status: ORDER_STATUS.CANCELED,
         deliveryAt: null,
       },
     });
@@ -190,7 +191,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'delivered',
+      status: ORDER_STATUS.DELIVERED,
       deliveryManId: deliveryMan.id,
     });
     inMemoryOrdersRepository.items.push(order);
@@ -208,7 +209,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'delivered',
+        status: ORDER_STATUS.DELIVERED,
         deliveryAt: null,
       },
     });
@@ -220,7 +221,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
       deliveryManId: deliveryMan.id,
     });
     inMemoryOrdersRepository.items.push(order);
@@ -238,7 +239,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
         deliveryAt: null,
       },
     });
@@ -250,7 +251,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const order = makeOrder({
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
       withdrawnAt: new Date(new Date().getDay() - 1),
     });
@@ -270,7 +271,7 @@ describe('mark an order as delivered use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'withdrawn',
+        status: ORDER_STATUS.WITHDRAWN,
       },
     });
   });

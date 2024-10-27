@@ -8,6 +8,7 @@ import { OrdersRepository } from '@/domain/delivery/application/repositories/ord
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
 import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository';
 import { Order } from '@/domain/delivery/enterprise/entities/order';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 interface RegisterOrderForRecipientUseCaseRequest {
   administratorId: string;
@@ -52,7 +53,7 @@ export class RegisterOrderForRecipientUseCase {
     }
 
     const newOrderForRecipient = Order.create({
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
       recipientId: recipient.id,
     });
 

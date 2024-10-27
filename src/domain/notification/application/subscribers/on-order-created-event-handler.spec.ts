@@ -17,6 +17,7 @@ import { waitFor } from '@/test/utils/wait-for';
 import { SpyInstance } from 'vitest';
 
 import { OnOrderCreatedEventHandler } from './on-order-created-event-handler';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 let sendNotificationUseCase: SendNotificationUseCase;
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -55,7 +56,7 @@ describe('On Answer Created', () => {
     const order = makeOrder({
       recipientId: recipient.id,
     });
-    order.status = 'pending';
+    order.status = ORDER_STATUS.PENDING;
     inMemoryOrdersRepository.save(order);
 
     waitFor(() => {

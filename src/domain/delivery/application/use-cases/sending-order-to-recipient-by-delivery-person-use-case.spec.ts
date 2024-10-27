@@ -18,6 +18,7 @@ import { makeOrder } from '@/test/factories/make-order';
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 describe('register order for recipient use case', () => {
   let sut: SendingOrderToRecipientByDeliveryManUseCase;
@@ -108,7 +109,7 @@ describe('register order for recipient use case', () => {
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
       },
     });
   });
@@ -164,7 +165,7 @@ describe('register order for recipient use case', () => {
     expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
       },
     });
   });
@@ -195,7 +196,7 @@ describe('register order for recipient use case', () => {
     expect(result.value).toBeInstanceOf(RecipientDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
       },
     });
   });
@@ -228,7 +229,7 @@ describe('register order for recipient use case', () => {
     expect(result.value).toBeInstanceOf(DeliveryAddressDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
       },
     });
   });

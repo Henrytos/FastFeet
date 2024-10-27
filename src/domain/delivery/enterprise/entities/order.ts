@@ -5,12 +5,13 @@ import { OrderCreatedEvent } from '../events/order-created-event';
 import { OrderMakeDeliveredEvent } from '../events/order-make-delivered-event';
 import { OrderWithdrawnEvent } from '../events/order-withdrawn-event';
 import { OrderCanceledEvent } from '../events/order-canceled-event';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 export interface OrderProps {
   deliveryManId?: UniqueEntityID;
   recipientId: UniqueEntityID;
   deliveryAddressId?: UniqueEntityID;
-  status: 'pending' | 'delivered' | 'withdrawn' | 'canceled';
+  status: ORDER_STATUS;
   createdAt: Date;
   updatedAt?: Date | null;
   deliveryAt?: Date | null;
@@ -51,12 +52,12 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.status;
   }
 
-  set status(status: 'pending' | 'withdrawn' | 'delivered' | 'canceled') {
+  set status(status: ORDER_STATUS) {
     switch (status) {
-      case 'pending':
+      case ORDER_STATUS.PENDING:
         this.addDomainEvent(new OrderCreatedEvent(this));
         break;
-      case 'delivered':
+      case ORDER_STATUS.DELIVERED:
         this.addDomainEvent(new OrderMakeDeliveredEvent(this));
         break;
       case 'withdrawn':

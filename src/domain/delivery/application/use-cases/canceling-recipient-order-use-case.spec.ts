@@ -7,6 +7,7 @@ import { AdministratorDoesNotExistError } from './errors/administrator-does-not-
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
 import { NotAllowedError } from '@/core/errors/not-allowed-error';
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 describe('cancelling recipient order  use case', () => {
   let sut: CancelingRecipientOrderUseCase;
@@ -31,7 +32,7 @@ describe('cancelling recipient order  use case', () => {
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const order = makeOrder({
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
     });
     inMemoryOrdersRepository.items.push(order);
 
@@ -53,7 +54,7 @@ describe('cancelling recipient order  use case', () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
     const order = makeOrder({
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
     });
     inMemoryOrdersRepository.items.push(order);
 
@@ -67,7 +68,7 @@ describe('cancelling recipient order  use case', () => {
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
       },
     });
   });
@@ -76,7 +77,7 @@ describe('cancelling recipient order  use case', () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
     const order = makeOrder({
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
     });
     inMemoryOrdersRepository.items.push(order);
 
@@ -90,7 +91,7 @@ describe('cancelling recipient order  use case', () => {
     expect(result.value).toBeInstanceOf(OrderDoesNotExistError);
     expect(inMemoryOrdersRepository.items[0]).toMatchObject({
       props: {
-        status: 'pending',
+        status: ORDER_STATUS.PENDING,
       },
     });
   });
@@ -99,7 +100,7 @@ describe('cancelling recipient order  use case', () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
     const order = makeOrder({
-      status: 'canceled',
+      status: ORDER_STATUS.CANCELED,
     });
     inMemoryOrdersRepository.items.push(order);
 

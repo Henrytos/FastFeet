@@ -16,6 +16,7 @@ import { waitFor } from '@/test/utils/wait-for';
  *********/
 import { SpyInstance } from 'vitest';
 import { OnOrderCancellationEventHandler } from './on-order-cancellation-event-handler';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 let sendNotificationUseCase: SendNotificationUseCase;
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -53,11 +54,11 @@ describe('On Answer Created', () => {
     inMemoryRecipientsRepository.create(recipient);
     const order = makeOrder({
       recipientId: recipient.id,
-      status: 'withdrawn',
+      status: ORDER_STATUS.WITHDRAWN,
     });
     inMemoryOrdersRepository.items.push(order);
 
-    order.status = 'canceled';
+    order.status = ORDER_STATUS.CANCELED;
     inMemoryOrdersRepository.save(order);
 
     waitFor(() => {

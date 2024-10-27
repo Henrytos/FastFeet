@@ -7,6 +7,7 @@ import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { PhotosRepository } from '../repositories/photos-repository';
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 export interface MarkAnOrderAsDeliveredUseCaseRequest {
   orderId: string;
@@ -49,9 +50,9 @@ export class MarkAnOrderAsDeliveredUseCase {
     }
 
     if (
-      order.status === 'pending' ||
-      order.status === 'delivered' ||
-      order.status === 'canceled'
+      order.status === ORDER_STATUS.PENDING ||
+      order.status === ORDER_STATUS.DELIVERED ||
+      order.status === ORDER_STATUS.CANCELED
     ) {
       return left(new WrongCredentialsError());
     }
@@ -61,7 +62,7 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new PhotoDoesNotExistError());
     }
 
-    order.status = 'delivered';
+    order.status = ORDER_STATUS.DELIVERED;
     order.deliveryAt = new Date();
     order.photoId = new UniqueEntityID(photoId);
 

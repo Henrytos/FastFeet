@@ -16,6 +16,7 @@ import { waitFor } from '@/test/utils/wait-for';
  *********/
 import { SpyInstance } from 'vitest';
 import { OnOrderWentOutForDeliveryEventHandler } from './on-order-went-out-for-delivery-event-handler';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 let sendNotificationUseCase: SendNotificationUseCase;
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
@@ -53,11 +54,11 @@ describe('On Answer Created', () => {
     inMemoryRecipientsRepository.create(recipient);
     const order = makeOrder({
       recipientId: recipient.id,
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
     });
     inMemoryOrdersRepository.items.push(order);
 
-    order.status = 'withdrawn';
+    order.status = ORDER_STATUS.WITHDRAWN;
     inMemoryOrdersRepository.save(order);
 
     waitFor(() => {

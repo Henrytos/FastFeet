@@ -38,7 +38,7 @@ export class ChangeDeliveryManPasswordUseCase {
     }
 
     const deliveryMan = await this.deliveryMansRepository.findByCpf(
-      Cpf.createFromValue(cpf),
+      Cpf.create(cpf),
     );
     if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError());
