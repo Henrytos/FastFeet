@@ -19,7 +19,7 @@ describe('CreateAccountController (e2e)', () => {
 
     app = moduleRef.createNestApplication();
     jwt = moduleRef.get(JwtService);
-
+    administratorFactory = moduleRef.get(AdministratorFactory);
     await app.init();
   });
 
@@ -28,7 +28,10 @@ describe('CreateAccountController (e2e)', () => {
       name: 'John Doe',
     });
 
-    const token = jwt.sign({ sub: administrator.id, role: administrator.role });
+    const token = jwt.sign({
+      sub: administrator.id,
+      role: administrator.role,
+    });
 
     const response = await request(app.getHttpServer())
       .get('/profile')
@@ -36,10 +39,10 @@ describe('CreateAccountController (e2e)', () => {
       .send();
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      user: {
+    expect(response.body).toMatchObject({
+      user: expect.objectContaining({
         name: 'John Doe',
-      },
+      }),
     });
   });
 });

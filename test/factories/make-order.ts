@@ -1,3 +1,4 @@
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { Order, OrderProps } from '@/domain/delivery/enterprise/entities/order';
 import { PrismaOrderMapper } from '@/infra/database/prisma/mappers/prisma-oreder-mapper';
@@ -9,7 +10,7 @@ export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
   const order = Order.create(
     {
       recipientId: new UniqueEntityID(randomUUID()),
-      status: 'pending',
+      status: ORDER_STATUS.PENDING,
       createdAt: new Date(),
       deliveryAt: null,
       photoId: null,

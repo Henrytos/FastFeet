@@ -7,7 +7,7 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
-  Put,
+  Patch,
   UnauthorizedException,
 } from '@nestjs/common';
 import { z } from 'zod';
@@ -16,6 +16,7 @@ import { CurrentUser } from '@/infra/auth/current-user';
 import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error';
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error';
+import { Roles } from '../guards/roles.decorator';
 
 const validationPasswordSchema = z.string().min(6).max(20);
 
@@ -27,11 +28,12 @@ export class ChangeDeliveryManPasswordController {
     private changeDeliveryManPasswordUseCase: ChangeDeliveryManPasswordUseCase,
   ) {}
 
-  @Put()
+  @Patch()
+  @Roles('ADMINISTRATOR')
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,
-    @Param('deliveryManCpf', ParseUUIDPipe) deliveryManCpf: string,
+    @Param('deliveryManCpf') deliveryManCpf: string,
     @Body('password', new ZodValidationPipe(validationPasswordSchema))
     password: ValidationPasswordSchema,
   ) {

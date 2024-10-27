@@ -9,7 +9,7 @@ import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-ca
 import { AuthenticateController } from './controllers/authenticate.controller';
 import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case';
 import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case';
-import { GetProfileController } from './controllers/get-profile-controller';
+import { GetProfileController } from './controllers/get-profile.controller';
 import { DeleteDeliveryManController } from './controllers/delete-delivery-man.controller';
 import { UpdateDeliveryManController } from './controllers/update-delivery-man.controller';
 import { ChangeDeliveryManPasswordController } from './controllers/change-delivery-man-password.controller';

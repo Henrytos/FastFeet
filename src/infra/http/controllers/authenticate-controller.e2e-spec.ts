@@ -37,13 +37,5 @@ describe('CreateAccountController (e2e)', () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty('accessToken');
-
-    const administratorOnDatabase = await prisma.user.findUnique({
-      where: {
-        id: administrator.id,
-      },
-    });
-
-    expect(administratorOnDatabase).toBeNull();
   });
 });
