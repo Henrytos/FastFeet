@@ -8,7 +8,7 @@ on:
       - main
   
 jobs:
-  test:
+  run-tests-unit:
     runs-on: ubuntu-latest
     
     permissions:
