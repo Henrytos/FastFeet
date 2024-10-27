@@ -24,10 +24,12 @@ describe('fetch nearby orders use case', () => {
     });
 
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
+    inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
     const order = makeOrder({
       deliveryAddressId: deliveryAddress.id,
     });
+
     inMemoryOrdersRepository.items.push(order);
 
     const result = await sut.execute({
@@ -35,6 +37,7 @@ describe('fetch nearby orders use case', () => {
       deliveryManLongitude: -46.414032247689725,
     });
 
+    console.log(result.value.orders);
     expect(result.isRight()).toBe(true);
   });
 });

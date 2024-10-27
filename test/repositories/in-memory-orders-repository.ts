@@ -6,7 +6,7 @@ import {
   getDistanceBetweenCoordinates,
 } from '../utils/get-distance-between-coordinate';
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { Console } from 'console';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
@@ -16,7 +16,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.items.push(order);
 
     switch (order.status) {
-      case 'pending':
+      case ORDER_STATUS.PENDING:
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
     }
@@ -42,13 +42,13 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.items[index] = order;
 
     switch (order.status) {
-      case 'pending':
+      case ORDER_STATUS.PENDING:
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
       case 'withdrawn':
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
-      case 'delivered':
+      case ORDER_STATUS.DELIVERED:
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
       case 'canceled':
@@ -104,33 +104,10 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return order;
   }
   async findManyNearby({ latitude, longitude }: Coordinate): Promise<Order[]> {
-    const ordersWithAddress = this.items.filter((item) => {
-      if (item.deliveryAddressId == undefined) {
-        return false;
-      }
-
-      if (item.deliveryAddressId.toString() == 'undefined') {
-        return false;
-      }
-
-      return true;
-    });
-
-    const orders = ordersWithAddress.filter(async (item) => {
-      if (item.deliveryAddressId == undefined) {
-        return false;
-      }
-      if (item.deliveryAddressId.toString() == '') {
-        return false;
-      }
-
+    const orders = this.items.filter(async (order) => {
       const deliveryAddress = await this.deliveryAddressRepository.findById(
-        item.deliveryAddressId.toString(),
+        order.deliveryAddressId.toValue(),
       );
-
-      if (!deliveryAddress) {
-        return false;
-      }
       const distance = getDistanceBetweenCoordinates(
         { latitude, longitude },
         {
@@ -138,7 +115,8 @@ export class InMemoryOrdersRepository implements OrdersRepository {
           longitude: deliveryAddress.longitude,
         },
       );
-      return distance < 0.1; // 10km
+
+      return distance <= 10; //10;
     });
 
     return orders;
