@@ -10,6 +10,7 @@ import { RecipientsRepository } from '../repositories/recipients-repository';
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
+import { ORDER_STATUS } from '@/core/entities/order-status.enum';
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
   administratorId: string;
@@ -63,10 +64,6 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
       return left(new RecipientDoesNotExistError());
     }
 
-    if (!order.deliveryAddressId) {
-      return left(new DeliveryAddressDoesNotExistError());
-    }
-
     const deliveryAddress = await this.deliveryAddressRepository.findById(
       order.deliveryAddressId.toString(),
     );
@@ -75,7 +72,7 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
       return left(new DeliveryAddressDoesNotExistError());
     }
 
-    order.status = 'withdrawn';
+    order.status = ORDER_STATUS.WITHDRAWN;
     order.deliveryManId = deliveryMan.id;
     order.withdrawnAt = new Date();
     order.deliveryAddressId = deliveryAddress.id;
