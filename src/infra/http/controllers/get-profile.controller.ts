@@ -5,6 +5,7 @@ import { UserPayload } from '@/infra/auth/jwt.strategy';
 import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { DeliveryManPresenter } from '../presenters/delivery-man-presenter';
 import { AdministratorPresenter } from '../presenters/administrator-presenter';
+import { Roles } from '../guards/roles.decorator';
 
 @Controller('/profile')
 export class GetProfileController {
@@ -14,6 +15,7 @@ export class GetProfileController {
   ) {}
 
   @Get()
+  @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
   @HttpCode(HttpStatus.OK)
   async handler(@CurrentUser() user: UserPayload) {
     const { sub: userId } = user;

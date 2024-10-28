@@ -15,6 +15,7 @@ import {
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error';
+import { Roles } from '../guards/roles.decorator';
 
 const updateDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -24,13 +25,14 @@ const updateDeliveryManBodySchema = z.object({
 
 type UpdateDeliveryManBodySchema = z.infer<typeof updateDeliveryManBodySchema>;
 
-@Controller('/users/{deliveryManId}')
+@Controller('/users/:deliveryManId')
 export class UpdateDeliveryManController {
   constructor(
     private updateDeliveryManByAdministratorUseCase: UpdateDeliveryManByAdministratorUseCase,
   ) {}
 
   @Put()
+  @Roles('ADMINISTRATOR')
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,

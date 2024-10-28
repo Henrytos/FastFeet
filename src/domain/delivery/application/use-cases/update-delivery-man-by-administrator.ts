@@ -52,7 +52,7 @@ export class UpdateDeliveryManByAdministratorUseCase {
     const passwordHash = await this.hashGenerator.hash(password);
     const updatedDeliveryMan = DeliveryMan.create(
       {
-        cpf: Cpf.createFromValue(cpf),
+        cpf: Cpf.create(cpf),
         name,
         password: passwordHash,
       },

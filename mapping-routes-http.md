@@ -22,7 +22,7 @@
 - **[ ] GET /users**: Listar todos os usuários.
 
 ### Visualizar Usuário por ID
-- **[ ] GET /users/{id}**: Visualizar um usuário específico.
+- **[ x ] GET /users/{id}**: Visualizar um usuário específico.
 
 ### Atualizar Usuário
 - **[ x ] PUT /users/{id}**: Atualizar informações de um usuário.
