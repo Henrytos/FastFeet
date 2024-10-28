@@ -27,6 +27,7 @@ jobs:
       env:
         PORT: ${{secrets.PORT}}
         DATABASE_URL: ${{secrets.DATABASE_URL}}
+        JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
       run: npm run test:e2e
     
    
