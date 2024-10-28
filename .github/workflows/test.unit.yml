@@ -25,7 +25,7 @@ jobs:
         node-version: '20.18.0'
     - name: 'Install Deps'
       run: npm install
-    - name: 'Test'
+    - name: 'Test unit'
       run: npx vitest --coverage.enabled true
     - name: 'Report Coverage'
       # Set if: always() to also generate the report if tests are failing

@@ -1,0 +1,32 @@
+name: 'Test e2e'
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  
+jobs:
+  run-tests-e2e:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: 'Install Node'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.18.0'
+    - name: 'Install Deps'
+      run: npm install
+    - name: 'Test e2e'
+      env:
+        PORT: ${{secrets.PORT}}
+        DATABASE_URL: ${{secrets.DATABASE_URL}}
+      run: npm run test:e2e
+    
+   
