@@ -1,8 +1,8 @@
-import { Either, left, right } from '@/core/either';
-import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { RecipientsRepository } from '../repositories/recipients-repository';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
+import { Either, left, right } from "@/core/either";
+import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { RecipientsRepository } from "../repositories/recipients-repository";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
 
 interface DeleteRecipientUseCaseRequest {
   recipientId: string;

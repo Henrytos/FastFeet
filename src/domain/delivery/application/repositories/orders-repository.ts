@@ -1,5 +1,5 @@
-import { Coordinate } from '@/test/utils/get-distance-between-coordinate';
-import { Order } from '@/domain/delivery/enterprise/entities/order';
+import { Coordinate } from "@/test/utils/get-distance-between-coordinate";
+import { Order } from "@/domain/delivery/enterprise/entities/order";
 
 export abstract class OrdersRepository {
   abstract create(order: Order): Promise<void>;

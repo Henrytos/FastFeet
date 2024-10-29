@@ -1,16 +1,16 @@
-import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository';
-import { DeleteRecipientUseCase } from './delete-recipient-use-case';
-import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository';
-import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-repository';
-import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
-import { makeRecipient } from '@/test/factories/make-recipient';
-import { makeAdministrator } from '@/test/factories/make-administrator';
-import { makeDeliveryAddress } from '@/test/factories/make-delivery-address';
-import { makeOrder } from '@/test/factories/make-order';
-import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
+import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
+import { DeleteRecipientUseCase } from "./delete-recipient-use-case";
+import { InMemoryRecipientsRepository } from "@/test/repositories/in-memory-recipients-repository";
+import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
+import { makeRecipient } from "@/test/factories/make-recipient";
+import { makeAdministrator } from "@/test/factories/make-administrator";
+import { makeDeliveryAddress } from "@/test/factories/make-delivery-address";
+import { makeOrder } from "@/test/factories/make-order";
+import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 
-describe('delete recipient use case', () => {
+describe("delete recipient use case", () => {
   let sut: DeleteRecipientUseCase;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository;
@@ -35,7 +35,7 @@ describe('delete recipient use case', () => {
     );
   });
 
-  it('should delete a recipient', async () => {
+  it("should delete a recipient", async () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
@@ -62,7 +62,7 @@ describe('delete recipient use case', () => {
     expect(inMemoryDeliveryAddressRepository.items).toHaveLength(0);
   });
 
-  it('should not be possible to delete intersect if administrator does not exist', async () => {
+  it("should not be possible to delete intersect if administrator does not exist", async () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
@@ -79,7 +79,7 @@ describe('delete recipient use case', () => {
     inMemoryOrdersRepository.items.push(order);
 
     const result = await sut.execute({
-      administratorId: 'invalid-administrator-id',
+      administratorId: "invalid-administrator-id",
       recipientId: recipient.id.toString(),
     });
 
@@ -90,7 +90,7 @@ describe('delete recipient use case', () => {
     expect(inMemoryDeliveryAddressRepository.items).toHaveLength(1);
   });
 
-  it('should not be possible to delete intersect if it does not exist', async () => {
+  it("should not be possible to delete intersect if it does not exist", async () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
 
@@ -108,7 +108,7 @@ describe('delete recipient use case', () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      recipientId: 'invalid-recipient-id',
+      recipientId: "invalid-recipient-id",
     });
 
     expect(result.isLeft()).toEqual(true);

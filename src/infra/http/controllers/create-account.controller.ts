@@ -1,4 +1,4 @@
-import { AdministratorRegistrationUseCase } from '@/domain/delivery/application/use-cases/administrator-registration-use-case';
+import { AdministratorRegistrationUseCase } from "@/domain/delivery/application/use-cases/administrator-registration-use-case";
 import {
   BadRequestException,
   Body,
@@ -7,14 +7,14 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-} from '@nestjs/common';
-import { z } from 'zod';
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error';
-import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-cases/register-delivery-man-use-case';
-import { Public } from '@/infra/auth/public';
-import { CurrentUser } from '@/infra/auth/current-user';
-import { UserPayload } from '@/infra/auth/jwt.strategy';
+} from "@nestjs/common";
+import { z } from "zod";
+import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { WrongCredentialsError } from "@/domain/delivery/application/use-cases/errors/wrong-credentials-error";
+import { RegisterDeliveryManUseCase } from "@/domain/delivery/application/use-cases/register-delivery-man-use-case";
+import { Public } from "@/infra/auth/public";
+import { CurrentUser } from "@/infra/auth/current-user";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -24,15 +24,15 @@ const createUserBodySchema = z.object({
 
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>;
 
-@Controller('/accounts')
+@Controller("/accounts")
 export class CreateAccountController {
   constructor(
-    private administratorRegistrationUseCase: AdministratorRegistrationUseCase,
-    private registerDeliveryManUseCase: RegisterDeliveryManUseCase,
-  ) {}
+    private readonly administratorRegistrationUseCase: AdministratorRegistrationUseCase,
+    private readonly registerDeliveryManUseCase: RegisterDeliveryManUseCase,
+  ) { }
 
   @Public()
-  @Post('/admin')
+  @Post("/admin")
   @HttpCode(201)
   async handlerCreateAdmin(
     @Body(new ZodValidationPipe(createUserBodySchema))
@@ -56,7 +56,7 @@ export class CreateAccountController {
     }
   }
 
-  @Post('/user')
+  @Post("/user")
   @HttpCode(HttpStatus.CREATED)
   async handlerCreateUser(
     @Body(new ZodValidationPipe(createUserBodySchema))

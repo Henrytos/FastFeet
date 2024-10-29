@@ -1,10 +1,10 @@
-import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-repository';
-import { FetchNearbyOrdersUseCase } from './fetch-nearby-orders';
-import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
-import { makeOrder } from '@/test/factories/make-order';
-import { makeDeliveryAddress } from '@/test/factories/make-delivery-address';
+import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
+import { FetchNearbyOrdersUseCase } from "./fetch-nearby-orders";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
+import { makeOrder } from "@/test/factories/make-order";
+import { makeDeliveryAddress } from "@/test/factories/make-delivery-address";
 
-describe('fetch nearby orders use case', () => {
+describe("fetch nearby orders use case", () => {
   let sut: FetchNearbyOrdersUseCase;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
   let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
@@ -17,7 +17,7 @@ describe('fetch nearby orders use case', () => {
     sut = new FetchNearbyOrdersUseCase(inMemoryOrdersRepository);
   });
 
-  it('should return nearby orders', async () => {
+  it("should return nearby orders", async () => {
     const deliveryAddress = makeDeliveryAddress({
       latitude: -23.43205962293566,
       longitude: -46.572444118904926,

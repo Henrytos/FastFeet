@@ -1,8 +1,8 @@
-import { Either, left, right } from '@/core/either';
-import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { OrdersRepository } from '../repositories/orders-repository';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
+import { Either, left, right } from "@/core/either";
+import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { OrdersRepository } from "../repositories/orders-repository";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
 
 interface DeleteAnOrderUseCaseRequest {
   orderId: string;

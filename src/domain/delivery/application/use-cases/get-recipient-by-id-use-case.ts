@@ -1,7 +1,7 @@
-import { Either, left, right } from '@/core/either';
-import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
-import { Recipient } from '../../enterprise/entities/recipient';
-import { RecipientsRepository } from '../repositories/recipients-repository';
+import { Either, left, right } from "@/core/either";
+import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
+import { Recipient } from "../../enterprise/entities/recipient";
+import { RecipientsRepository } from "../repositories/recipients-repository";
 
 interface GetRecipientByIdUseCaseRequest {
   recipientId: string;

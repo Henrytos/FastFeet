@@ -1,10 +1,10 @@
-import { Either, left, right } from '@/core/either';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
-import { HashGenerator } from '../cryptography/hash-generator';
-import { Administrator } from '../../enterprise/entities/administrator';
-import { Cpf } from '../../enterprise/entities/value-object/cpf';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { Injectable } from '@nestjs/common';
+import { Either, left, right } from "@/core/either";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { HashGenerator } from "../cryptography/hash-generator";
+import { Administrator } from "../../enterprise/entities/administrator";
+import { Cpf } from "../../enterprise/entities/value-object/cpf";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { Injectable } from "@nestjs/common";
 
 interface AdministratorRegistrationUseCaseRe {
   name: string;

@@ -1,9 +1,9 @@
-import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
-import { Order } from '@/domain/delivery/enterprise/entities/order';
-import { Coordinate } from '@/test/utils/get-distance-between-coordinate';
-import { PrismaOrderMapper } from '../mappers/prisma-oreder-mapper';
-import { PrismaService } from '../prisma.service';
-import { Injectable } from '@nestjs/common';
+import { OrdersRepository } from "@/domain/delivery/application/repositories/orders-repository";
+import { Order } from "@/domain/delivery/enterprise/entities/order";
+import { Coordinate } from "@/test/utils/get-distance-between-coordinate";
+import { PrismaOrderMapper } from "../mappers/prisma-oreder-mapper";
+import { PrismaService } from "../prisma.service";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
@@ -45,7 +45,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async findManyNearby(coordinate: Coordinate): Promise<Order[]> {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 
   async deleteManyByRecipientId(recipientId: string): Promise<void> {

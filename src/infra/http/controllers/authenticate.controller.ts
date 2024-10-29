@@ -1,5 +1,5 @@
-import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case';
-import { Public } from '@/infra/auth/public';
+import { AuthenticateAdministratorUseCase } from "@/domain/delivery/application/use-cases/authenticate-administrator-use-case";
+import { Public } from "@/infra/auth/public";
 import {
   Body,
   Controller,
@@ -7,10 +7,10 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-} from '@nestjs/common';
-import { z } from 'zod';
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case';
+} from "@nestjs/common";
+import { z } from "zod";
+import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { AuthenticateDeliveryManUseCase } from "@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case";
 
 const authenticateBodySchema = z.object({
   cpf: z.string(),
@@ -19,12 +19,12 @@ const authenticateBodySchema = z.object({
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
 
 @Public()
-@Controller('/sessions')
+@Controller("/sessions")
 export class AuthenticateController {
   constructor(
-    private authenticateAdministratorUseCase: AuthenticateAdministratorUseCase,
-    private authenticateDeliveryManUseCase: AuthenticateDeliveryManUseCase,
-  ) {}
+    private readonly authenticateAdministratorUseCase: AuthenticateAdministratorUseCase,
+    private readonly authenticateDeliveryManUseCase: AuthenticateDeliveryManUseCase,
+  ) { }
 
   @Post()
   @HttpCode(HttpStatus.OK)

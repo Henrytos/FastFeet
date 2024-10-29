@@ -1,8 +1,8 @@
-import { Either, left, right } from '@/core/either';
-import { RecipientsRepository } from '../repositories/recipients-repository';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
+import { Either, left, right } from "@/core/either";
+import { RecipientsRepository } from "../repositories/recipients-repository";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
 
 interface UpdateRecipientUseCaseRequest {
   administratorId: string;

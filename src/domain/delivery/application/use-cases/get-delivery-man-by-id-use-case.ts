@@ -1,8 +1,8 @@
-import { Either, left, right } from '@/core/either';
-import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { DeliveryMan } from '../../enterprise/entities/delivery-man';
+import { Either, left, right } from "@/core/either";
+import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { DeliveryMan } from "../../enterprise/entities/delivery-man";
 
 interface GetDeliveryManByIdUseCaseRequest {
   deliveryManId: string;

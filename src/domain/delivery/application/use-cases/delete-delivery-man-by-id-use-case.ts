@@ -1,10 +1,10 @@
-import { Either, left, right } from '@/core/either';
-import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { Injectable } from '@nestjs/common';
+import { Either, left, right } from "@/core/either";
+import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { Injectable } from "@nestjs/common";
 
 interface DeleteDeliveryManByIdUseCaseRequest {
   deliveryManId: string;

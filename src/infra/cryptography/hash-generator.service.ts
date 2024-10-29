@@ -1,6 +1,6 @@
-import { HashGenerator } from '@/domain/delivery/application/cryptography/hash-generator';
-import { Injectable } from '@nestjs/common';
-import { hash } from 'bcryptjs';
+import { HashGenerator } from "@/domain/delivery/application/cryptography/hash-generator";
+import { Injectable } from "@nestjs/common";
+import { hash } from "bcryptjs";
 
 @Injectable()
 export class HashGeneratorService implements HashGenerator {

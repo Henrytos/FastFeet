@@ -1,10 +1,10 @@
-import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository';
-import { Recipient } from '@/domain/delivery/enterprise/entities/recipient';
-import { PrismaService } from '../prisma.service';
-import { PrismaRecipientMapper } from '../mappers/prisma-recipient-mapper';
-import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
-import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { Injectable } from '@nestjs/common';
+import { RecipientsRepository } from "@/domain/delivery/application/repositories/recipients-repository";
+import { Recipient } from "@/domain/delivery/enterprise/entities/recipient";
+import { PrismaService } from "../prisma.service";
+import { PrismaRecipientMapper } from "../mappers/prisma-recipient-mapper";
+import { OrdersRepository } from "@/domain/delivery/application/repositories/orders-repository";
+import { DeliveryAddressRepository } from "@/domain/delivery/application/repositories/delivery-address-repository";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class PrismaRecipientsRepository implements RecipientsRepository {
@@ -50,7 +50,7 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
     const recipientAlreadyExists = this.findByEmail(recipient.email);
 
     if (!recipientAlreadyExists) {
-      throw new Error('Recipient not found');
+      throw new Error("Recipient not found");
     }
 
     await this.prisma.recipient.delete({
@@ -68,7 +68,7 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
     const recipientAlreadyExists = this.findById(recipient.id.toString());
 
     if (!recipientAlreadyExists) {
-      throw new Error('Recipient not found');
+      throw new Error("Recipient not found");
     }
 
     const data = PrismaRecipientMapper.toPrisma(recipient);

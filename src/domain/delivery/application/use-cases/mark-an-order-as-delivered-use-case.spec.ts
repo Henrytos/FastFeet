@@ -1,18 +1,18 @@
-import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-repository';
-import { makeOrder } from '@/test/factories/make-order';
-import { MarkAnOrderAsDeliveredUseCase } from './mark-an-order-as-delivered-use-case';
-import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
-import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
-import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { InMemoryPhotosRepository } from '@/test/repositories/in-memory-photos-repository';
-import { makePhoto } from '@/test/factories/make-photo';
-import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
-import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error';
-import { ORDER_STATUS } from '@/core/entities/order-status.enum';
+import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
+import { makeOrder } from "@/test/factories/make-order";
+import { MarkAnOrderAsDeliveredUseCase } from "./mark-an-order-as-delivered-use-case";
+import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
+import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
+import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { InMemoryPhotosRepository } from "@/test/repositories/in-memory-photos-repository";
+import { makePhoto } from "@/test/factories/make-photo";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
+import { PhotoDoesNotExistError } from "./errors/photo-does-not-exist-error";
+import { ORDER_STATUS } from "@/core/entities/order-status.enum";
 
-describe('mark an order as delivered use case', () => {
+describe("mark an order as delivered use case", () => {
   let sut: MarkAnOrderAsDeliveredUseCase;
   let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
@@ -33,7 +33,7 @@ describe('mark an order as delivered use case', () => {
     );
   });
 
-  it('should be possible mark order with delivered', async () => {
+  it("should be possible mark order with delivered", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -63,7 +63,7 @@ describe('mark an order as delivered use case', () => {
     });
   });
 
-  it('should not be possible to make an order delivered if it was not you who withdrew', async () => {
+  it("should not be possible to make an order delivered if it was not you who withdrew", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -77,7 +77,7 @@ describe('mark an order as delivered use case', () => {
     inMemoryPhotosRepository.items.push(photo);
 
     const result = await sut.execute({
-      orderId: 'invalid-order-id',
+      orderId: "invalid-order-id",
       deliveryManId: deliveryMan.id.toString(),
       photoId: photo.id.toString(),
     });
@@ -93,7 +93,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(OrderDoesNotExistError);
   });
 
-  it('should not be possible to make an order delivered if delivery man not exists', async () => {
+  it("should not be possible to make an order delivered if delivery man not exists", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -108,7 +108,7 @@ describe('mark an order as delivered use case', () => {
 
     const result = await sut.execute({
       orderId: order.id.toString(),
-      deliveryManId: 'invalid-delivery-man-id',
+      deliveryManId: "invalid-delivery-man-id",
       photoId: photo.id.toString(),
     });
 
@@ -123,7 +123,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
   });
 
-  it('should not be possible to mark order as delivered by another delivery man', async () => {
+  it("should not be possible to mark order as delivered by another delivery man", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -156,7 +156,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(WrongCredentialsError);
   });
 
-  it('should not mark an order delivered if it has status canceled', async () => {
+  it("should not mark an order delivered if it has status canceled", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -186,7 +186,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(WrongCredentialsError);
   });
 
-  it('should not mark an order delivered if it is with the status ends', async () => {
+  it("should not mark an order delivered if it is with the status ends", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -216,7 +216,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(WrongCredentialsError);
   });
 
-  it('should not mark a delivered order if it has pending status', async () => {
+  it("should not mark a delivered order if it has pending status", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -246,7 +246,7 @@ describe('mark an order as delivered use case', () => {
     expect(result.value).toBeInstanceOf(WrongCredentialsError);
   });
 
-  it('should not be possible brand as delivered without sending a photo of the delivery', async () => {
+  it("should not be possible brand as delivered without sending a photo of the delivery", async () => {
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
@@ -263,7 +263,7 @@ describe('mark an order as delivered use case', () => {
     const result = await sut.execute({
       orderId: order.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      photoId: 'invalid-photo-id',
+      photoId: "invalid-photo-id",
     });
 
     expect(result.isLeft()).toBe(true);

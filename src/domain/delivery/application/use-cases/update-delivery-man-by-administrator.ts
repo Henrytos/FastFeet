@@ -1,12 +1,12 @@
-import { Either, left, right } from '@/core/either';
-import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { DeliveryMan } from '../../enterprise/entities/delivery-man';
-import { HashGenerator } from '../cryptography/hash-generator';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
-import { Cpf } from '../../enterprise/entities/value-object/cpf';
-import { Injectable } from '@nestjs/common';
+import { Either, left, right } from "@/core/either";
+import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { DeliveryMan } from "../../enterprise/entities/delivery-man";
+import { HashGenerator } from "../cryptography/hash-generator";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { Cpf } from "../../enterprise/entities/value-object/cpf";
+import { Injectable } from "@nestjs/common";
 
 interface UpdateDeliveryManByAdministratorUseCaseRequest {
   deliveryManId: string;

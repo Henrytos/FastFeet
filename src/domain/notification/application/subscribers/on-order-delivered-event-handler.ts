@@ -1,7 +1,7 @@
-import { DomainEvents } from '@/core/events/domain-events';
-import { EventHandler } from '@/core/events/event-handler';
-import { OrderMakeDeliveredEvent } from '@/domain/delivery/enterprise/events/order-make-delivered-event';
-import { SendNotificationUseCase } from '../use-cases/send-notification-use-case';
+import { DomainEvents } from "@/core/events/domain-events";
+import { EventHandler } from "@/core/events/event-handler";
+import { OrderMakeDeliveredEvent } from "@/domain/delivery/enterprise/events/order-make-delivered-event";
+import { SendNotificationUseCase } from "../use-cases/send-notification-use-case";
 
 export class OnOrderDeliveredEventHandler implements EventHandler {
   constructor(private sendNotification: SendNotificationUseCase) {
@@ -21,8 +21,8 @@ export class OnOrderDeliveredEventHandler implements EventHandler {
     if (order) {
       await this.sendNotification.execute({
         recipientId: order.recipientId.toString(),
-        title: 'order delivered',
-        content: 'your order has been delivered',
+        title: "order delivered",
+        content: "your order has been delivered",
       });
     }
   }

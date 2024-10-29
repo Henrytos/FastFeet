@@ -1,8 +1,8 @@
-import { Either, left, right } from '@/core/either';
-import { Notification } from '../../enterprise/entities/notification';
-import { NotificationsRepository } from '../repositories/notifications-repository';
-import { NotificationDoesNotExistsError } from './errors/notification-does-not-exists-error';
-import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error';
+import { Either, left, right } from "@/core/either";
+import { Notification } from "../../enterprise/entities/notification";
+import { NotificationsRepository } from "../repositories/notifications-repository";
+import { NotificationDoesNotExistsError } from "./errors/notification-does-not-exists-error";
+import { WrongCredentialsError } from "@/domain/delivery/application/use-cases/errors/wrong-credentials-error";
 
 export interface ReadNotificationUseCaseRequest {
   notificationId: string;

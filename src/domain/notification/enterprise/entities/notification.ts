@@ -37,14 +37,14 @@ export class Notification extends Entity<NotificationProps> {
 
   static create(
     props: Optional<NotificationProps, "createdAt">,
-    id?: UniqueEntityID
+    id?: UniqueEntityID,
   ) {
     const notification = new Notification(
       {
         createdAt: props.createdAt ?? new Date(),
         ...props,
       },
-      id
+      id,
     );
 
     return notification;

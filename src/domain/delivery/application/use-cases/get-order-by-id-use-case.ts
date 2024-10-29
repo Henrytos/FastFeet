@@ -1,7 +1,7 @@
-import { Either, left, right } from '@/core/either';
-import { OrderDoesNotExistError } from './errors/order-does-not-exist-error';
-import { Order } from '../../enterprise/entities/order';
-import { OrdersRepository } from '../repositories/orders-repository';
+import { Either, left, right } from "@/core/either";
+import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
+import { Order } from "../../enterprise/entities/order";
+import { OrdersRepository } from "../repositories/orders-repository";
 
 interface GetOrderByIdUseCaseRequest {
   orderId: string;

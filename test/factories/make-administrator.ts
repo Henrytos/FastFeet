@@ -1,13 +1,13 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import {
   Administrator,
   AdministratorProps,
-} from '@/domain/delivery/enterprise/entities/administrator';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
-import { PrismaAdministratorMapper } from '@/infra/database/prisma/mappers/prisma-administrator-mapper';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { faker } from '@faker-js/faker';
-import { Injectable } from '@nestjs/common';
+} from "@/domain/delivery/enterprise/entities/administrator";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
+import { PrismaAdministratorMapper } from "@/infra/database/prisma/mappers/prisma-administrator-mapper";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { faker } from "@faker-js/faker";
+import { Injectable } from "@nestjs/common";
 
 export function makeAdministrator(
   overwide: Partial<AdministratorProps> = {},

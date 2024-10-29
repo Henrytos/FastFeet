@@ -1,4 +1,4 @@
-import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address';
+import { DeliveryAddress } from "@/domain/delivery/enterprise/entities/delivery-address";
 
 export abstract class DeliveryAddressRepository {
   abstract findById(id: string): Promise<DeliveryAddress | null>;

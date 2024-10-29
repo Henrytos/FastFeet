@@ -1,9 +1,9 @@
-import { DeliveryMansRepository } from '@/domain/delivery/application/repositories/delivery-mans-repository';
-import { DeliveryMan } from '@/domain/delivery/enterprise/entities/delivery-man';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
-import { Injectable } from '@nestjs/common';
-import { PrismaDeliveryManMapper } from '../mappers/prisma-delivery-man-mapper';
-import { PrismaService } from '../prisma.service';
+import { DeliveryMansRepository } from "@/domain/delivery/application/repositories/delivery-mans-repository";
+import { DeliveryMan } from "@/domain/delivery/enterprise/entities/delivery-man";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
+import { Injectable } from "@nestjs/common";
+import { PrismaDeliveryManMapper } from "../mappers/prisma-delivery-man-mapper";
+import { PrismaService } from "../prisma.service";
 
 @Injectable()
 export class PrismaDeliveryMansRepository implements DeliveryMansRepository {
@@ -52,7 +52,7 @@ export class PrismaDeliveryMansRepository implements DeliveryMansRepository {
       deliveryMan.id.toString(),
     );
     if (!deliveryManAlreadyExists) {
-      throw new Error('Delivery man not found');
+      throw new Error("Delivery man not found");
     }
 
     await this.prisma.user.update({
@@ -69,7 +69,7 @@ export class PrismaDeliveryMansRepository implements DeliveryMansRepository {
     );
 
     if (!deliveryManAlreadyExists) {
-      throw new Error('Delivery man not found');
+      throw new Error("Delivery man not found");
     }
 
     await this.prisma.user.delete({

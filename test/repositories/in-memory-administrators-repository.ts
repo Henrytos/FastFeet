@@ -1,6 +1,6 @@
-import { AdministratorsRepository } from '@/domain/delivery/application/repositories/administrators-repository';
-import { Administrator } from '@/domain/delivery/enterprise/entities/administrator';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
+import { AdministratorsRepository } from "@/domain/delivery/application/repositories/administrators-repository";
+import { Administrator } from "@/domain/delivery/enterprise/entities/administrator";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
 
 export class InMemoryAdministratorsRepository
   implements AdministratorsRepository

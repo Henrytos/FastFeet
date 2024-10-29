@@ -1,6 +1,6 @@
-import { HashComparer } from '@/domain/delivery/application/cryptography/hash-comparer';
-import { Injectable } from '@nestjs/common';
-import { compare } from 'bcryptjs';
+import { HashComparer } from "@/domain/delivery/application/cryptography/hash-comparer";
+import { Injectable } from "@nestjs/common";
+import { compare } from "bcryptjs";
 
 @Injectable()
 export class HashComparerService implements HashComparer {

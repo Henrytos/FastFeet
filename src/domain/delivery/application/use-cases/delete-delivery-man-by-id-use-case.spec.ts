@@ -1,13 +1,13 @@
-import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
-import { DeleteDeliveryManByIdUseCase } from './delete-delivery-man-by-id-use-case';
-import { makeAdministrator } from '@/test/factories/make-administrator';
-import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
+import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
+import { DeleteDeliveryManByIdUseCase } from "./delete-delivery-man-by-id-use-case";
+import { makeAdministrator } from "@/test/factories/make-administrator";
+import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
 
-describe('create delivery man  use case', () => {
+describe("create delivery man  use case", () => {
   let sut: DeleteDeliveryManByIdUseCase;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
@@ -21,7 +21,7 @@ describe('create delivery man  use case', () => {
     );
   });
 
-  it('should be possible to delete a delivery by administrator', async () => {
+  it("should be possible to delete a delivery by administrator", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -39,14 +39,14 @@ describe('create delivery man  use case', () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(0);
   });
 
-  it('should not be possible to delete a administrator does not exist', async () => {
+  it("should not be possible to delete a administrator does not exist", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan();
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
-      administratorId: 'invalid-administrator-id',
+      administratorId: "invalid-administrator-id",
       deliveryManId: deliveryMan.id.toString(),
     });
 
@@ -55,7 +55,7 @@ describe('create delivery man  use case', () => {
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
   });
 
-  it('should not be possible to delete a delivery man who does not exist', async () => {
+  it("should not be possible to delete a delivery man who does not exist", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
     const deliveryMan = makeDeliveryMan();
@@ -63,7 +63,7 @@ describe('create delivery man  use case', () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      deliveryManId: 'invalid-delivery-man-id',
+      deliveryManId: "invalid-delivery-man-id",
     });
 
     expect(result.isLeft()).toBe(true);

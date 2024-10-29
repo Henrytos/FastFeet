@@ -1,8 +1,8 @@
-import { Either, left, right } from '@/core/either';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
-import { DeliveryAddressRepository } from '../repositories/delivery-address-repository';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { DeliveryAddress } from '../../enterprise/entities/delivery-address';
+import { Either, left, right } from "@/core/either";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { DeliveryAddress } from "../../enterprise/entities/delivery-address";
 
 interface RegisterDeliveryAddressUseCaseRequest {
   administratorId: string;

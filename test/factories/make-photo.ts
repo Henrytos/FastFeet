@@ -1,9 +1,9 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { Photo, PhotoProps } from '@/domain/delivery/enterprise/entities/photo';
-import { PrismaPhotoMapper } from '@/infra/database/prisma/mappers/prisma-photo-mapper';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { faker } from '@faker-js/faker';
-import { Injectable } from '@nestjs/common';
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { Photo, PhotoProps } from "@/domain/delivery/enterprise/entities/photo";
+import { PrismaPhotoMapper } from "@/infra/database/prisma/mappers/prisma-photo-mapper";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { faker } from "@faker-js/faker";
+import { Injectable } from "@nestjs/common";
 
 export function makePhoto(
   overwide: Partial<PhotoProps> = {},

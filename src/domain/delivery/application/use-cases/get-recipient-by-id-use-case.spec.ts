@@ -14,7 +14,7 @@ describe("get recipient by id use case", () => {
   beforeEach(() => {
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
-      inMemoryDeliveryAddressRepository
+      inMemoryDeliveryAddressRepository,
     );
     sut = new GetRecipientByIdUseCase(inMemoryRecipientsRepository);
   });

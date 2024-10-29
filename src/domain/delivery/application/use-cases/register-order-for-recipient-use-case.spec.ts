@@ -1,18 +1,18 @@
-import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-repository';
-import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository';
-import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository';
-import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository';
-import { makeAdministrator } from '@/test/factories/make-administrator';
-import { makeDeliveryAddress } from '@/test/factories/make-delivery-address';
-import { makeRecipient } from '@/test/factories/make-recipient';
+import { InMemoryOrdersRepository } from "@/test/repositories/in-memory-orders-repository";
+import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
+import { InMemoryDeliveryAddressRepository } from "@/test/repositories/in-memory-delivery-address-repository";
+import { InMemoryRecipientsRepository } from "@/test/repositories/in-memory-recipients-repository";
+import { makeAdministrator } from "@/test/factories/make-administrator";
+import { makeDeliveryAddress } from "@/test/factories/make-delivery-address";
+import { makeRecipient } from "@/test/factories/make-recipient";
 
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error';
-import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does-not-exist-error';
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
+import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does-not-exist-error";
 
-import { RegisterOrderForRecipientUseCase } from './register-order-for-recipient-use-case';
+import { RegisterOrderForRecipientUseCase } from "./register-order-for-recipient-use-case";
 
-describe('register order for recipient use case', () => {
+describe("register order for recipient use case", () => {
   let sut: RegisterOrderForRecipientUseCase;
   let inMemoryOrdersRepository: InMemoryOrdersRepository;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
@@ -37,7 +37,7 @@ describe('register order for recipient use case', () => {
     );
   });
 
-  it('should be possible to register order for the destination', async () => {
+  it("should be possible to register order for the destination", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -57,14 +57,14 @@ describe('register order for recipient use case', () => {
     expect(inMemoryOrdersRepository.items).toHaveLength(1);
   });
 
-  it('should not be possible to create order without administrator', async () => {
+  it("should not be possible to create order without administrator", async () => {
     const deliveryAddress = makeDeliveryAddress();
     inMemoryDeliveryAddressRepository.items.push(deliveryAddress);
     const recipient = makeRecipient({});
     inMemoryRecipientsRepository.items.push(recipient);
 
     const result = await sut.execute({
-      administratorId: 'invalid-administrator-id',
+      administratorId: "invalid-administrator-id",
       recipientId: recipient.id.toString(),
       deliveryAddressId: deliveryAddress.id.toString(),
     });
@@ -74,7 +74,7 @@ describe('register order for recipient use case', () => {
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);
   });
 
-  it('should not be possible to create order without destination', async () => {
+  it("should not be possible to create order without destination", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -83,7 +83,7 @@ describe('register order for recipient use case', () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      recipientId: 'invalid-recipient-id',
+      recipientId: "invalid-recipient-id",
       deliveryAddressId: deliveryAddress.id.toString(),
     });
 
@@ -92,7 +92,7 @@ describe('register order for recipient use case', () => {
     expect(result.value).toBeInstanceOf(RecipientDoesNotExistError);
   });
 
-  it('should not be possible to create order with address of the destination', async () => {
+  it("should not be possible to create order with address of the destination", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
@@ -102,7 +102,7 @@ describe('register order for recipient use case', () => {
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       recipientId: recipient.id.toString(),
-      deliveryAddressId: 'invalid-delivery-address-id',
+      deliveryAddressId: "invalid-delivery-address-id",
     });
 
     expect(result.isLeft()).toEqual(true);

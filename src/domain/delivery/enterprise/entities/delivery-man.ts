@@ -1,6 +1,6 @@
-import { Entity } from '@/core/entities/entity';
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { Cpf } from './value-object/cpf';
+import { Entity } from "@/core/entities/entity";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { Cpf } from "./value-object/cpf";
 
 export interface DeliveryManProps {
   cpf: Cpf;

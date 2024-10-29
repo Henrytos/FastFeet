@@ -1,9 +1,9 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
-import { EnvService } from '../env/env.service';
-import { z } from 'zod';
-import { Role } from '@prisma/client';
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { PassportStrategy } from "@nestjs/passport";
+import { Injectable } from "@nestjs/common";
+import { EnvService } from "../env/env.service";
+import { z } from "zod";
+import { Role } from "@prisma/client";
 
 const tokenPayloadSchema = z.object({
   sub: z.string().uuid(),
@@ -17,7 +17,7 @@ export class AuthStrategy extends PassportStrategy(Strategy) {
   constructor(envService: EnvService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: envService.get('JWT_SECRET_KEY'),
+      secretOrKey: envService.get("JWT_SECRET_KEY"),
     });
   }
 

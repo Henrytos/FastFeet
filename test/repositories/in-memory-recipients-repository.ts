@@ -1,7 +1,7 @@
-import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
-import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository';
-import { Recipient } from '@/domain/delivery/enterprise/entities/recipient';
+import { DeliveryAddressRepository } from "@/domain/delivery/application/repositories/delivery-address-repository";
+import { OrdersRepository } from "@/domain/delivery/application/repositories/orders-repository";
+import { RecipientsRepository } from "@/domain/delivery/application/repositories/recipients-repository";
+import { Recipient } from "@/domain/delivery/enterprise/entities/recipient";
 
 export class InMemoryRecipientsRepository implements RecipientsRepository {
   public items: Recipient[] = [];
@@ -41,7 +41,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     const index = this.items.indexOf(recipient);
 
     if (index == -1) {
-      throw new Error('Recipient not found');
+      throw new Error("Recipient not found");
     }
 
     this.items.splice(index, 1);
@@ -63,7 +63,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     const index = this.items.indexOf(recipient);
 
     if (index == -1) {
-      throw new Error('Recipient not found');
+      throw new Error("Recipient not found");
     }
 
     this.items[index] = recipient;

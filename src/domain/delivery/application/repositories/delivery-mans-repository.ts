@@ -1,5 +1,5 @@
-import { DeliveryMan } from '@/domain/delivery/enterprise/entities/delivery-man';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
+import { DeliveryMan } from "@/domain/delivery/enterprise/entities/delivery-man";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
 
 export abstract class DeliveryMansRepository {
   abstract create(deliveryMan: DeliveryMan): Promise<void>;

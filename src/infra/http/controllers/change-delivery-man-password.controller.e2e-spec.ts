@@ -1,16 +1,16 @@
-import { AppModule } from '@/infra/app.module';
-import { DatabaseModule } from '@/infra/database/database.module';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
-import { PrismaDeliveryAddressRepository } from '@/infra/database/prisma/repositories/prisma-delivery-address-repository';
-import { AdministratorFactory } from '@/test/factories/make-administrator';
-import { DeliveryManFactory } from '@/test/factories/make-delivery-man';
-import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Test } from '@nestjs/testing';
-import { compare, hash } from 'bcryptjs';
-import request from 'supertest';
+import { AppModule } from "@/infra/app.module";
+import { DatabaseModule } from "@/infra/database/database.module";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { PrismaDeliveryAddressRepository } from "@/infra/database/prisma/repositories/prisma-delivery-address-repository";
+import { AdministratorFactory } from "@/test/factories/make-administrator";
+import { DeliveryManFactory } from "@/test/factories/make-delivery-man";
+import { INestApplication } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { Test } from "@nestjs/testing";
+import { compare, hash } from "bcryptjs";
+import request from "supertest";
 
-describe('ChangeDeliveryManPasswordController (e2e)', () => {
+describe("ChangeDeliveryManPasswordController (e2e)", () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let jwt: JwtService;
@@ -33,10 +33,10 @@ describe('ChangeDeliveryManPasswordController (e2e)', () => {
     await app.init();
   });
 
-  test('[PATCH] /users/{deliveryManCpf}/password', async () => {
+  test("[PATCH] /users/{deliveryManCpf}/password", async () => {
     const administrator = await administratorFactory.makePrismaAdministrator();
     const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan({
-      password: await hash('password', 8),
+      password: await hash("password", 8),
     });
 
     const accessToken = jwt.sign({
@@ -46,9 +46,9 @@ describe('ChangeDeliveryManPasswordController (e2e)', () => {
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${deliveryMan.cpf}/password`)
-      .set('Authorization', `Bearer ${accessToken}`)
+      .set("Authorization", `Bearer ${accessToken}`)
       .send({
-        password: 'new password',
+        password: "new password",
       });
 
     expect(response.status).toBe(204);

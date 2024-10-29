@@ -31,7 +31,7 @@
 - **[ x ] DELETE /users/{id}**: Excluir um usuário.
 
 ### Alterar Senha
-- **[ ] PATCH /users/{id}/password**: Alterar a senha de um usuário (somente o admin pode realizar essa operação).
+- **[ x ] PATCH /users/{id}/password**: Alterar a senha de um usuário (somente o admin pode realizar essa operação).
 
 ---
 

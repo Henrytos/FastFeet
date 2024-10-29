@@ -1,7 +1,7 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { DeliveryMan } from '@/domain/delivery/enterprise/entities/delivery-man';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
-import { Prisma, User as PrismaDeliveryMan } from '@prisma/client';
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { DeliveryMan } from "@/domain/delivery/enterprise/entities/delivery-man";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
+import { Prisma, User as PrismaDeliveryMan } from "@prisma/client";
 
 export class PrismaDeliveryManMapper {
   static toDomain(raw: PrismaDeliveryMan): DeliveryMan {
@@ -21,7 +21,7 @@ export class PrismaDeliveryManMapper {
       cpf: deliveryMan.cpf.value,
       name: deliveryMan.name,
       passwordHash: deliveryMan.password,
-      role: 'DELIVERY_MAN',
+      role: "DELIVERY_MAN",
     };
   }
 }

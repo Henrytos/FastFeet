@@ -1,8 +1,8 @@
-import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address';
-import { PrismaService } from '../prisma.service';
-import { Injectable } from '@nestjs/common';
-import { PrismaDeliveryAddressMapper } from '../mappers/prisma-delivery-address-mapper';
+import { DeliveryAddressRepository } from "@/domain/delivery/application/repositories/delivery-address-repository";
+import { DeliveryAddress } from "@/domain/delivery/enterprise/entities/delivery-address";
+import { PrismaService } from "../prisma.service";
+import { Injectable } from "@nestjs/common";
+import { PrismaDeliveryAddressMapper } from "../mappers/prisma-delivery-address-mapper";
 
 @Injectable()
 export class PrismaDeliveryAddressRepository

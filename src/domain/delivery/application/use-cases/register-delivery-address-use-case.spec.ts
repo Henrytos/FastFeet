@@ -14,7 +14,7 @@ describe("register delivery address use case", () => {
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
     sut = new RegisterDeliveryAddressUseCase(
       inMemoryAdministratorRepository,
-      inMemoryDeliveryAddressRepository
+      inMemoryDeliveryAddressRepository,
     );
   });
 

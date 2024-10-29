@@ -1,6 +1,6 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { DomainEvent } from '@/core/events/domain-event';
-import { Order } from '../entities/order';
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { DomainEvent } from "@/core/events/domain-event";
+import { Order } from "../entities/order";
 
 export class OrderMakeDeliveredEvent implements DomainEvent {
   public ocurredAt: Date;
@@ -12,6 +12,6 @@ export class OrderMakeDeliveredEvent implements DomainEvent {
   }
 
   getAggregateId(): UniqueEntityID {
-    throw new Error('Method not implemented.');
+    throw new Error("Method not implemented.");
   }
 }

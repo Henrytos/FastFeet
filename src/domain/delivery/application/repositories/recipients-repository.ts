@@ -1,4 +1,4 @@
-import { Recipient } from '@/domain/delivery/enterprise/entities/recipient';
+import { Recipient } from "@/domain/delivery/enterprise/entities/recipient";
 
 export abstract class RecipientsRepository {
   abstract findById(id: string): Promise<Recipient | null>;

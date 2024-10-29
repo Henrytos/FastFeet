@@ -1,10 +1,10 @@
-import { makeAdministrator } from '@/test/factories/make-administrator';
-import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { GetDeliveryManByIdUseCase } from './get-delivery-man-by-id-use-case';
-import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
+import { makeAdministrator } from "@/test/factories/make-administrator";
+import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { GetDeliveryManByIdUseCase } from "./get-delivery-man-by-id-use-case";
+import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
 
-describe('get delivery man  use case', () => {
+describe("get delivery man  use case", () => {
   let sut: GetDeliveryManByIdUseCase;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
 
@@ -14,7 +14,7 @@ describe('get delivery man  use case', () => {
     sut = new GetDeliveryManByIdUseCase(inMemoryDeliveryMansRepository);
   });
 
-  it('should be possible to get a delivery by administrator', async () => {
+  it("should be possible to get a delivery by administrator", async () => {
     const administrator = makeAdministrator();
 
     const deliveryMan = makeDeliveryMan();
@@ -32,11 +32,11 @@ describe('get delivery man  use case', () => {
     });
   });
 
-  it('should not be possible to get a delivery man who does not exist', async () => {
+  it("should not be possible to get a delivery man who does not exist", async () => {
     const administrator = makeAdministrator();
 
     const result = await sut.execute({
-      deliveryManId: 'invalid-delivery-man-id',
+      deliveryManId: "invalid-delivery-man-id",
     });
 
     expect(result.isLeft()).toBe(true);

@@ -1,6 +1,6 @@
-import { Encrypter } from '@/domain/delivery/application/cryptography/encrypter';
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { Encrypter } from "@/domain/delivery/application/cryptography/encrypter";
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class JwtEncrypterService implements Encrypter {

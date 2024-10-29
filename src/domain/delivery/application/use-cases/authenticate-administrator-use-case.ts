@@ -1,11 +1,11 @@
-import { Either, left, right } from '@/core/either';
-import { Encrypter } from '../cryptography/encrypter';
-import { HashComparer } from '../cryptography/hash-comparer';
-import { AdministratorsRepository } from '../repositories/administrators-repository';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { Cpf } from '../../enterprise/entities/value-object/cpf';
-import { Injectable } from '@nestjs/common';
+import { Either, left, right } from "@/core/either";
+import { Encrypter } from "../cryptography/encrypter";
+import { HashComparer } from "../cryptography/hash-comparer";
+import { AdministratorsRepository } from "../repositories/administrators-repository";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { Cpf } from "../../enterprise/entities/value-object/cpf";
+import { Injectable } from "@nestjs/common";
 
 interface AuthenticateAdministratorUseCaseRequest {
   cpf: string;
@@ -49,7 +49,7 @@ export class AuthenticateAdministratorUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: administrator.id.toString(),
-      role: 'ADMINISTRATOR',
+      role: "ADMINISTRATOR",
     });
 
     return right({ accessToken });

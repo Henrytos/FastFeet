@@ -1,12 +1,12 @@
-import { AppModule } from '@/infra/app.module';
-import { DatabaseModule } from '@/infra/database/database.module';
-import { AdministratorFactory } from '@/test/factories/make-administrator';
-import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { AppModule } from "@/infra/app.module";
+import { DatabaseModule } from "@/infra/database/database.module";
+import { AdministratorFactory } from "@/test/factories/make-administrator";
+import { INestApplication } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { Test } from "@nestjs/testing";
+import request from "supertest";
 
-describe('CreateAccountController (e2e)', () => {
+describe("CreateAccountController (e2e)", () => {
   let app: INestApplication;
   let jwt: JwtService;
   let administratorFactory: AdministratorFactory;
@@ -23,9 +23,9 @@ describe('CreateAccountController (e2e)', () => {
     await app.init();
   });
 
-  test('[GET] /profile ', async () => {
+  test("[GET] /profile ", async () => {
     const administrator = await administratorFactory.makePrismaAdministrator({
-      name: 'John Doe',
+      name: "John Doe",
     });
 
     const token = jwt.sign({
@@ -34,14 +34,14 @@ describe('CreateAccountController (e2e)', () => {
     });
 
     const response = await request(app.getHttpServer())
-      .get('/profile')
-      .set('Authorization', `Bearer ${token}`)
+      .get("/profile")
+      .set("Authorization", `Bearer ${token}`)
       .send();
 
     expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
       user: expect.objectContaining({
-        name: 'John Doe',
+        name: "John Doe",
       }),
     });
   });

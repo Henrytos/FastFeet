@@ -1,12 +1,12 @@
-import { Either, left, right } from '@/core/either';
-import { Encrypter } from '../cryptography/encrypter';
-import { HashComparer } from '../cryptography/hash-comparer';
+import { Either, left, right } from "@/core/either";
+import { Encrypter } from "../cryptography/encrypter";
+import { HashComparer } from "../cryptography/hash-comparer";
 
-import { WrongCredentialsError } from './errors/wrong-credentials-error';
-import { Cpf } from '../../enterprise/entities/value-object/cpf';
-import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
-import { Injectable } from '@nestjs/common';
+import { WrongCredentialsError } from "./errors/wrong-credentials-error";
+import { Cpf } from "../../enterprise/entities/value-object/cpf";
+import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
+import { Injectable } from "@nestjs/common";
 
 interface AuthenticateDeliveryManUseCaseRequest {
   cpf: string;
@@ -50,7 +50,7 @@ export class AuthenticateDeliveryManUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: deliveryMan.id.toString(),
-      role: 'DELIVERY_MAN',
+      role: "DELIVERY_MAN",
     });
 
     return right({ accessToken });

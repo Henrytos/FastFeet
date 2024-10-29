@@ -1,10 +1,10 @@
-import { InMemoryNotificationsRepository } from '@/test/repositories/in-memory-notifications-repository';
-import { makeNotification } from '@/test/factories/make-notification';
-import { ReadNotificationUseCase } from './read-notification-use-case';
-import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error';
-import { NotificationDoesNotExistsError } from './errors/notification-does-not-exists-error';
+import { InMemoryNotificationsRepository } from "@/test/repositories/in-memory-notifications-repository";
+import { makeNotification } from "@/test/factories/make-notification";
+import { ReadNotificationUseCase } from "./read-notification-use-case";
+import { WrongCredentialsError } from "@/domain/delivery/application/use-cases/errors/wrong-credentials-error";
+import { NotificationDoesNotExistsError } from "./errors/notification-does-not-exists-error";
 
-describe('Read notification use case', () => {
+describe("Read notification use case", () => {
   let sut: ReadNotificationUseCase;
   let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
 
@@ -13,7 +13,7 @@ describe('Read notification use case', () => {
     sut = new ReadNotificationUseCase(inMemoryNotificationsRepository);
   });
 
-  it('should be possible to read notification', async () => {
+  it("should be possible to read notification", async () => {
     const notification = makeNotification();
     inMemoryNotificationsRepository.items.push(notification);
     const result = await sut.execute({
@@ -24,7 +24,7 @@ describe('Read notification use case', () => {
     expect(result.isRight()).toEqual(true);
   });
 
-  it('should not be possible to read notification if it does not exist ', async () => {
+  it("should not be possible to read notification if it does not exist ", async () => {
     const notification = makeNotification();
 
     const result = await sut.execute({
@@ -36,14 +36,14 @@ describe('Read notification use case', () => {
     expect(result.value).toBeInstanceOf(NotificationDoesNotExistsError);
   });
 
-  it('should not be possible to read notification if you are not intended ', async () => {
+  it("should not be possible to read notification if you are not intended ", async () => {
     const notification = makeNotification({
       readAt: undefined,
     });
     inMemoryNotificationsRepository.items.push(notification);
 
     const result = await sut.execute({
-      recipientId: 'invalid-recipient-id',
+      recipientId: "invalid-recipient-id",
       notificationId: notification.id.toString(),
     });
 

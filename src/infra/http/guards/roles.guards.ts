@@ -1,13 +1,13 @@
-import { UserPayload } from '@/infra/auth/jwt.strategy';
-import { PrismaService } from '@/infra/database/prisma/prisma.service';
+import { UserPayload } from "@/infra/auth/jwt.strategy";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { Role } from '@prisma/client';
+} from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { Role } from "@prisma/client";
 
 @Injectable()
 export class RolesGuards implements CanActivate {
@@ -19,7 +19,7 @@ export class RolesGuards implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const rolesRequired = this.reflector.get<Role[]>(
-      'roles',
+      "roles",
       context.getHandler(),
     );
 
@@ -31,7 +31,7 @@ export class RolesGuards implements CanActivate {
 
     if (!rolesRequired.includes(role)) {
       throw new UnauthorizedException(
-        'You do not have permission to perform this action.',
+        "You do not have permission to perform this action.",
       );
     }
 
@@ -40,7 +40,7 @@ export class RolesGuards implements CanActivate {
     });
 
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException("User not found");
     }
 
     return true;

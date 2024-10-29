@@ -1,9 +1,9 @@
-import { AdministratorsRepository } from '@/domain/delivery/application/repositories/administrators-repository';
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
-import { Administrator } from '@/domain/delivery/enterprise/entities/administrator';
-import { PrismaAdministratorMapper } from '../mappers/prisma-administrator-mapper';
+import { AdministratorsRepository } from "@/domain/delivery/application/repositories/administrators-repository";
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma.service";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
+import { Administrator } from "@/domain/delivery/enterprise/entities/administrator";
+import { PrismaAdministratorMapper } from "../mappers/prisma-administrator-mapper";
 
 @Injectable()
 export class PrismaAdministratorsRepository

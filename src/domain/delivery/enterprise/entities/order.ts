@@ -1,11 +1,11 @@
-import { AggregateRoot } from '@/core/entities/aggregate-root';
-import { UniqueEntityID } from '@/core/entities/unique-entity-id';
-import { Optional } from '@/core/types/optional';
-import { OrderCreatedEvent } from '../events/order-created-event';
-import { OrderMakeDeliveredEvent } from '../events/order-make-delivered-event';
-import { OrderWithdrawnEvent } from '../events/order-withdrawn-event';
-import { OrderCanceledEvent } from '../events/order-canceled-event';
-import { ORDER_STATUS } from '@/core/entities/order-status.enum';
+import { AggregateRoot } from "@/core/entities/aggregate-root";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { Optional } from "@/core/types/optional";
+import { OrderCreatedEvent } from "../events/order-created-event";
+import { OrderMakeDeliveredEvent } from "../events/order-make-delivered-event";
+import { OrderWithdrawnEvent } from "../events/order-withdrawn-event";
+import { OrderCanceledEvent } from "../events/order-canceled-event";
+import { ORDER_STATUS } from "@/core/entities/order-status.enum";
 
 export interface OrderProps {
   deliveryManId?: UniqueEntityID;
@@ -60,10 +60,10 @@ export class Order extends AggregateRoot<OrderProps> {
       case ORDER_STATUS.DELIVERED:
         this.addDomainEvent(new OrderMakeDeliveredEvent(this));
         break;
-      case 'withdrawn':
+      case "withdrawn":
         this.addDomainEvent(new OrderWithdrawnEvent(this));
         break;
-      case 'canceled':
+      case "canceled":
         this.addDomainEvent(new OrderCanceledEvent(this));
         break;
     }
@@ -87,10 +87,10 @@ export class Order extends AggregateRoot<OrderProps> {
 
   set deliveryAt(deliveryAt: Date) {
     if (!this.withdrawnAt) {
-      throw new Error('Order is already withdrawn');
+      throw new Error("Order is already withdrawn");
     }
     if (this.withdrawnAt > deliveryAt) {
-      throw new Error('Delivery date must be after withdrawn date');
+      throw new Error("Delivery date must be after withdrawn date");
     }
     this.props.deliveryAt = deliveryAt;
 
@@ -110,7 +110,7 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.updatedAt = new Date();
   }
 
-  static create(props: Optional<OrderProps, 'createdAt'>, id?: UniqueEntityID) {
+  static create(props: Optional<OrderProps, "createdAt">, id?: UniqueEntityID) {
     const order = new Order(
       {
         createdAt: new Date(),

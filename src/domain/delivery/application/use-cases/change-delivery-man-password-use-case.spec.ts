@@ -1,14 +1,14 @@
-import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository';
-import { ChangeDeliveryManPasswordUseCase } from './change-delivery-man-password-use-case';
-import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository';
-import { FakeHashGenerator } from '@/test/cryptography/fake-hash-generator';
-import { makeAdministrator } from '@/test/factories/make-administrator';
-import { makeDeliveryMan } from '@/test/factories/make-delivery-man';
-import { Cpf } from '../../enterprise/entities/value-object/cpf';
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
+import { InMemoryAdministratorsRepository } from "@/test/repositories/in-memory-administrators-repository";
+import { ChangeDeliveryManPasswordUseCase } from "./change-delivery-man-password-use-case";
+import { InMemoryDeliveryMansRepository } from "@/test/repositories/in-memory-delivery-mans-repository";
+import { FakeHashGenerator } from "@/test/cryptography/fake-hash-generator";
+import { makeAdministrator } from "@/test/factories/make-administrator";
+import { makeDeliveryMan } from "@/test/factories/make-delivery-man";
+import { Cpf } from "../../enterprise/entities/value-object/cpf";
+import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
+import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 
-describe('change delivery man password use case', () => {
+describe("change delivery man password use case", () => {
   let sut: ChangeDeliveryManPasswordUseCase;
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository;
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository;
@@ -26,18 +26,18 @@ describe('change delivery man password use case', () => {
     );
   });
 
-  it('should be possible to change delivery password', async () => {
+  it("should be possible to change delivery password", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryMan = makeDeliveryMan({
-      password: await fakeHashGenerator.hash('old password'),
+      password: await fakeHashGenerator.hash("old password"),
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      password: 'new password',
+      password: "new password",
       cpf: deliveryMan.cpf.value,
     });
 
@@ -45,31 +45,31 @@ describe('change delivery man password use case', () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
     expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
       props: {
-        password: await fakeHashGenerator.hash('new password'),
+        password: await fakeHashGenerator.hash("new password"),
       },
     });
   });
 
-  it('should not be possible to change the delivery man if there is no delivery', async () => {
+  it("should not be possible to change the delivery man if there is no delivery", async () => {
     const administrator = makeAdministrator();
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryMan = makeDeliveryMan({
-      password: await fakeHashGenerator.hash('old password'),
+      password: await fakeHashGenerator.hash("old password"),
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      password: 'new password',
-      cpf: Cpf.create('12345678901').value,
+      password: "new password",
+      cpf: Cpf.create("12345678901").value,
     });
 
     expect(result.isLeft()).toEqual(true);
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
     expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
       props: {
-        password: await fakeHashGenerator.hash('old password'),
+        password: await fakeHashGenerator.hash("old password"),
       },
     });
     expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError);
@@ -80,13 +80,13 @@ describe('change delivery man password use case', () => {
     inMemoryAdministratorsRepository.items.push(administrator);
 
     const deliveryMan = makeDeliveryMan({
-      password: await fakeHashGenerator.hash('old password'),
+      password: await fakeHashGenerator.hash("old password"),
     });
     inMemoryDeliveryMansRepository.items.push(deliveryMan);
 
     const result = await sut.execute({
-      administratorId: 'invalid-administrator-id',
-      password: 'new password',
+      administratorId: "invalid-administrator-id",
+      password: "new password",
       cpf: deliveryMan.cpf.value,
     });
 
@@ -94,7 +94,7 @@ describe('change delivery man password use case', () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
     expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
       props: {
-        password: await fakeHashGenerator.hash('old password'),
+        password: await fakeHashGenerator.hash("old password"),
       },
     });
     expect(result.value).toBeInstanceOf(AdministratorDoesNotExistError);

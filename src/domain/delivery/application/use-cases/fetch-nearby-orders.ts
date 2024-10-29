@@ -1,6 +1,6 @@
-import { Either, right } from '@/core/either';
-import { Order } from '../../enterprise/entities/order';
-import { OrdersRepository } from '../repositories/orders-repository';
+import { Either, right } from "@/core/either";
+import { Order } from "../../enterprise/entities/order";
+import { OrdersRepository } from "../repositories/orders-repository";
 
 interface FetchNearbyOrdersUseCaseRequest {
   deliveryManLongitude: number;

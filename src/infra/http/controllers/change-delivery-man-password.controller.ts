@@ -1,4 +1,4 @@
-import { ChangeDeliveryManPasswordUseCase } from '@/domain/delivery/application/use-cases/change-delivery-man-password-use-case';
+import { ChangeDeliveryManPasswordUseCase } from "@/domain/delivery/application/use-cases/change-delivery-man-password-use-case";
 import {
   BadRequestException,
   Body,
@@ -9,32 +9,32 @@ import {
   ParseUUIDPipe,
   Patch,
   UnauthorizedException,
-} from '@nestjs/common';
-import { z } from 'zod';
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { CurrentUser } from '@/infra/auth/current-user';
-import { UserPayload } from '@/infra/auth/jwt.strategy';
-import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error';
-import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error';
-import { Roles } from '../guards/roles.decorator';
+} from "@nestjs/common";
+import { z } from "zod";
+import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { CurrentUser } from "@/infra/auth/current-user";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
+import { AdministratorDoesNotExistError } from "@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error";
+import { DeliveryManDoesNotExistError } from "@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error";
+import { Roles } from "../guards/roles.decorator";
 
 const validationPasswordSchema = z.string().min(6).max(20);
 
 type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>;
 
-@Controller('/users/:deliveryManCpf/password')
+@Controller("/users/:deliveryManCpf/password")
 export class ChangeDeliveryManPasswordController {
   constructor(
-    private changeDeliveryManPasswordUseCase: ChangeDeliveryManPasswordUseCase,
-  ) {}
+    private readonly changeDeliveryManPasswordUseCase: ChangeDeliveryManPasswordUseCase,
+  ) { }
 
   @Patch()
-  @Roles('ADMINISTRATOR')
+  @Roles("ADMINISTRATOR")
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,
-    @Param('deliveryManCpf') deliveryManCpf: string,
-    @Body('password', new ZodValidationPipe(validationPasswordSchema))
+    @Param("deliveryManCpf") deliveryManCpf: string,
+    @Body("password", new ZodValidationPipe(validationPasswordSchema))
     password: ValidationPasswordSchema,
   ) {
     const result = await this.changeDeliveryManPasswordUseCase.execute({

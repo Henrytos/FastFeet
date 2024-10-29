@@ -1,12 +1,12 @@
-import { DomainEvents } from '@/core/events/domain-events';
-import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository';
-import { Order } from '@/domain/delivery/enterprise/entities/order';
+import { DomainEvents } from "@/core/events/domain-events";
+import { OrdersRepository } from "@/domain/delivery/application/repositories/orders-repository";
+import { Order } from "@/domain/delivery/enterprise/entities/order";
 import {
   Coordinate,
   getDistanceBetweenCoordinates,
-} from '../utils/get-distance-between-coordinate';
-import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository';
-import { ORDER_STATUS } from '@/core/entities/order-status.enum';
+} from "../utils/get-distance-between-coordinate";
+import { DeliveryAddressRepository } from "@/domain/delivery/application/repositories/delivery-address-repository";
+import { ORDER_STATUS } from "@/core/entities/order-status.enum";
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
@@ -45,13 +45,13 @@ export class InMemoryOrdersRepository implements OrdersRepository {
       case ORDER_STATUS.PENDING:
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
-      case 'withdrawn':
+      case "withdrawn":
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
       case ORDER_STATUS.DELIVERED:
         DomainEvents.dispatchEventsForAggregate(order.id);
         break;
-      case 'canceled':
+      case "canceled":
         DomainEvents.dispatchEventsForAggregate(order.id);
 
         break;
@@ -61,7 +61,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   async delete(order: Order) {
     const orderDoesExists = !this.findById(order.id.toString());
     if (orderDoesExists) {
-      throw new Error('Order does not exist');
+      throw new Error("Order does not exist");
     }
 
     const index = this.items.findIndex((item) => {

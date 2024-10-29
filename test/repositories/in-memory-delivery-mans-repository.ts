@@ -1,6 +1,6 @@
-import { DeliveryMansRepository } from '@/domain/delivery/application/repositories/delivery-mans-repository';
-import { DeliveryMan } from '@/domain/delivery/enterprise/entities/delivery-man';
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf';
+import { DeliveryMansRepository } from "@/domain/delivery/application/repositories/delivery-mans-repository";
+import { DeliveryMan } from "@/domain/delivery/enterprise/entities/delivery-man";
+import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
 
 export class InMemoryDeliveryMansRepository implements DeliveryMansRepository {
   public items: DeliveryMan[] = [];
