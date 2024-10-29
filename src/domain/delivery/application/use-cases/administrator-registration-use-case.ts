@@ -24,7 +24,7 @@ export class AdministratorRegistrationUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
     private hashGenerator: HashGenerator,
-  ) {}
+  ) { }
 
   async execute({
     name,
@@ -43,7 +43,7 @@ export class AdministratorRegistrationUseCase {
     const administrator = Administrator.create({
       name,
       password: passwordHash,
-      cpf: Cpf.createFromValue(cpf),
+      cpf: Cpf.create(cpf),
     });
 
     this.administratorsRepository.create(administrator);

@@ -33,7 +33,7 @@ export class CreateAccountController {
 
   @Public()
   @Post("/admin")
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async handlerCreateAdmin(
     @Body(new ZodValidationPipe(createUserBodySchema))
     body: CreateUserBodySchema,
