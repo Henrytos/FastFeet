@@ -21,14 +21,14 @@ function generateUniqueDatabaseURL() {
   return databaseUrl.toString();
 }
 
-beforeAll(async () => {
+beforeEach(async () => {
   const databaseUrl = generateUniqueDatabaseURL();
 
   process.env.DATABASE_URL = databaseUrl;
   execSync("npx prisma migrate deploy");
 });
 
-afterAll(async () => {
+afterEach(async () => {
   await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
   await prisma.$disconnect();
 });
