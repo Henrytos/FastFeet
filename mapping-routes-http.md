@@ -38,7 +38,7 @@
 ## Entregadores
 
 ### Criar Entregador
-- **[ ] POST /deliverymen**: Cadastrar um novo entregador (somente admin).
+- **[ x ] POST /deliverymen**: Cadastrar um novo entregador (somente admin).
 
 ### Listar Entregadores
 - **[ ] GET /deliverymen**: Listar todos os entregadores (somente admin).
@@ -47,10 +47,10 @@
 - **[ ] GET /deliverymen/{id}**: Visualizar um entregador específico (somente admin).
 
 ### Atualizar Entregador
-- **[ ] PUT /deliverymen/{id}**: Atualizar dados de um entregador (somente admin).
+- **[ x ] PUT /deliverymen/{id}**: Atualizar dados de um entregador (somente admin).
 
 ### Excluir Entregador
-- **[ ] DELETE /deliverymen/{id}**: Excluir um entregador (somente admin).
+- **[ x] DELETE /deliverymen/{id}**: Excluir um entregador (somente admin).
 
 ### Listar Entregas do Entregador
 - **[ ] GET /deliverymen/{id}/deliveries**: Listar as entregas associadas a um entregador específico.
