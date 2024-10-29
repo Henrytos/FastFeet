@@ -37,7 +37,6 @@ describe("fetch nearby orders use case", () => {
       deliveryManLongitude: -46.414032247689725,
     });
 
-    console.log(result.value.orders);
     expect(result.isRight()).toBe(true);
   });
 });

@@ -4,7 +4,7 @@ import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { PrismaDeliveryAddressRepository } from "@/infra/database/prisma/repositories/prisma-delivery-address-repository";
 import { AdministratorFactory } from "@/test/factories/make-administrator";
 import { DeliveryManFactory } from "@/test/factories/make-delivery-man";
-import { INestApplication } from "@nestjs/common";
+import { HttpStatus, INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import { compare, hash } from "bcryptjs";
@@ -51,19 +51,19 @@ describe("ChangeDeliveryManPasswordController (e2e)", () => {
         password: "new password",
       });
 
-    expect(response.status).toBe(204);
+    expect(response.status).toBe(HttpStatus.NO_CONTENT);
 
-    // const deliveryManInDatabase = await prisma.user.findUnique({
-    //   where: {
-    //     id: deliveryMan.id,
-    //   },
-    // });
+    const deliveryManInDatabase = await prisma.user.findUnique({
+      where: {
+        cpf: deliveryMan.cpf,
+      },
+    });
 
-    // const isPasswordMatch = await compare(
-    //   'new password',
-    //   deliveryManInDatabase.passwordHash,
-    // );
+    const isPasswordMatch = await compare(
+      'new password',
+      deliveryManInDatabase.passwordHash,
+    );
 
-    // expect(isPasswordMatch).toBe(true);
+    expect(isPasswordMatch).toBe(true);
   });
 });

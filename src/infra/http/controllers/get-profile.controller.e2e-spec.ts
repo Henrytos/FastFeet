@@ -1,7 +1,7 @@
 import { AppModule } from "@/infra/app.module";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { AdministratorFactory } from "@/test/factories/make-administrator";
-import { INestApplication } from "@nestjs/common";
+import { HttpStatus, INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
@@ -38,7 +38,7 @@ describe("CreateAccountController (e2e)", () => {
       .set("Authorization", `Bearer ${token}`)
       .send();
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toMatchObject({
       user: expect.objectContaining({
         name: "John Doe",

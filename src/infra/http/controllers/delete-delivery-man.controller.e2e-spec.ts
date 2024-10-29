@@ -3,7 +3,7 @@ import { DatabaseModule } from "@/infra/database/database.module";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { AdministratorFactory } from "@/test/factories/make-administrator";
 import { DeliveryManFactory } from "@/test/factories/make-delivery-man";
-import { INestApplication } from "@nestjs/common";
+import { HttpStatus, INestApplication } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
@@ -43,7 +43,7 @@ describe("DeleteDeliveryManController (e2e)", () => {
       .delete(`/users/${deliveryman.id}`)
       .set("Authorization", `Bearer ${accessToken}`)
       .send();
-    expect(response.status).toBe(204);
+    expect(response.status).toBe(HttpStatus.NO_CONTENT);
 
     const deliveryMaOnDatabase = await prisma.user.findUnique({
       where: {

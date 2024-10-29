@@ -24,7 +24,7 @@ export class ChangeDeliveryManPasswordUseCase {
     private administratorsRepository: AdministratorsRepository,
     private deliveryMansRepository: DeliveryMansRepository,
     private hashGenerator: HashGenerator,
-  ) {}
+  ) { }
 
   async execute({
     administratorId,
@@ -45,6 +45,7 @@ export class ChangeDeliveryManPasswordUseCase {
     }
 
     deliveryMan.password = await this.hashGenerator.hash(password);
+    await this.deliveryMansRepository.save(deliveryMan);
 
     return right({});
   }

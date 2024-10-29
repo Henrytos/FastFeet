@@ -49,7 +49,7 @@ describe("update delivery use case", () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(1);
     expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
       props: {
-        cpf: Cpf.createFromValue("00987654321"),
+        cpf: Cpf.create("00987654321"),
         name: "doe john",
       },
     });

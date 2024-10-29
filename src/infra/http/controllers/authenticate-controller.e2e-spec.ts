@@ -1,11 +1,10 @@
-import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
 import { AppModule } from "@/infra/app.module";
 import { DatabaseModule } from "@/infra/database/database.module";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { AdministratorFactory } from "@/test/factories/make-administrator";
-import { INestApplication } from "@nestjs/common";
+import { HttpStatus, INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
-import { hash, hashSync } from "bcryptjs";
+import { hashSync } from "bcryptjs";
 import request from "supertest";
 
 describe("CreateAccountController (e2e)", () => {
@@ -35,7 +34,7 @@ describe("CreateAccountController (e2e)", () => {
       password: "password",
     });
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(HttpStatus.OK);
     expect(response.body).toHaveProperty("accessToken");
   });
 });
