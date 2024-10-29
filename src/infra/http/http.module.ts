@@ -18,6 +18,8 @@ import { UpdateDeliveryManByAdministratorUseCase } from "@/domain/delivery/appli
 import { ChangeDeliveryManPasswordUseCase } from "@/domain/delivery/application/use-cases/change-delivery-man-password-use-case";
 import { GuardsModule } from "./guards/guards.module";
 import { RegisterDeliveryManController } from "./controllers/register-delivery-man.controller";
+import { GetDeliveryManByIdController } from "./controllers/get-delivery-man-by-id.controller";
+import { GetDeliveryManByIdUseCase } from "@/domain/delivery/application/use-cases/get-delivery-man-by-id-use-case";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -28,7 +30,8 @@ import { RegisterDeliveryManController } from "./controllers/register-delivery-m
     DeleteDeliveryManController,
     UpdateDeliveryManController,
     ChangeDeliveryManPasswordController,
-    RegisterDeliveryManController
+    RegisterDeliveryManController,
+    GetDeliveryManByIdController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -38,6 +41,7 @@ import { RegisterDeliveryManController } from "./controllers/register-delivery-m
     DeleteDeliveryManByIdUseCase,
     UpdateDeliveryManByAdministratorUseCase,
     ChangeDeliveryManPasswordUseCase,
+    GetDeliveryManByIdUseCase,
   ],
 })
-export class HttpModule { }
+export class HttpModule {}

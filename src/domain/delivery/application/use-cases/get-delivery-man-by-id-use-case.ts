@@ -3,6 +3,7 @@ import { DeliveryMansRepository } from "../repositories/delivery-mans-repository
 import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
 import { WrongCredentialsError } from "./errors/wrong-credentials-error";
 import { DeliveryMan } from "../../enterprise/entities/delivery-man";
+import { Injectable } from "@nestjs/common";
 
 interface GetDeliveryManByIdUseCaseRequest {
   deliveryManId: string;
@@ -12,6 +13,7 @@ type GetDeliveryManByIdUseCaseResponse = Either<
   { deliveryMan: DeliveryMan }
 >;
 
+@Injectable()
 export class GetDeliveryManByIdUseCase {
   constructor(private deliveryMansRepository: DeliveryMansRepository) {}
 

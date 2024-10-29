@@ -20,7 +20,9 @@ import { Roles } from "../guards/roles.decorator";
 
 @Controller("/users/:deliveryManId")
 export class DeleteDeliveryManController {
-  constructor(private readonly deleteDeliveryManUseCase: DeleteDeliveryManByIdUseCase) { }
+  constructor(
+    private readonly deleteDeliveryManUseCase: DeleteDeliveryManByIdUseCase
+  ) {}
 
   @Delete()
   @Roles("ADMINISTRATOR")
@@ -28,7 +30,7 @@ export class DeleteDeliveryManController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,
-    @Param("deliveryManId", ParseUUIDPipe) deliveryManId: string,
+    @Param("deliveryManId", ParseUUIDPipe) deliveryManId: string
   ) {
     const result = await this.deleteDeliveryManUseCase.execute({
       administratorId: user.sub,
