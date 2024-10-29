@@ -1,4 +1,3 @@
-import { Cpf } from "@/domain/delivery/enterprise/entities/value-object/cpf";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { PhotosRepository } from "@/domain/delivery/application/repositories/photos-repository";
@@ -9,18 +8,18 @@ import { Photo } from "@/domain/delivery/enterprise/entities/photo";
 export class PrismaPhotosRepository implements PhotosRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findById(photoId: string): Promise<boolean> {
-    const count = await this.prisma.photo.count({
+  async findById(photoId: string): Promise<Photo | null> {
+    const photo = await this.prisma.photo.findUnique({
       where: {
         id: photoId,
       },
     });
 
-    if (count > 0) {
-      return true;
+    if (!photo) {
+      return null;
     }
 
-    return false;
+    return PrismaPhotoMapper.toDomain(photo);
   }
 
   async create(photo: Photo): Promise<void> {

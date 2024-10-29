@@ -4,6 +4,7 @@ import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-
 import { OrdersRepository } from "../repositories/orders-repository";
 import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
 import { NotAllowedError } from "@/core/errors/not-allowed-error";
+import { ORDER_STATUS } from "@/core/entities/order-status.enum";
 
 interface CancelingRecipientOrderUseCaseRequest {
   administratorId: string;
@@ -17,7 +18,7 @@ type CancelingRecipientOrderUseCaseResponse = Either<
 export class CancelingRecipientOrderUseCase {
   constructor(
     private administratorsRepository: AdministratorsRepository,
-    private orderRepository: OrdersRepository,
+    private orderRepository: OrdersRepository
   ) {}
 
   async execute({
@@ -35,11 +36,11 @@ export class CancelingRecipientOrderUseCase {
     if (!order) {
       return left(new OrderDoesNotExistError());
     }
-    if (order.status === "canceled") {
+    if (order.status === ORDER_STATUS.CANCELED) {
       return left(new NotAllowedError());
     }
 
-    order.status = "canceled";
+    order.status = ORDER_STATUS.CANCELED;
     await this.orderRepository.save(order);
 
     return right({});
