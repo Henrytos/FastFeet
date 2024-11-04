@@ -1,4 +1,4 @@
-name: 'Test Unit'
+name: 'test unit'
 on: 
   push:
     branches:
