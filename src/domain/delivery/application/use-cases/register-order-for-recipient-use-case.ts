@@ -27,7 +27,7 @@ export class RegisterOrderForRecipientUseCase {
     private readonly ordersRepository: OrdersRepository,
     private readonly administratorsRepository: AdministratorsRepository,
     private readonly deliveryAddressRepository: DeliveryAddressRepository,
-    private readonly recipientsRepository: RecipientsRepository
+    private readonly recipientsRepository: RecipientsRepository,
   ) {}
 
   async execute({

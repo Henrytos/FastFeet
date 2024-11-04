@@ -26,7 +26,7 @@ type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>;
 export class ChangeDeliveryManPasswordController {
   constructor(
     private readonly changeDeliveryManPasswordUseCase: ChangeDeliveryManPasswordUseCase,
-  ) { }
+  ) {}
 
   @Patch()
   @Roles("ADMINISTRATOR")

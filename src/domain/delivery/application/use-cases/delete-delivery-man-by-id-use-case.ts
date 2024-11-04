@@ -19,7 +19,7 @@ type DeleteDeliveryManByIdUseCaseResponse = Either<
 export class DeleteDeliveryManByIdUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
-    private readonly deliveryMansRepository: DeliveryMansRepository
+    private readonly deliveryMansRepository: DeliveryMansRepository,
   ) {}
 
   async execute({

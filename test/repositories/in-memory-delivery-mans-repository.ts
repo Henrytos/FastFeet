@@ -42,7 +42,8 @@ export class InMemoryDeliveryMansRepository implements DeliveryMansRepository {
     page: number,
     perPage: number
   ): Promise<DeliveryMan[]> {
-    const deliveryMans = this.items.slice(page * perPage, (page + 1) * perPage);
+    const deliveryMans = this.items.slice((page - 1) * perPage, page * perPage);
+
     return deliveryMans;
   }
 }

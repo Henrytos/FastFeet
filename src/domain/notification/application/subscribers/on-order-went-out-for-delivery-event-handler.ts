@@ -5,7 +5,7 @@ import { OrderWithdrawnEvent } from "@/domain/delivery/enterprise/events/order-w
 
 export class OnOrderWentOutForDeliveryEventHandler implements EventHandler {
   constructor(
-    private readonly sendNotificationUseCase: SendNotificationUseCase
+    private readonly sendNotificationUseCase: SendNotificationUseCase,
   ) {
     this.setupSubscriptions();
   }
@@ -13,7 +13,7 @@ export class OnOrderWentOutForDeliveryEventHandler implements EventHandler {
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendNotificationToRecipient.bind(this),
-      OrderWithdrawnEvent.name
+      OrderWithdrawnEvent.name,
     );
   }
 

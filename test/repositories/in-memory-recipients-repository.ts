@@ -8,12 +8,12 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
   constructor(
     private readonly ordersRepository: OrdersRepository,
-    private deliveryAddress: DeliveryAddressRepository
+    private deliveryAddress: DeliveryAddressRepository,
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
     const recipient = this.items.find(
-      (recipient) => recipient.id.toString() === id
+      (recipient) => recipient.id.toString() === id,
     );
 
     if (!recipient) {
@@ -47,7 +47,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     this.items.splice(index, 1);
 
     const order = await this.ordersRepository.findByRecipientId(
-      recipient.id.toString()
+      recipient.id.toString(),
     );
 
     if (order?.deliveryAddressId) {
@@ -55,7 +55,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
     }
 
     await this.ordersRepository.deleteManyByRecipientId(
-      recipient.id.toString()
+      recipient.id.toString(),
     );
   }
 

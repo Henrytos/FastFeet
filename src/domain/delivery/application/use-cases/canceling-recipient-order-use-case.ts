@@ -18,7 +18,7 @@ type CancelingRecipientOrderUseCaseResponse = Either<
 export class CancelingRecipientOrderUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
-    private readonly ordersRepository: OrdersRepository
+    private readonly ordersRepository: OrdersRepository,
   ) {}
 
   async execute({

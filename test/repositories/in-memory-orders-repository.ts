@@ -11,7 +11,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
   constructor(
-    private readonly deliveryAddressRepository: DeliveryAddressRepository
+    private readonly deliveryAddressRepository: DeliveryAddressRepository,
   ) {}
 
   async create(order: Order): Promise<void> {
@@ -75,7 +75,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async findManyOrdersByRecipientId(
     recipientId: string,
-    page: number
+    page: number,
   ): Promise<Order[]> {
     const orders = this.items
       .filter((item) => {
@@ -107,18 +107,18 @@ export class InMemoryOrdersRepository implements OrdersRepository {
   }
   async fetchManyNearby(
     { latitude, longitude }: Coordinate,
-    page: number
+    page: number,
   ): Promise<Order[]> {
     const orders = this.items.filter(async (order) => {
       const deliveryAddress = await this.deliveryAddressRepository.findById(
-        order.deliveryAddressId.toValue()
+        order.deliveryAddressId.toValue(),
       );
       const distance = getDistanceBetweenCoordinates(
         { latitude, longitude },
         {
           latitude: deliveryAddress.latitude,
           longitude: deliveryAddress.longitude,
-        }
+        },
       );
 
       return distance <= 10; //10;

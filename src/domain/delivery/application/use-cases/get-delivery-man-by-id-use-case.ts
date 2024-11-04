@@ -16,7 +16,7 @@ type GetDeliveryManByIdUseCaseResponse = Either<
 @Injectable()
 export class GetDeliveryManByIdUseCase {
   constructor(
-    private readonly deliveryMansRepository: DeliveryMansRepository
+    private readonly deliveryMansRepository: DeliveryMansRepository,
   ) {}
 
   async execute({

@@ -15,7 +15,7 @@ import { WrongCredentialsError } from "@/domain/delivery/application/use-cases/e
 @Controller("/deliveryMan/:deliveryManId")
 export class GetDeliveryManByIdController {
   constructor(
-    private readonly getDeliveryManByIdUseCase: GetDeliveryManByIdUseCase
+    private readonly getDeliveryManByIdUseCase: GetDeliveryManByIdUseCase,
   ) {}
 
   @Get()

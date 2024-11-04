@@ -33,7 +33,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async findManyOrdersByRecipientId(
     recipientId: string,
-    page: number
+    page: number,
   ): Promise<Order[]> {
     const orders = await this.prisma.order.findMany({
       where: { recipientId },

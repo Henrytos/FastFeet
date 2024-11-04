@@ -29,7 +29,7 @@ export class CreateAccountController {
   constructor(
     private readonly administratorRegistrationUseCase: AdministratorRegistrationUseCase,
     private readonly registerDeliveryManUseCase: RegisterDeliveryManUseCase,
-  ) { }
+  ) {}
 
   @Public()
   @Post("/admin")

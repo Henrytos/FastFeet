@@ -17,15 +17,15 @@ describe("fetch order by recipient id use case", () => {
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
 
     inMemoryOrdersRepository = new InMemoryOrdersRepository(
-      inMemoryDeliveryAddressRepository
+      inMemoryDeliveryAddressRepository,
     );
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
-      inMemoryDeliveryAddressRepository
+      inMemoryDeliveryAddressRepository,
     );
     sut = new FetchOrderByRecipientIdUseCase(
       inMemoryRecipientsRepository,
-      inMemoryOrdersRepository
+      inMemoryOrdersRepository,
     );
   });
 
@@ -51,7 +51,7 @@ describe("fetch order by recipient id use case", () => {
     for (let i = 1; i <= 22; i++) {
       const order = makeOrder(
         { recipientId: recipient.id },
-        new UniqueEntityID(i.toString())
+        new UniqueEntityID(i.toString()),
       );
       inMemoryOrdersRepository.items.push(order);
     }

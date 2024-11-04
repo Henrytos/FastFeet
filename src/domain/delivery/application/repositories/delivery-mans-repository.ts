@@ -9,6 +9,6 @@ export abstract class DeliveryMansRepository {
   abstract delete(deliveryMan: DeliveryMan): Promise<void>;
   abstract fetchDeliveryManByPage(
     page: number,
-    perPage: number
+    perPage: number,
   ): Promise<DeliveryMan[]>;
 }

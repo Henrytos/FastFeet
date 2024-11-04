@@ -12,7 +12,7 @@ describe("fetch nearby orders use case", () => {
   beforeEach(() => {
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository();
     inMemoryOrdersRepository = new InMemoryOrdersRepository(
-      inMemoryDeliveryAddressRepository
+      inMemoryDeliveryAddressRepository,
     );
     sut = new FetchNearbyOrdersUseCase(inMemoryOrdersRepository);
   });

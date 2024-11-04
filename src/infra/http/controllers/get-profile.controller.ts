@@ -11,7 +11,7 @@ import { Roles } from "../guards/roles.decorator";
 export class GetProfileController {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
-    private readonly deliveryMansRepository: DeliveryMansRepository
+    private readonly deliveryMansRepository: DeliveryMansRepository,
   ) {}
 
   @Get()

@@ -24,7 +24,7 @@ export class AuthenticateController {
   constructor(
     private readonly authenticateAdministratorUseCase: AuthenticateAdministratorUseCase,
     private readonly authenticateDeliveryManUseCase: AuthenticateDeliveryManUseCase,
-  ) { }
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.OK)

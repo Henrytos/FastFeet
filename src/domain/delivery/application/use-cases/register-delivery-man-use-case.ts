@@ -26,7 +26,7 @@ export class RegisterDeliveryManUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
     private readonly deliveryMansRepository: DeliveryMansRepository,
-    private readonly hashGenerator: HashGenerator
+    private readonly hashGenerator: HashGenerator,
   ) {}
 
   async execute({

@@ -29,7 +29,7 @@ export class FetchNearbyOrdersUseCase {
         longitude: from.deliveryManLongitude,
         latitude: from.deliveryManLatitude,
       },
-      page
+      page,
     );
 
     return right({

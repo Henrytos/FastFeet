@@ -25,7 +25,7 @@ export class UpdateDeliveryManByAdministratorUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
     private readonly deliveryMansRepository: DeliveryMansRepository,
-    private readonly hashGenerator: HashGenerator
+    private readonly hashGenerator: HashGenerator,
   ) {}
 
   async execute({
@@ -56,7 +56,7 @@ export class UpdateDeliveryManByAdministratorUseCase {
         name,
         password: passwordHash,
       },
-      deliveryMan.id
+      deliveryMan.id,
     );
 
     await this.deliveryMansRepository.save(updatedDeliveryMan);

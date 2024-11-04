@@ -30,7 +30,7 @@ const validationZodPipe = new ZodValidationPipe(registerDeliveryManBodySchema);
 export class RegisterDeliveryManController {
   constructor(
     private readonly registerDeliveryManUseCase: RegisterDeliveryManUseCase,
-  ) { }
+  ) {}
 
   @Post()
   @Roles("ADMINISTRATOR")

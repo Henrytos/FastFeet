@@ -24,7 +24,7 @@ export class AuthenticateDeliveryManUseCase {
   constructor(
     private readonly deliveryMansRepository: DeliveryMansRepository,
     private readonly encrypter: Encrypter,
-    private readonly hashComparer: HashComparer
+    private readonly hashComparer: HashComparer,
   ) {}
 
   async execute({
@@ -32,7 +32,7 @@ export class AuthenticateDeliveryManUseCase {
     password,
   }: AuthenticateDeliveryManUseCaseRequest): Promise<AuthenticateDeliveryManUseCaseResponse> {
     const deliveryMan = await this.deliveryMansRepository.findByCpf(
-      Cpf.create(cpf)
+      Cpf.create(cpf),
     );
 
     if (!deliveryMan) {
@@ -41,7 +41,7 @@ export class AuthenticateDeliveryManUseCase {
 
     const passwordMatch = await this.hashComparer.comparer(
       password,
-      deliveryMan.password
+      deliveryMan.password,
     );
 
     if (!passwordMatch) {

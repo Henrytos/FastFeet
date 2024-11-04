@@ -17,7 +17,7 @@ type FetchOrderByRecipientIdUseCaseResponse = Either<
 export class FetchOrderByRecipientIdUseCase {
   constructor(
     private readonly recipientsRepository: RecipientsRepository,
-    private readonly ordersRepository: OrdersRepository
+    private readonly ordersRepository: OrdersRepository,
   ) {}
 
   async execute({
@@ -32,7 +32,7 @@ export class FetchOrderByRecipientIdUseCase {
 
     const orders = await this.ordersRepository.findManyOrdersByRecipientId(
       recipientId,
-      page
+      page,
     );
 
     return right({ orders });

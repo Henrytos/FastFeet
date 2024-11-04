@@ -20,7 +20,7 @@ type UploadAndCreatePhotoUseCaseResponse = Either<
 export class UploadAndCreatePhotoUseCase {
   constructor(
     private readonly uploader: Uploader,
-    private readonly photosRepository: PhotosRepository
+    private readonly photosRepository: PhotosRepository,
   ) {}
 
   async execute({

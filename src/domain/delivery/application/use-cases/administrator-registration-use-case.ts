@@ -22,9 +22,9 @@ type AdministratorsRepositoryResponse = Either<
 @Injectable()
 export class AdministratorRegistrationUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private hashGenerator: HashGenerator,
-  ) { }
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly hashGenerator: HashGenerator,
+  ) {}
 
   async execute({
     name,

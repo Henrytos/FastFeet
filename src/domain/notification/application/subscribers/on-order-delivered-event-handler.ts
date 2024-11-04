@@ -11,7 +11,7 @@ export class OnOrderDeliveredEventHandler implements EventHandler {
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendNotificationToRecipient.bind(this),
-      OrderMakeDeliveredEvent.name
+      OrderMakeDeliveredEvent.name,
     );
   }
 

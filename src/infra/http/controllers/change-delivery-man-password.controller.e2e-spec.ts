@@ -60,7 +60,7 @@ describe("ChangeDeliveryManPasswordController (e2e)", () => {
     });
 
     const isPasswordMatch = await compare(
-      'new password',
+      "new password",
       deliveryManInDatabase.passwordHash,
     );
 

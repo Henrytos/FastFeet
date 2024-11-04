@@ -16,7 +16,7 @@ type FetchDeliveryMansUseCaseResponse = Either<
 
 export class FetchDeliveryMansUseCase {
   constructor(
-    private readonly deliveryMansRepository: DeliveryMansRepository
+    private readonly deliveryMansRepository: DeliveryMansRepository,
   ) {}
 
   async execute({

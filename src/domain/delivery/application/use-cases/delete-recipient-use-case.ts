@@ -17,7 +17,7 @@ type DeleteRecipientUseCaseResponse = Either<
 export class DeleteRecipientUseCase {
   constructor(
     private readonly recipientsRepository: RecipientsRepository,
-    private readonly administratorsRepository: AdministratorsRepository
+    private readonly administratorsRepository: AdministratorsRepository,
   ) {}
 
   async execute({

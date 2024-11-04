@@ -26,7 +26,7 @@ export class MarkAnOrderAsDeliveredUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,
     private readonly deliveryMansRepository: DeliveryMansRepository,
-    private readonly photosRepository: PhotosRepository
+    private readonly photosRepository: PhotosRepository,
   ) {}
 
   async execute({

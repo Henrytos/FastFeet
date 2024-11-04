@@ -29,7 +29,7 @@ type UpdateDeliveryManBodySchema = z.infer<typeof updateDeliveryManBodySchema>;
 export class UpdateDeliveryManController {
   constructor(
     private readonly updateDeliveryManByAdministratorUseCase: UpdateDeliveryManByAdministratorUseCase,
-  ) { }
+  ) {}
 
   @Put()
   @Roles("ADMINISTRATOR")
