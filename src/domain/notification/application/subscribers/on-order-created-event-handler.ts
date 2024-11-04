@@ -4,14 +4,14 @@ import { SendNotificationUseCase } from "../use-cases/send-notification-use-case
 import { OrderCreatedEvent } from "@/domain/delivery/enterprise/events/order-created-event";
 
 export class OnOrderCreatedEventHandler implements EventHandler {
-  constructor(private sendNotification: SendNotificationUseCase) {
+  constructor(private readonly sendNotification: SendNotificationUseCase) {
     this.setupSubscriptions();
   }
 
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendNotificationToRecipient.bind(this),
-      OrderCreatedEvent.name,
+      OrderCreatedEvent.name
     );
   }
 

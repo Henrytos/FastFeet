@@ -24,9 +24,9 @@ export type MarkAnOrderAsDeliveredUseCaseResponse = Either<
 
 export class MarkAnOrderAsDeliveredUseCase {
   constructor(
-    private orderRepository: OrdersRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
-    private photosRepository: PhotosRepository,
+    private readonly ordersRepository: OrdersRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository,
+    private readonly photosRepository: PhotosRepository
   ) {}
 
   async execute({
@@ -34,7 +34,7 @@ export class MarkAnOrderAsDeliveredUseCase {
     deliveryManId,
     photoId,
   }: MarkAnOrderAsDeliveredUseCaseRequest): Promise<MarkAnOrderAsDeliveredUseCaseResponse> {
-    const order = await this.orderRepository.findById(orderId);
+    const order = await this.ordersRepository.findById(orderId);
     if (!order) {
       return left(new OrderDoesNotExistError());
     }
@@ -66,7 +66,7 @@ export class MarkAnOrderAsDeliveredUseCase {
     order.deliveryAt = new Date();
     order.photoId = new UniqueEntityID(photoId);
 
-    await this.orderRepository.save(order);
+    await this.ordersRepository.save(order);
 
     return right({});
   }

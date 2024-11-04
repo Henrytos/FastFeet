@@ -25,8 +25,8 @@ type UpdateDeliveryAddressUseCaseResponse = Either<
 
 export class UpdateDeliveryAddressUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryAddressRepository: DeliveryAddressRepository,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryAddressRepository: DeliveryAddressRepository
   ) {}
 
   async execute({

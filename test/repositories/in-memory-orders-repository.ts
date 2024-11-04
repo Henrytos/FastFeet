@@ -10,7 +10,9 @@ import { ORDER_STATUS } from "@/core/entities/order-status.enum";
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = [];
 
-  constructor(private deliveryAddressRepository: DeliveryAddressRepository) {}
+  constructor(
+    private readonly deliveryAddressRepository: DeliveryAddressRepository
+  ) {}
 
   async create(order: Order): Promise<void> {
     this.items.push(order);

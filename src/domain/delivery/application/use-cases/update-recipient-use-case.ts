@@ -17,8 +17,8 @@ type UpdateRecipientUseCaseResponse = Either<
 >;
 export class UpdateRecipientUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private recipientsRepository: RecipientsRepository,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly recipientsRepository: RecipientsRepository
   ) {}
   async execute({
     administratorId,

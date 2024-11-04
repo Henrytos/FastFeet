@@ -18,7 +18,7 @@ type FetchNearbyOrdersUseCaseResponse = Either<
 >;
 
 export class FetchNearbyOrdersUseCase {
-  constructor(private ordersRepository: OrdersRepository) {}
+  constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async execute({
     from,

@@ -15,7 +15,7 @@ type GetRecipientByIdUseCaseResponse = Either<
 >;
 
 export class GetRecipientByIdUseCase {
-  constructor(private recipientsRepository: RecipientsRepository) {}
+  constructor(private readonly recipientsRepository: RecipientsRepository) {}
 
   async execute({
     recipientId,

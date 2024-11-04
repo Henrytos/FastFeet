@@ -16,8 +16,8 @@ type FetchOrderByRecipientIdUseCaseResponse = Either<
 
 export class FetchOrderByRecipientIdUseCase {
   constructor(
-    private recipientsRepository: RecipientsRepository,
-    private ordersRepository: OrdersRepository
+    private readonly recipientsRepository: RecipientsRepository,
+    private readonly ordersRepository: OrdersRepository
   ) {}
 
   async execute({

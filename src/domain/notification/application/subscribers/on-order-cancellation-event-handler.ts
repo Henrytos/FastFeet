@@ -4,14 +4,16 @@ import { DomainEvents } from "@/core/events/domain-events";
 import { OrderCanceledEvent } from "@/domain/delivery/enterprise/events/order-canceled-event";
 
 export class OnOrderCancellationEventHandler implements EventHandler {
-  constructor(private sendNotificationUseCase: SendNotificationUseCase) {
+  constructor(
+    private readonly sendNotificationUseCase: SendNotificationUseCase
+  ) {
     this.setupSubscriptions();
   }
 
   setupSubscriptions(): void {
     DomainEvents.register(
       this.sendNotificationToRecipient.bind(this),
-      OrderCanceledEvent.name,
+      OrderCanceledEvent.name
     );
   }
 

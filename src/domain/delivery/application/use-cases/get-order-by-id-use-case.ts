@@ -15,7 +15,7 @@ type GetOrderByIdUseCaseResponse = Either<
 >;
 
 export class GetOrderByIdUseCase {
-  constructor(private ordersRepository: OrdersRepository) {}
+  constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async execute({
     orderId,

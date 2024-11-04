@@ -22,8 +22,8 @@ type RegisterRecipientUseCaseResponse = Either<
 
 export class RegisterRecipientUseCase {
   constructor(
-    private recipientsRepository: RecipientsRepository,
-    private administratorsRepository: AdministratorsRepository,
+    private readonly recipientsRepository: RecipientsRepository,
+    private readonly administratorsRepository: AdministratorsRepository
   ) {}
 
   async execute({
@@ -32,14 +32,14 @@ export class RegisterRecipientUseCase {
     administratorId,
   }: RegisterRecipientUseCaseRequest): Promise<RegisterRecipientUseCaseResponse> {
     const administratorDoesNotExists = !Boolean(
-      await this.administratorsRepository.findById(administratorId),
+      await this.administratorsRepository.findById(administratorId)
     );
     if (administratorDoesNotExists) {
       return left(new AdministratorDoesNotExistError());
     }
 
     const emailAlreadyExists = Boolean(
-      await this.recipientsRepository.findByEmail(email),
+      await this.recipientsRepository.findByEmail(email)
     );
     if (emailAlreadyExists) {
       return left(new WrongCredentialsError());

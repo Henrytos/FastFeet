@@ -10,7 +10,7 @@ import { Injectable } from "@nestjs/common";
 export class PrismaRecipientsRepository implements RecipientsRepository {
   constructor(
     private prisma: PrismaService,
-    private ordersRepository: OrdersRepository,
+    private readonly ordersRepository: OrdersRepository
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
@@ -60,7 +60,7 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
     });
 
     await this.ordersRepository.deleteManyByRecipientId(
-      recipient.id.toString(),
+      recipient.id.toString()
     );
   }
 

@@ -28,11 +28,11 @@ type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
 
 export class SendingOrderToRecipientByDeliveryManUseCase {
   constructor(
-    private ordersRepository: OrdersRepository,
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
-    private deliveryAddressRepository: DeliveryAddressRepository,
-    private recipientsRepository: RecipientsRepository,
+    private readonly ordersRepository: OrdersRepository,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository,
+    private readonly deliveryAddressRepository: DeliveryAddressRepository,
+    private readonly recipientsRepository: RecipientsRepository
   ) {}
 
   async execute({
@@ -58,14 +58,14 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
     }
 
     const recipient = await this.recipientsRepository.findById(
-      order.recipientId.toString(),
+      order.recipientId.toString()
     );
     if (!recipient) {
       return left(new RecipientDoesNotExistError());
     }
 
     const deliveryAddress = await this.deliveryAddressRepository.findById(
-      order.deliveryAddressId.toString(),
+      order.deliveryAddressId.toString()
     );
 
     if (!deliveryAddress) {

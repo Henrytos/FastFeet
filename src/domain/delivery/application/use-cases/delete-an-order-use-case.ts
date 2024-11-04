@@ -16,8 +16,8 @@ type DeleteAnOrderUseCaseResponse = Either<
 
 export class DeleteAnOrderUseCase {
   constructor(
-    private ordersRepository: OrdersRepository,
-    private administratorsRepository: AdministratorsRepository,
+    private readonly ordersRepository: OrdersRepository,
+    private readonly administratorsRepository: AdministratorsRepository
   ) {}
 
   async execute({
@@ -30,7 +30,7 @@ export class DeleteAnOrderUseCase {
     }
 
     const administratorDoesNotExist = !Boolean(
-      await this.administratorsRepository.findById(administratorId),
+      await this.administratorsRepository.findById(administratorId)
     );
     if (administratorDoesNotExist) {
       return left(new AdministratorDoesNotExistError());

@@ -37,4 +37,12 @@ export class InMemoryDeliveryMansRepository implements DeliveryMansRepository {
     const index = this.items.findIndex((item) => item.id === deliveryMan.id);
     this.items[index] = deliveryMan;
   }
+
+  async fetchDeliveryManByPage(
+    page: number,
+    perPage: number
+  ): Promise<DeliveryMan[]> {
+    const deliveryMans = this.items.slice(page * perPage, (page + 1) * perPage);
+    return deliveryMans;
+  }
 }

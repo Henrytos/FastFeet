@@ -18,8 +18,8 @@ type DeleteDeliveryManByIdUseCaseResponse = Either<
 @Injectable()
 export class DeleteDeliveryManByIdUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository
   ) {}
 
   async execute({

@@ -24,10 +24,10 @@ type RegisterOrderForRecipientUseCaseResponse = Either<
 
 export class RegisterOrderForRecipientUseCase {
   constructor(
-    private ordersRepository: OrdersRepository,
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryAddressRepository: DeliveryAddressRepository,
-    private recipientsRepository: RecipientsRepository,
+    private readonly ordersRepository: OrdersRepository,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryAddressRepository: DeliveryAddressRepository,
+    private readonly recipientsRepository: RecipientsRepository
   ) {}
 
   async execute({

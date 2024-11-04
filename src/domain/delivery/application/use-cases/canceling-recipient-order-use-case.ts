@@ -17,8 +17,8 @@ type CancelingRecipientOrderUseCaseResponse = Either<
 
 export class CancelingRecipientOrderUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private orderRepository: OrdersRepository
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly ordersRepository: OrdersRepository
   ) {}
 
   async execute({
@@ -32,7 +32,7 @@ export class CancelingRecipientOrderUseCase {
       return left(new AdministratorDoesNotExistError());
     }
 
-    const order = await this.orderRepository.findById(orderId);
+    const order = await this.ordersRepository.findById(orderId);
     if (!order) {
       return left(new OrderDoesNotExistError());
     }
@@ -41,7 +41,7 @@ export class CancelingRecipientOrderUseCase {
     }
 
     order.status = ORDER_STATUS.CANCELED;
-    await this.orderRepository.save(order);
+    await this.ordersRepository.save(order);
 
     return right({});
   }

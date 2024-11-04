@@ -17,7 +17,9 @@ export type ReadNotificationUseCaseResponse = Either<
 >;
 
 export class ReadNotificationUseCase {
-  constructor(private notificationsRepository: NotificationsRepository) {}
+  constructor(
+    private readonly notificationsRepository: NotificationsRepository
+  ) {}
 
   async execute({
     notificationId,

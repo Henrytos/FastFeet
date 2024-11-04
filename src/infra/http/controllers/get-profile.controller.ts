@@ -10,8 +10,8 @@ import { Roles } from "../guards/roles.decorator";
 @Controller("/profile")
 export class GetProfileController {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository
   ) {}
 
   @Get()

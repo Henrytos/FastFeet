@@ -21,9 +21,9 @@ type AuthenticateAdministratorUseCaseResponse = Either<
 @Injectable()
 export class AuthenticateAdministratorUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private encrypter: Encrypter,
-    private hashComparer: HashComparer,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly encrypter: Encrypter,
+    private readonly hashComparer: HashComparer
   ) {}
 
   async execute({
@@ -31,7 +31,7 @@ export class AuthenticateAdministratorUseCase {
     password,
   }: AuthenticateAdministratorUseCaseRequest): Promise<AuthenticateAdministratorUseCaseResponse> {
     const administrator = await this.administratorsRepository.findByCpf(
-      Cpf.create(cpf),
+      Cpf.create(cpf)
     );
 
     if (!administrator) {
@@ -40,7 +40,7 @@ export class AuthenticateAdministratorUseCase {
 
     const passwordMatch = await this.hashComparer.comparer(
       password,
-      administrator.password,
+      administrator.password
     );
 
     if (!passwordMatch) {

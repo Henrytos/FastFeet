@@ -21,10 +21,10 @@ type ChangeDeliveryManPasswordUseCaseResponse = Either<
 @Injectable()
 export class ChangeDeliveryManPasswordUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
-    private hashGenerator: HashGenerator,
-  ) { }
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository,
+    private readonly hashGenerator: HashGenerator
+  ) {}
 
   async execute({
     administratorId,
@@ -38,7 +38,7 @@ export class ChangeDeliveryManPasswordUseCase {
     }
 
     const deliveryMan = await this.deliveryMansRepository.findByCpf(
-      Cpf.create(cpf),
+      Cpf.create(cpf)
     );
     if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError());

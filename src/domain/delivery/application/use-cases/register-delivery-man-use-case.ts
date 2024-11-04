@@ -24,10 +24,10 @@ type RegisterDeliveryManUseCaseResponse = Either<
 @Injectable()
 export class RegisterDeliveryManUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
-    private hashGenerator: HashGenerator,
-  ) { }
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository,
+    private readonly hashGenerator: HashGenerator
+  ) {}
 
   async execute({
     cpf,

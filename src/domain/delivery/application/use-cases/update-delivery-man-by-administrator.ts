@@ -23,9 +23,9 @@ type UpdateDeliveryManByAdministratorUseCaseResponse = Either<
 @Injectable()
 export class UpdateDeliveryManByAdministratorUseCase {
   constructor(
-    private administratorsRepository: AdministratorsRepository,
-    private deliveryMansRepository: DeliveryMansRepository,
-    private hashGenerator: HashGenerator,
+    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository,
+    private readonly hashGenerator: HashGenerator
   ) {}
 
   async execute({
@@ -56,7 +56,7 @@ export class UpdateDeliveryManByAdministratorUseCase {
         name,
         password: passwordHash,
       },
-      deliveryMan.id,
+      deliveryMan.id
     );
 
     await this.deliveryMansRepository.save(updatedDeliveryMan);
