@@ -3,8 +3,11 @@ import { Order } from "../../enterprise/entities/order";
 import { OrdersRepository } from "../repositories/orders-repository";
 
 interface FetchNearbyOrdersUseCaseRequest {
-  deliveryManLongitude: number;
-  deliveryManLatitude: number;
+  from: {
+    deliveryManLongitude: number;
+    deliveryManLatitude: number;
+  };
+  page: number;
 }
 
 type FetchNearbyOrdersUseCaseResponse = Either<
@@ -18,13 +21,16 @@ export class FetchNearbyOrdersUseCase {
   constructor(private ordersRepository: OrdersRepository) {}
 
   async execute({
-    deliveryManLongitude,
-    deliveryManLatitude,
+    from,
+    page,
   }: FetchNearbyOrdersUseCaseRequest): Promise<FetchNearbyOrdersUseCaseResponse> {
-    const ordersNearby = await this.ordersRepository.findManyNearby({
-      longitude: deliveryManLongitude,
-      latitude: deliveryManLatitude,
-    });
+    const ordersNearby = await this.ordersRepository.fetchManyNearby(
+      {
+        longitude: from.deliveryManLongitude,
+        latitude: from.deliveryManLatitude,
+      },
+      page
+    );
 
     return right({
       orders: ordersNearby,

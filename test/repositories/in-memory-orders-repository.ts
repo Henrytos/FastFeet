@@ -73,7 +73,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
   async findManyOrdersByRecipientId(
     recipientId: string,
-    page: number,
+    page: number
   ): Promise<Order[]> {
     const orders = this.items
       .filter((item) => {
@@ -103,22 +103,26 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     return order;
   }
-  async findManyNearby({ latitude, longitude }: Coordinate): Promise<Order[]> {
+  async fetchManyNearby(
+    { latitude, longitude }: Coordinate,
+    page: number
+  ): Promise<Order[]> {
     const orders = this.items.filter(async (order) => {
       const deliveryAddress = await this.deliveryAddressRepository.findById(
-        order.deliveryAddressId.toValue(),
+        order.deliveryAddressId.toValue()
       );
       const distance = getDistanceBetweenCoordinates(
         { latitude, longitude },
         {
           latitude: deliveryAddress.latitude,
           longitude: deliveryAddress.longitude,
-        },
+        }
       );
 
       return distance <= 10; //10;
     });
 
-    return orders;
+    const ordersPaginated = orders.slice((page - 1) * 20, (page - 1) * 20 + 20);
+    return ordersPaginated;
   }
 }
