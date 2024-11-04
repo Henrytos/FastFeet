@@ -25,9 +25,9 @@ jobs:
       run: npm install
     - name: 'Test e2e'
       env:
-        PORT: ${{secrets.PORT}}
-        DATABASE_URL: ${{secrets.DATABASE_URL}}
-        JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+        PORT: ${{ secrets.PORT }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
       run: npm run test:e2e
     
    
