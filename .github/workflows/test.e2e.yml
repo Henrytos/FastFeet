@@ -6,7 +6,6 @@ on:
   pull_request:
     branches:
       - main
-  
 jobs:
   run-tests-e2e:
     runs-on: ubuntu-latest
