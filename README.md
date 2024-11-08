@@ -52,6 +52,8 @@ Nesse desafio desenvolveremos uma API para controle de encomendas de uma transpo
 
 [ x ] Deve ser possível listar as entregas de um **usuário**
 
+
+
 [ x ] Deve ser possível notificar o **destinatário** a cada alteração no status da **encomenda**
 
 #### entities 
