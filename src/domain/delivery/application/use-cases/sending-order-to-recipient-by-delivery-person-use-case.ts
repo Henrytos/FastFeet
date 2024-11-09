@@ -1,21 +1,21 @@
-import { Either, left, right } from "@/core/either";
+import { Either, left, right } from '@/core/either'
 
-import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
-import { AdministratorsRepository } from "../repositories/administrators-repository";
-import { DeliveryAddressDoesNotExistError } from "./errors/delivery-address-does-not-exist-error";
-import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
-import { OrdersRepository } from "../repositories/orders-repository";
-import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
-import { RecipientsRepository } from "../repositories/recipients-repository";
-import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
-import { OrderDoesNotExistError } from "./errors/order-does-not-exist-error";
-import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
-import { ORDER_STATUS } from "@/core/entities/order-status.enum";
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
+import { AdministratorsRepository } from '../repositories/administrators-repository'
+import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does-not-exist-error'
+import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error'
+import { OrdersRepository } from '../repositories/orders-repository'
+import { DeliveryAddressRepository } from '../repositories/delivery-address-repository'
+import { RecipientsRepository } from '../repositories/recipients-repository'
+import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
+import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
+import { ORDER_STATUS } from '@/core/entities/order-status.enum'
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
-  administratorId: string;
-  deliveryManId: string;
-  orderId: string;
+  administratorId: string
+  deliveryManId: string
+  orderId: string
 }
 type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
   | AdministratorDoesNotExistError
@@ -23,8 +23,8 @@ type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
   | OrderDoesNotExistError
   | RecipientDoesNotExistError
   | DeliveryAddressDoesNotExistError,
-  {}
->;
+  object
+>
 
 export class SendingOrderToRecipientByDeliveryManUseCase {
   constructor(
@@ -41,44 +41,44 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
     orderId,
   }: SendingOrderToRecipientByDeliveryManUseCaseRequest): Promise<SendingOrderToRecipientByDeliveryManUseCaseResponse> {
     const administrator =
-      await this.administratorsRepository.findById(administratorId);
+      await this.administratorsRepository.findById(administratorId)
     if (!administrator) {
-      return left(new AdministratorDoesNotExistError());
+      return left(new AdministratorDoesNotExistError())
     }
 
     const deliveryMan =
-      await this.deliveryMansRepository.findById(deliveryManId);
+      await this.deliveryMansRepository.findById(deliveryManId)
     if (!deliveryMan) {
-      return left(new DeliveryManDoesNotExistError());
+      return left(new DeliveryManDoesNotExistError())
     }
 
-    const order = await this.ordersRepository.findById(orderId);
+    const order = await this.ordersRepository.findById(orderId)
     if (!order) {
-      return left(new OrderDoesNotExistError());
+      return left(new OrderDoesNotExistError())
     }
 
     const recipient = await this.recipientsRepository.findById(
       order.recipientId.toString(),
-    );
+    )
     if (!recipient) {
-      return left(new RecipientDoesNotExistError());
+      return left(new RecipientDoesNotExistError())
     }
 
     const deliveryAddress = await this.deliveryAddressRepository.findById(
       order.deliveryAddressId.toString(),
-    );
+    )
 
     if (!deliveryAddress) {
-      return left(new DeliveryAddressDoesNotExistError());
+      return left(new DeliveryAddressDoesNotExistError())
     }
 
-    order.status = ORDER_STATUS.WITHDRAWN;
-    order.deliveryManId = deliveryMan.id;
-    order.withdrawnAt = new Date();
-    order.deliveryAddressId = deliveryAddress.id;
+    order.status = ORDER_STATUS.WITHDRAWN
+    order.deliveryManId = deliveryMan.id
+    order.withdrawnAt = new Date()
+    order.deliveryAddressId = deliveryAddress.id
 
-    this.ordersRepository.save(order);
+    this.ordersRepository.save(order)
 
-    return right({});
+    return right({})
   }
 }

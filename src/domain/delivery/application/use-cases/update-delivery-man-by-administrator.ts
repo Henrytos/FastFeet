@@ -1,24 +1,24 @@
-import { Either, left, right } from "@/core/either";
-import { DeliveryMansRepository } from "../repositories/delivery-mans-repository";
-import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
-import { DeliveryManDoesNotExistError } from "./errors/delivery-man-does-not-exist-error";
-import { DeliveryMan } from "../../enterprise/entities/delivery-man";
-import { HashGenerator } from "../cryptography/hash-generator";
-import { AdministratorsRepository } from "../repositories/administrators-repository";
-import { Cpf } from "../../enterprise/entities/value-object/cpf";
-import { Injectable } from "@nestjs/common";
+import { Either, left, right } from '@/core/either'
+import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
+import { DeliveryMan } from '../../enterprise/entities/delivery-man'
+import { HashGenerator } from '../cryptography/hash-generator'
+import { AdministratorsRepository } from '../repositories/administrators-repository'
+import { Cpf } from '../../enterprise/entities/value-object/cpf'
+import { Injectable } from '@nestjs/common'
 
 interface UpdateDeliveryManByAdministratorUseCaseRequest {
-  deliveryManId: string;
-  administratorId: string;
-  cpf: string;
-  name: string;
-  password: string;
+  deliveryManId: string
+  administratorId: string
+  cpf: string
+  name: string
+  password: string
 }
 type UpdateDeliveryManByAdministratorUseCaseResponse = Either<
   AdministratorDoesNotExistError,
-  {}
->;
+  object
+>
 
 @Injectable()
 export class UpdateDeliveryManByAdministratorUseCase {
@@ -36,20 +36,20 @@ export class UpdateDeliveryManByAdministratorUseCase {
     password,
   }: UpdateDeliveryManByAdministratorUseCaseRequest): Promise<UpdateDeliveryManByAdministratorUseCaseResponse> {
     const administrator =
-      await this.administratorsRepository.findById(administratorId);
+      await this.administratorsRepository.findById(administratorId)
 
     if (!administrator) {
-      return left(new AdministratorDoesNotExistError());
+      return left(new AdministratorDoesNotExistError())
     }
 
     const deliveryMan =
-      await this.deliveryMansRepository.findById(deliveryManId);
+      await this.deliveryMansRepository.findById(deliveryManId)
 
     if (!deliveryMan) {
-      return left(new DeliveryManDoesNotExistError());
+      return left(new DeliveryManDoesNotExistError())
     }
 
-    const passwordHash = await this.hashGenerator.hash(password);
+    const passwordHash = await this.hashGenerator.hash(password)
     const updatedDeliveryMan = DeliveryMan.create(
       {
         cpf: Cpf.create(cpf),
@@ -57,9 +57,9 @@ export class UpdateDeliveryManByAdministratorUseCase {
         password: passwordHash,
       },
       deliveryMan.id,
-    );
+    )
 
-    await this.deliveryMansRepository.save(updatedDeliveryMan);
-    return right({});
+    await this.deliveryMansRepository.save(updatedDeliveryMan)
+    return right({})
   }
 }

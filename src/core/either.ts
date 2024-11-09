@@ -1,41 +1,41 @@
 export class Left<L, R> {
-  readonly value: L;
+  readonly value: L
 
   constructor(value: L) {
-    this.value = value;
+    this.value = value
   }
 
   isLeft(): this is Left<L, R> {
-    return true;
+    return true
   }
 
   isRight(): this is Right<L, R> {
-    return false;
+    return false
   }
 }
 
 export class Right<L, R> {
-  readonly value: R;
+  readonly value: R
 
   constructor(value: R) {
-    this.value = value;
+    this.value = value
   }
 
   isLeft(): this is Left<L, R> {
-    return false;
+    return false
   }
 
   isRight(): this is Right<L, R> {
-    return true;
+    return true
   }
 }
 
-export type Either<L, R> = Left<L, R> | Right<L, R>;
+export type Either<L, R> = Left<L, R> | Right<L, R>
 
 export const left = <L, R>(value: L): Either<L, R> => {
-  return new Left<L, R>(value);
-};
+  return new Left<L, R>(value)
+}
 
 export const right = <L, R>(value: R): Either<L, R> => {
-  return new Right<L, R>(value);
-};
+  return new Right<L, R>(value)
+}

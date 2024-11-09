@@ -1,27 +1,27 @@
-import { Either, left, right } from "@/core/either";
-import { AdministratorsRepository } from "../repositories/administrators-repository";
-import { DeliveryAddressRepository } from "../repositories/delivery-address-repository";
-import { AdministratorDoesNotExistError } from "./errors/administrator-does-not-exist-error";
-import { DeliveryAddress } from "../../enterprise/entities/delivery-address";
+import { Either, left, right } from '@/core/either'
+import { AdministratorsRepository } from '../repositories/administrators-repository'
+import { DeliveryAddressRepository } from '../repositories/delivery-address-repository'
+import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
+import { DeliveryAddress } from '../../enterprise/entities/delivery-address'
 
 interface RegisterDeliveryAddressUseCaseRequest {
-  administratorId: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  zip: string;
-  number: string;
-  latitude: number;
-  longitude: number;
+  administratorId: string
+  state: string
+  city: string
+  neighborhood: string
+  street: string
+  zip: string
+  number: string
+  latitude: number
+  longitude: number
 }
 
 type RegisterDeliveryAddressUseCaseResponse = Either<
   AdministratorDoesNotExistError,
   {
-    deliveryAddress: DeliveryAddress;
+    deliveryAddress: DeliveryAddress
   }
->;
+>
 export class RegisterDeliveryAddressUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
@@ -40,9 +40,9 @@ export class RegisterDeliveryAddressUseCase {
     longitude,
   }: RegisterDeliveryAddressUseCaseRequest): Promise<RegisterDeliveryAddressUseCaseResponse> {
     const administrator =
-      await this.administratorsRepository.findById(administratorId);
+      await this.administratorsRepository.findById(administratorId)
     if (!administrator) {
-      return left(new AdministratorDoesNotExistError());
+      return left(new AdministratorDoesNotExistError())
     }
 
     const deliveryAddress = DeliveryAddress.create({
@@ -54,10 +54,10 @@ export class RegisterDeliveryAddressUseCase {
       number,
       latitude,
       longitude,
-    });
+    })
 
-    this.deliveryAddressRepository.create(deliveryAddress);
+    this.deliveryAddressRepository.create(deliveryAddress)
 
-    return right({ deliveryAddress });
+    return right({ deliveryAddress })
   }
 }

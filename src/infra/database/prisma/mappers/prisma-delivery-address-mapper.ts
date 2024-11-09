@@ -1,6 +1,6 @@
-import { Prisma, Address as PrismaDeliveryAddress } from "@prisma/client";
-import { DeliveryAddress } from "@/domain/delivery/enterprise/entities/delivery-address";
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { Prisma, Address as PrismaDeliveryAddress } from '@prisma/client'
+import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address'
+import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export class PrismaDeliveryAddressMapper {
   static toDomain(raw: PrismaDeliveryAddress): DeliveryAddress {
@@ -16,7 +16,7 @@ export class PrismaDeliveryAddressMapper {
         zip: raw.zip,
       },
       new UniqueEntityID(raw.id),
-    );
+    )
   }
 
   static toPrisma(
@@ -31,6 +31,6 @@ export class PrismaDeliveryAddressMapper {
       state: deliveryAddress.state,
       street: deliveryAddress.street,
       zip: deliveryAddress.zip,
-    };
+    }
   }
 }

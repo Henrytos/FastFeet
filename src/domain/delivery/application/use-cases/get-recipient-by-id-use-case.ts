@@ -1,18 +1,18 @@
-import { Either, left, right } from "@/core/either";
-import { RecipientDoesNotExistError } from "./errors/recipient-does-not-exist-error";
-import { Recipient } from "../../enterprise/entities/recipient";
-import { RecipientsRepository } from "../repositories/recipients-repository";
+import { Either, left, right } from '@/core/either'
+import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error'
+import { Recipient } from '../../enterprise/entities/recipient'
+import { RecipientsRepository } from '../repositories/recipients-repository'
 
 interface GetRecipientByIdUseCaseRequest {
-  recipientId: string;
+  recipientId: string
 }
 
 type GetRecipientByIdUseCaseResponse = Either<
   RecipientDoesNotExistError,
   {
-    recipient: Recipient;
+    recipient: Recipient
   }
->;
+>
 
 export class GetRecipientByIdUseCase {
   constructor(private readonly recipientsRepository: RecipientsRepository) {}
@@ -20,13 +20,13 @@ export class GetRecipientByIdUseCase {
   async execute({
     recipientId,
   }: GetRecipientByIdUseCaseRequest): Promise<GetRecipientByIdUseCaseResponse> {
-    const recipient = await this.recipientsRepository.findById(recipientId);
+    const recipient = await this.recipientsRepository.findById(recipientId)
     if (!recipient) {
-      return left(new RecipientDoesNotExistError());
+      return left(new RecipientDoesNotExistError())
     }
 
     return right({
       recipient,
-    });
+    })
   }
 }

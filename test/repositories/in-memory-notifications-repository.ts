@@ -1,35 +1,36 @@
-import { NotificationsRepository } from "@/domain/notification/application/repositories/notifications-repository";
-import { Notification } from "@/domain/notification/enterprise/entities/notification";
+import { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
+import { Notification } from '@/domain/notification/enterprise/entities/notification'
 
 export class InMemoryNotificationsRepository
   implements NotificationsRepository
 {
-  public items: Notification[] = [];
+  public items: Notification[] = []
 
   async create(notification: Notification): Promise<void> {
-    this.items.push(notification);
+    this.items.push(notification)
   }
 
   async findById(id: string): Promise<Notification | null> {
     const notification = this.items.find((item) => {
-      return item.id.toString() == id;
-    });
+      return item.id.toString() === id
+    })
 
     if (!notification) {
-      return null;
+      return null
     }
 
-    return notification;
+    return notification
   }
+
   async save(notification: Notification): Promise<void> {
     const index = this.items.findIndex((item) => {
-      return item.equals(notification);
-    });
+      return item.equals(notification)
+    })
 
     if (index === -1) {
-      throw new Error("Notification does not exist");
+      throw new Error('Notification does not exist')
     }
 
-    this.items[index] = notification;
+    this.items[index] = notification
   }
 }

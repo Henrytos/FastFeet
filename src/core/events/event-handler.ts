@@ -1,3 +1,3 @@
 export interface EventHandler {
-  setupSubscriptions(): void;
+  setupSubscriptions(): void
 }

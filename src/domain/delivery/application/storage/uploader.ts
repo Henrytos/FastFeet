@@ -1,7 +1,7 @@
 export interface UploadParams {
-  fileName: string;
-  fileType: string;
-  body: Buffer;
+  fileName: string
+  fileType: string
+  body: Buffer
 }
 
 export interface Uploader {
@@ -9,5 +9,5 @@ export interface Uploader {
     fileName,
     fileType,
     body,
-  }: UploadParams) => Promise<{ url: string }>;
+  }: UploadParams) => Promise<{ url: string }>
 }

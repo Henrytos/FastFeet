@@ -1,22 +1,18 @@
-import {
-  ArgumentMetadata,
-  BadRequestException,
-  PipeTransform,
-} from "@nestjs/common";
-import { ZodError, ZodSchema } from "zod";
+import { BadRequestException, PipeTransform } from '@nestjs/common'
+import { ZodError, ZodSchema } from 'zod'
 
 export class ZodValidationPipe implements PipeTransform {
   constructor(private schema: ZodSchema) {}
 
-  transform(value: any, metadata: ArgumentMetadata) {
+  transform(value: never) {
     try {
-      const parsedValue = this.schema.parse(value);
-      return parsedValue;
+      const parsedValue = this.schema.parse(value)
+      return parsedValue
     } catch (error) {
       if (error instanceof ZodError) {
-        throw new BadRequestException(error.message);
+        throw new BadRequestException(error.message)
       }
-      throw new Error("Unexpected error occurred while validating input");
+      throw new Error('Unexpected error occurred while validating input')
     }
   }
 }

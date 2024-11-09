@@ -1,8 +1,8 @@
-import { UseCaseError } from "@/core/errors/use-case-error";
+import { UseCaseError } from '@/core/errors/use-case-error'
 
 export class PhotoDoesNotExistError extends Error implements UseCaseError {
-  message = "Photo does not exist";
+  message = 'Photo does not exist'
   constructor() {
-    super();
+    super()
   }
 }
