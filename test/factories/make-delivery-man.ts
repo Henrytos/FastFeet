@@ -15,7 +15,7 @@ export function makeDeliveryMan(
 ) {
   const deliveryMan = DeliveryMan.create(
     {
-      cpf: Cpf.createFromValue(
+      cpf: Cpf.create(
         faker.number.int({ min: 10000000000, max: 99999999999 }).toString(),
       ),
       name: faker.person.firstName(),

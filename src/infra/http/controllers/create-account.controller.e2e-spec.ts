@@ -1,4 +1,3 @@
-import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -32,7 +31,7 @@ describe('CreateAccountController (e2e)', () => {
       .post('/accounts/admin')
       .send({
         name: 'John Doe',
-        cpf: Cpf.create('12345678901').value,
+        cpf: '12345678901',
         password: 'password',
       })
 
@@ -40,9 +39,10 @@ describe('CreateAccountController (e2e)', () => {
 
     const userOnDatabase = await prisma.user.findUnique({
       where: {
-        cpf: Cpf.create('12345678901').value,
+        cpf: '12345678901',
       },
     })
+
     expect(userOnDatabase).toBeTruthy()
   })
 
@@ -59,7 +59,7 @@ describe('CreateAccountController (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',
-        cpf: Cpf.create('12345678902').value,
+        cpf: '12345678902',
         password: 'password',
       })
 
@@ -67,7 +67,7 @@ describe('CreateAccountController (e2e)', () => {
 
     const userOnDatabase = await prisma.user.findUnique({
       where: {
-        cpf: Cpf.create('12345678902').value,
+        cpf: '12345678902',
       },
     })
     expect(userOnDatabase).toBeTruthy()

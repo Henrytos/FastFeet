@@ -36,7 +36,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     })
     const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan({
       name: 'John Doe',
-      cpf: Cpf.createFromValue('12345678909'),
+      cpf: Cpf.create('12345678909'),
       password: '123456',
     })
 
