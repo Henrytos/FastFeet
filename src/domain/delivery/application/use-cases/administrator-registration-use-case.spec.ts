@@ -32,7 +32,7 @@ describe('administrator registration use case', () => {
 
   it('It should not be possible to create an administrator with repeated CPF', async () => {
     const administrator = makeAdministrator({
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
     })
     inMemoryAdministratorsRepository.items.push(administrator)
 

@@ -30,13 +30,13 @@ describe('authenticate administrator use case', () => {
   it('should be able possible to login with CPF and password', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 
     const result = await sut.execute({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900').value,
+      cpf: Cpf.create('12345678900').value,
     })
 
     expect(result.isRight()).toBe(true)
@@ -48,13 +48,13 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate with the invalid password ', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 
     const result = await sut.execute({
       password: '654321',
-      cpf: Cpf.createFromValue('12345678900').value,
+      cpf: Cpf.create('12345678900').value,
     })
 
     expect(result.isLeft()).toBe(true)
@@ -64,7 +64,7 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate with the invalid CPF ', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678901'),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 

@@ -30,13 +30,13 @@ describe('authenticate administrator use case', () => {
   it('should be able possible to login with CPF and password', async () => {
     const administrator = makeAdministrator({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
     })
     inMemoryAdministratorsRepository.items.push(administrator)
 
     const result = await sut.execute({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900').value,
+      cpf: Cpf.create('12345678900').value,
     })
 
     expect(result.isRight()).toBe(true)
@@ -48,13 +48,13 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate with the invalid password ', async () => {
     const administrator = makeAdministrator({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
     })
     inMemoryAdministratorsRepository.items.push(administrator)
 
     const result = await sut.execute({
       password: '654321',
-      cpf: Cpf.createFromValue('12345678900').value,
+      cpf: Cpf.create('12345678900').value,
     })
 
     expect(result.isLeft()).toBe(true)
@@ -64,7 +64,7 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate with the invalid CPF ', async () => {
     const administrator = makeAdministrator({
       password: '123456',
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
     })
     inMemoryAdministratorsRepository.items.push(administrator)
 

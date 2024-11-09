@@ -1,5 +1,5 @@
-import { defineConfig } from 'vitest/config';
-import tsconfigPaths from 'vitest-tsconfig-paths';
+import { defineConfig } from 'vitest/config'
+import tsconfigPaths from 'vitest-tsconfig-paths'
 
 export default defineConfig({
   test: {
@@ -20,4 +20,4 @@ export default defineConfig({
     },
   },
   plugins: [tsconfigPaths()],
-});
+})
