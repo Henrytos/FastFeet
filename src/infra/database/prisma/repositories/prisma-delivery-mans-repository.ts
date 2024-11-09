@@ -9,6 +9,24 @@ import { PrismaService } from '../prisma.service'
 export class PrismaDeliveryMansRepository implements DeliveryMansRepository {
   constructor(private prisma: PrismaService) {}
 
+  async fetchDeliveryManByPage(
+    page: number,
+    perPage: number,
+  ): Promise<DeliveryMan[]> {
+    const deliveryMans = await this.prisma.user.findMany({
+      where: {
+        role: 'DELIVERY_MAN',
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    })
+
+    return deliveryMans.map(PrismaDeliveryManMapper.toDomain)
+  }
+
   async create(deliveryMan: DeliveryMan): Promise<void> {
     const data = PrismaDeliveryManMapper.toPrisma(deliveryMan)
 
