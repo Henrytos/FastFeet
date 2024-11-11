@@ -18,7 +18,7 @@ import {
 import { RolesGuards } from '../guards/roles.guards'
 import { Roles } from '../guards/roles.decorator'
 
-@Controller('/users/:deliveryManId')
+@Controller('/deliverymen/:deliveryManId')
 export class DeleteDeliveryManController {
   constructor(
     private readonly deleteDeliveryManUseCase: DeleteDeliveryManByIdUseCase,

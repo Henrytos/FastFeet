@@ -22,6 +22,8 @@ import { GetDeliveryManByIdController } from './controllers/get-delivery-man-by-
 import { GetDeliveryManByIdUseCase } from '@/domain/delivery/application/use-cases/get-delivery-man-by-id-use-case'
 import { FetchDeliveryMansUseCase } from '@/domain/delivery/application/use-cases/fetch-delivery-man-use-case'
 import { FetchDeliveryManController } from './controllers/fetch-delivery-man.controller'
+import { FetchOrderByDeliveryManIdUseCase } from '@/domain/delivery/application/use-cases/fetch-order-by-delivery-man-id-use-case'
+import { FetchOrderByDeliveryManIdController } from './controllers/fetch-order-by-delivery-man-id.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -35,6 +37,7 @@ import { FetchDeliveryManController } from './controllers/fetch-delivery-man.con
     RegisterDeliveryManController,
     GetDeliveryManByIdController,
     FetchDeliveryManController,
+    FetchOrderByDeliveryManIdController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -46,6 +49,8 @@ import { FetchDeliveryManController } from './controllers/fetch-delivery-man.con
     ChangeDeliveryManPasswordUseCase,
     GetDeliveryManByIdUseCase,
     FetchDeliveryMansUseCase,
+    FetchOrderByDeliveryManIdUseCase,
+    FetchOrderByDeliveryManIdUseCase,
   ],
 })
 export class HttpModule {}

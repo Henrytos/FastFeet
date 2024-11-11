@@ -19,7 +19,7 @@
 - **[ x ] POST /users**: Cadastrar um novo usuário.
 
 ### Listar Usuários
-- **[ ] GET /users**: Listar todos os usuários.
+- **[ X ] GET /users**: Listar todos os usuários.
 
 ### Visualizar Usuário por ID
 - **[ x ] GET /users/{id}**: Visualizar um usuário específico.
@@ -41,10 +41,10 @@
 - **[ x ] POST /deliverymen**: Cadastrar um novo entregador (somente admin).
 
 ### Listar Entregadores
-- **[ ] GET /deliverymen**: Listar todos os entregadores (somente admin).
+- **[ X ] GET /deliverymen**: Listar todos os entregadores (somente admin).
 
 ### Visualizar Entregador por ID
-- **[ ] GET /deliverymen/{id}**: Visualizar um entregador específico (somente admin).
+- **[ X ] GET /deliverymen/{id}**: Visualizar um entregador específico (somente admin).
 
 ### Atualizar Entregador
 - **[ x ] PUT /deliverymen/{id}**: Atualizar dados de um entregador (somente admin).

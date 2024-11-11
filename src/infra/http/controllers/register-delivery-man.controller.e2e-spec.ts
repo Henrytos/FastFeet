@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
-describe('UpdateDeliveryManController (e2e)', () => {
+describe('RegisterDeliveryManController (e2e)', () => {
   let app: INestApplication
   let jwt: JwtService
   let administratorFactory: AdministratorFactory
@@ -26,7 +26,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[POST] /deliveryMan ', async () => {
+  test('[POST] /deliverymen ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
     const token = jwt.sign({
       sub: administrator.id,
@@ -34,7 +34,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post(`/deliveryMan`)
+      .post(`/deliverymen`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'John Doe Updated',

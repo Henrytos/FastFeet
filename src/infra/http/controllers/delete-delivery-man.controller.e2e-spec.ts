@@ -30,7 +30,7 @@ describe('DeleteDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[DELETE] /users/{deliveryManId} ', async () => {
+  test('[DELETE] /deliverymen/{deliveryManId} ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
     const deliveryman = await deliveryManFactory.makePrismaDeliveryMan()
 
@@ -40,7 +40,7 @@ describe('DeleteDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .delete(`/users/${deliveryman.id}`)
+      .delete(`/deliverymen/${deliveryman.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
     expect(response.status).toBe(HttpStatus.NO_CONTENT)

@@ -4,19 +4,18 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Query,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
-import { DeliveryManPresenter } from '../presenters/delivery-man-presenter'
 import { Roles } from '../guards/roles.decorator'
-import { FetchDeliveryMansUseCase } from '@/domain/delivery/application/use-cases/fetch-delivery-man-use-case'
-import { CurrentUser } from '@/infra/auth/current-user'
-import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RolesGuards } from '../guards/roles.guards'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { FetchOrderByDeliveryManIdUseCase } from '@/domain/delivery/application/use-cases/fetch-order-by-delivery-man-id-use-case'
+import { OrderPresenter } from '../presenters/order-presenter'
 
 const queryParamsSchema = z.object({
   page: z.coerce.number().min(1).optional().default(1),
@@ -25,25 +24,32 @@ const queryParamsSchema = z.object({
 
 type QueryParams = z.infer<typeof queryParamsSchema>
 
-@Controller('/deliverymen')
-export class FetchDeliveryManController {
+const routeParamsSchema = z.object({
+  deliveryManId: z.string().uuid(),
+})
+
+type RouteParams = z.infer<typeof routeParamsSchema>
+
+@Controller('/deliverymen/:deliveryManId/deliveries')
+export class FetchOrderByDeliveryManIdController {
   constructor(
-    private readonly fetchDeliveryMansUseCase: FetchDeliveryMansUseCase,
+    private readonly fetchOrderByDeliveryManIdUseCase: FetchOrderByDeliveryManIdUseCase,
   ) {}
 
   @Get()
-  @Roles('ADMINISTRATOR')
+  @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
   @UseGuards(RolesGuards)
   @HttpCode(HttpStatus.OK)
   async handler(
-    @CurrentUser() { sub }: UserPayload,
     @Query(new ZodValidationPipe(queryParamsSchema))
     { page, perPage }: QueryParams,
+    @Param(new ZodValidationPipe(routeParamsSchema))
+    { deliveryManId }: RouteParams,
   ) {
-    const result = await this.fetchDeliveryMansUseCase.execute({
+    const result = await this.fetchOrderByDeliveryManIdUseCase.execute({
       page,
       perPage,
-      administratorId: sub,
+      deliveryManId,
     })
 
     if (result.isLeft()) {
@@ -56,7 +62,7 @@ export class FetchDeliveryManController {
     }
 
     return {
-      user: result.value.deliveryMans.map(DeliveryManPresenter.toHTTP),
+      user: result.value.orders.map(OrderPresenter.toHTTP),
     }
   }
 }

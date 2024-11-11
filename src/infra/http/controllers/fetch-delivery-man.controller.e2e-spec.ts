@@ -26,7 +26,7 @@ describe('FetchDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[GET] /users ', async () => {
+  test('[GET] /deliverymen ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator({
       name: 'John Doe',
     })
@@ -54,7 +54,7 @@ describe('FetchDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/users?page=1&perPage=10`)
+      .get(`/deliverymen?page=1&perPage=10`)
       .set('Authorization', `Bearer ${token}`)
       .send()
 

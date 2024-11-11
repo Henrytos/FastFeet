@@ -21,7 +21,7 @@ const validationPasswordSchema = z.string().min(6).max(20)
 
 type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>
 
-@Controller('/users/:deliveryManCpf/password')
+@Controller('/deliverymen/:deliveryManCpf/password')
 export class ChangeDeliveryManPasswordController {
   constructor(
     private readonly changeDeliveryManPasswordUseCase: ChangeDeliveryManPasswordUseCase,

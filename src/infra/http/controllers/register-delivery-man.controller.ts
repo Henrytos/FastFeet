@@ -26,7 +26,7 @@ type RegisterDeliveryManBody = z.infer<typeof registerDeliveryManBodySchema>
 
 const validationZodPipe = new ZodValidationPipe(registerDeliveryManBodySchema)
 
-@Controller('/deliveryman')
+@Controller('/deliverymen')
 export class RegisterDeliveryManController {
   constructor(
     private readonly registerDeliveryManUseCase: RegisterDeliveryManUseCase,

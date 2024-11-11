@@ -11,4 +11,6 @@ export abstract class DeliveryMansRepository {
     page: number,
     perPage: number,
   ): Promise<DeliveryMan[]>
+
+
 }

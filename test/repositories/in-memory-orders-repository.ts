@@ -128,4 +128,18 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     const ordersPaginated = orders.slice((page - 1) * 20, (page - 1) * 20 + 20)
     return ordersPaginated
   }
+
+  async fetchOrderByDeliveryManId(
+    deliveryManId: string,
+    page: number,
+    perPage: number,
+  ): Promise<Order[]> {
+    const orders = this.items
+      .filter((order) => {
+        return order.deliveryManId?.toValue() === deliveryManId
+      })
+      .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
+
+    return orders
+  }
 }
