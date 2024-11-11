@@ -50,10 +50,10 @@
 - **[ x ] PUT /deliverymen/{id}**: Atualizar dados de um entregador (somente admin).
 
 ### Excluir Entregador
-- **[ x] DELETE /deliverymen/{id}**: Excluir um entregador (somente admin).
+- **[ x ] DELETE /deliverymen/{id}**: Excluir um entregador (somente admin).
 
 ### Listar Entregas do Entregador
-- **[ ] GET /deliverymen/{id}/deliveries**: Listar as entregas associadas a um entregador específico.
+- **[ x ] GET /deliverymen/{id}/deliveries**: Listar as entregas associadas a um entregador específico.
 
 ---
 
