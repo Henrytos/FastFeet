@@ -4,7 +4,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  ParseIntPipe,
   Query,
   UnauthorizedException,
   UseGuards,
@@ -16,6 +15,15 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RolesGuards } from '../guards/roles.guards'
+import { z } from 'zod'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+
+const queryParamsSchema = z.object({
+  page: z.coerce.number().min(1).optional().default(1),
+  perPage: z.coerce.number().min(1).optional().default(10),
+})
+
+type QueryParams = z.infer<typeof queryParamsSchema>
 
 @Controller('/users')
 export class FetchDeliveryManController {
@@ -28,9 +36,9 @@ export class FetchDeliveryManController {
   @UseGuards(RolesGuards)
   @HttpCode(HttpStatus.OK)
   async handler(
-    @Query('page', ParseIntPipe) page: number,
-    @Query('perPage', ParseIntPipe) perPage: number,
     @CurrentUser() { sub }: UserPayload,
+    @Query(new ZodValidationPipe(queryParamsSchema))
+    { page, perPage }: QueryParams,
   ) {
     const result = await this.fetchDeliveryMansUseCase.execute({
       page,
