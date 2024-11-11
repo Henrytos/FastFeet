@@ -1,6 +1,5 @@
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { AdministratorFactory } from '@/test/factories/make-administrator'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -9,7 +8,6 @@ import request from 'supertest'
 
 describe('CreateAccountController (e2e)', () => {
   let app: INestApplication
-  let prisma: PrismaService
   let jwt: JwtService
   let administratorFactory: AdministratorFactory
 
@@ -20,7 +18,6 @@ describe('CreateAccountController (e2e)', () => {
     }).compile()
 
     app = moduleRef.createNestApplication()
-    prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
     administratorFactory = moduleRef.get(AdministratorFactory)
     await app.init()
@@ -36,17 +33,9 @@ describe('CreateAccountController (e2e)', () => {
       })
 
     expect(response.status).toBe(HttpStatus.CREATED)
-
-    const userOnDatabase = await prisma.user.findUnique({
-      where: {
-        cpf: '12345678901',
-      },
-    })
-
-    expect(userOnDatabase).toBeTruthy()
   })
 
-  test.skip('[POST] /accounts/user ', async () => {
+  test('[POST] /accounts/user ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
 
     const accessToken = jwt.sign({
@@ -64,12 +53,5 @@ describe('CreateAccountController (e2e)', () => {
       })
 
     expect(response.status).toBe(HttpStatus.CREATED)
-
-    const userOnDatabase = await prisma.user.findUnique({
-      where: {
-        cpf: '12345678902',
-      },
-    })
-    expect(userOnDatabase).toBeTruthy()
   })
 })

@@ -12,7 +12,7 @@ import { GetDeliveryManByIdUseCase } from '@/domain/delivery/application/use-cas
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
 
-@Controller('/deliveryMan/:deliveryManId')
+@Controller('/user/:deliveryManId')
 export class GetDeliveryManByIdController {
   constructor(
     private readonly getDeliveryManByIdUseCase: GetDeliveryManByIdUseCase,
