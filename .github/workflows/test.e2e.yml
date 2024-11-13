@@ -23,6 +23,8 @@ jobs:
         node-version: '20.18.0'
     - name: 'Install Deps'
       run: npm install
+    - name: 'Docker compose up'
+      run: docker compose up -d
     - name: 'Test e2e'
       env:
         PORT: ${{ secrets.PORT }}
