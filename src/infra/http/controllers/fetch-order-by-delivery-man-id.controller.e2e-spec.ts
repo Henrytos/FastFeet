@@ -23,17 +23,22 @@ describe('FetchDeliveryManController (e2e)', () => {
 
     app = moduleRef.createNestApplication()
     jwt = moduleRef.get(JwtService)
+    deliveryManFactory = moduleRef.get(DeliveryManFactory)
+    orderFactory = moduleRef.get(OrderFactory)
     await app.init()
   })
 
   test('[GET] /deliverymen/:deliveryMan.id/deliveries ', async () => {
-    const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan({})
-
+    const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan()
+    console.log(deliveryMan)
     orderFactory.makePrismaOrder({
       deliveryManId: new UniqueEntityID(deliveryMan.id),
     })
 
-    const accessToken = jwt.sign({ id: deliveryMan.id, role: deliveryMan.role })
+    const accessToken = jwt.sign({
+      sub: deliveryMan.id,
+      role: deliveryMan.role,
+    })
 
     const response = await request(app.getHttpServer())
       .get(`/deliverymen/${deliveryMan.id}/deliveries?page=1&perPage=10`)
