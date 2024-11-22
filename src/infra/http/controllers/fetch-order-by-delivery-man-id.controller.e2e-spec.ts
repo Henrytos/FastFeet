@@ -1,7 +1,6 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { AdministratorFactory } from '@/test/factories/make-administrator'
 import { DeliveryAddressFactory } from '@/test/factories/make-delivery-address'
 import { DeliveryManFactory } from '@/test/factories/make-delivery-man'
@@ -21,7 +20,6 @@ describe('FetchDeliveryManController (e2e)', () => {
   let recipientFactory: RecipientFactory
   let photoFactory: PhotoFactory
   let deliveryAddressFactory: DeliveryAddressFactory
-  let prisma: PrismaService
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -43,7 +41,6 @@ describe('FetchDeliveryManController (e2e)', () => {
     recipientFactory = moduleRef.get(RecipientFactory)
     photoFactory = moduleRef.get(PhotoFactory)
     deliveryAddressFactory = moduleRef.get(DeliveryAddressFactory)
-    prisma = moduleRef.get(PrismaService)
 
     await app.init()
   })
@@ -53,8 +50,6 @@ describe('FetchDeliveryManController (e2e)', () => {
     const recipient = await recipientFactory.makePrismaRecipient()
     const photo = await photoFactory.makePrismaPhoto()
     const deliveryAddress = await deliveryAddressFactory.makeDeliveryAddress()
-    const deliveryAddressAllOnDatabase = await prisma.address.findMany()
-    og(deliveryAddressAllOnDatabase)
 
     await orderFactory.makePrismaOrder({
       deliveryManId: new UniqueEntityID(deliveryMan.id),
@@ -62,9 +57,6 @@ describe('FetchDeliveryManController (e2e)', () => {
       photoId: new UniqueEntityID(photo.id),
       deliveryAddressId: new UniqueEntityID(deliveryAddress.id),
     })
-
-    const orderAllOnDatabase = await prisma.order.findMany()
-    og(orderAllOnDatabase)
 
     const accessToken = jwt.sign({
       sub: deliveryMan.id,

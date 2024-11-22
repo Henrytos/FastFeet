@@ -30,7 +30,7 @@ describe('update delivery use case', () => {
     const administrator = makeAdministrator()
     inMemoryAdministratorsRepository.items.push(administrator)
     const deliveryMan = makeDeliveryMan({
-      cpf: Cpf.createFromValue('12345678900'),
+      cpf: Cpf.create('12345678900'),
       name: 'john doe',
       password: '123456',
     })

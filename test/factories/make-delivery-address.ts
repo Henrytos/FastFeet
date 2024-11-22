@@ -35,16 +35,12 @@ export class DeliveryAddressFactory {
   constructor(private prisma: PrismaService) {}
 
   async makeDeliveryAddress(overwide: Partial<DeliveryAddressProps> = {}) {
-    try {
-      const deliveryAddress = makeDeliveryAddress(overwide)
+    const deliveryAddress = makeDeliveryAddress(overwide)
 
-      const prismaDeliveryAddress = await this.prisma.address.create({
-        data: PrismaDeliveryAddressMapper.toPrisma(deliveryAddress),
-      })
+    const prismaDeliveryAddress = await this.prisma.address.create({
+      data: PrismaDeliveryAddressMapper.toPrisma(deliveryAddress),
+    })
 
-      return prismaDeliveryAddress
-    } catch (error) {
-      og(error)
-    }
+    return prismaDeliveryAddress
   }
 }
