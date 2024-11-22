@@ -23,6 +23,7 @@ export class PrismaDeliveryAddressMapper {
     deliveryAddress: DeliveryAddress,
   ): Prisma.AddressUncheckedCreateInput {
     return {
+      id: deliveryAddress.id.toValue(),
       city: deliveryAddress.city,
       latitude: String(deliveryAddress.latitude),
       longitude: String(deliveryAddress.longitude),

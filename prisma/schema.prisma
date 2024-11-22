@@ -35,20 +35,20 @@ enum OrderStatus {
 }
 
 model Order {
-    id            String      @id @default(uuid())
-    orderStatus   OrderStatus @default(pending) @map("order_status")
-    deliveryManId String?     @map("delivery_man_id")
-    deliveryMan   User?       @relation(fields: [deliveryManId], references: [id])
-    recipientId   String?     @map("recipient_id")
-    recipient     Recipient?  @relation(fields: [recipientId], references: [id])
-    photoId       String?
-    photo         Photo?      @relation(fields: [photoId], references: [id])
-    addressId     String?
-    address       Address?    @relation(fields: [addressId], references: [id])
-    createdAt     DateTime    @default(now()) @map("created_at")
-    deliveryAt    DateTime?   @map("delivery_at")
-    withdrawnAt   DateTime?   @map("withdrawn_at")
-    updatedAt     DateTime    @updatedAt() @map("updated_at")
+    id                String      @id @default(uuid())
+    orderStatus       OrderStatus @default(pending) @map("order_status")
+    deliveryManId     String?     @map("delivery_man_id")
+    deliveryMan       User?       @relation(fields: [deliveryManId], references: [id])
+    recipientId       String?     @map("recipient_id")
+    recipient         Recipient?  @relation(fields: [recipientId], references: [id])
+    photoId           String?
+    photo             Photo?      @relation(fields: [photoId], references: [id])
+    deliveryAddressId String?
+    address           Address?    @relation(fields: [deliveryAddressId], references: [id])
+    createdAt         DateTime    @default(now()) @map("created_at")
+    deliveryAt        DateTime?   @map("delivery_at")
+    withdrawnAt       DateTime?   @map("withdrawn_at")
+    updatedAt         DateTime    @updatedAt() @map("updated_at")
 
     @@map("orders")
 }
