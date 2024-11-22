@@ -30,7 +30,7 @@ export class FetchOrderByRecipientIdUseCase {
       return left(new RecipientDoesNotExistError())
     }
 
-    const orders = await this.ordersRepository.findManyOrdersByRecipientId(
+    const orders = await this.ordersRepository.fetchOrdersByRecipientId(
       recipientId,
       page,
     )

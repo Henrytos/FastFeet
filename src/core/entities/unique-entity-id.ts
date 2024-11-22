@@ -12,7 +12,7 @@ export class UniqueEntityID {
   }
 
   toValue(): string {
-    return this.value
+    return this.value.toString()
   }
 
   equals(id: UniqueEntityID) {

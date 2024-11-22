@@ -10,11 +10,13 @@ export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
   const order = Order.create(
     {
       recipientId: new UniqueEntityID(randomUUID()),
+      deliveryManId: new UniqueEntityID(randomUUID()),
+      deliveryAddressId: new UniqueEntityID(randomUUID()),
       status: ORDER_STATUS.PENDING,
       createdAt: new Date(),
+      photoId: new UniqueEntityID(randomUUID()),
+      updatedAt: null,
       deliveryAt: null,
-      photoId: null,
-      updatedAt: new Date(),
       withdrawnAt: null,
       ...overwide,
     },

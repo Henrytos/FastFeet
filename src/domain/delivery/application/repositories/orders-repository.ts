@@ -5,7 +5,7 @@ export abstract class OrdersRepository {
   abstract create(order: Order): Promise<void>
   abstract findById(id: string): Promise<Order | null>
   abstract findByRecipientId(id: string): Promise<Order | null>
-  abstract findManyOrdersByRecipientId(
+  abstract fetchOrdersByRecipientId(
     recipientId: string,
     page: number,
   ): Promise<Order[]>

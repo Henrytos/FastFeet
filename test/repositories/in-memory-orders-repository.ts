@@ -73,7 +73,7 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     this.items.splice(index, 1)
   }
 
-  async findManyOrdersByRecipientId(
+  async fetchOrdersByRecipientId(
     recipientId: string,
     page: number,
   ): Promise<Order[]> {

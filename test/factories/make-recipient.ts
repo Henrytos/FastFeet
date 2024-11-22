@@ -27,7 +27,7 @@ export function makeRecipient(
 export class RecipientFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaRecipient(overwide: Partial<RecipientProps>) {
+  async makePrismaRecipient(overwide: Partial<RecipientProps> = {}) {
     const recipient = makeRecipient(overwide)
 
     const recipientPrisma = await this.prisma.recipient.create({

@@ -39,11 +39,11 @@ model Order {
     orderStatus   OrderStatus @default(pending) @map("order_status")
     deliveryManId String?     @map("delivery_man_id")
     deliveryMan   User?       @relation(fields: [deliveryManId], references: [id])
-    recipientId   String      @map("recipient_id")
-    recipient     Recipient   @relation(fields: [recipientId], references: [id])
+    recipientId   String?     @map("recipient_id")
+    recipient     Recipient?  @relation(fields: [recipientId], references: [id])
     photoId       String?
     photo         Photo?      @relation(fields: [photoId], references: [id])
-    addressId     String
+    addressId     String?
     address       Address?    @relation(fields: [addressId], references: [id])
     createdAt     DateTime    @default(now()) @map("created_at")
     deliveryAt    DateTime?   @map("delivery_at")

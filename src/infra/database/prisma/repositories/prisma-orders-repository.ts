@@ -31,7 +31,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
     return PrismaOrderMapper.toDomain(order)
   }
 
-  async findManyOrdersByRecipientId(
+  async fetchOrdersByRecipientId(
     recipientId: string,
     page: number,
   ): Promise<Order[]> {
@@ -39,6 +39,25 @@ export class PrismaOrdersRepository implements OrdersRepository {
       where: { recipientId },
       skip: page * 10,
       take: 10,
+    })
+
+    return orders.map(PrismaOrderMapper.toDomain)
+  }
+
+  async fetchOrderByDeliveryManId(
+    deliveryManId: string,
+    page: number,
+    perPage: number,
+  ): Promise<Order[]> {
+    const orders = await this.prisma.order.findMany({
+      where: {
+        deliveryManId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: (page - 1) * perPage,
+      take: perPage,
     })
 
     return orders.map(PrismaOrderMapper.toDomain)
