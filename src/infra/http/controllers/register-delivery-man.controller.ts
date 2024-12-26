@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Post,
   UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
@@ -15,6 +16,7 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
+import { RolesGuards } from '../guards/roles.guards'
 
 const registerDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -34,6 +36,7 @@ export class RegisterDeliveryManController {
 
   @Post()
   @Roles('ADMINISTRATOR')
+  @UseGuards(RolesGuards)
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @CurrentUser() administrator: UserPayload,

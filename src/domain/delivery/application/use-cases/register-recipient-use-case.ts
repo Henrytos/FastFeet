@@ -7,6 +7,7 @@ import { Recipient } from '../../enterprise/entities/recipient'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { Injectable } from '@nestjs/common'
 
 interface RegisterRecipientUseCaseRequest {
   name: string
@@ -19,7 +20,7 @@ type RegisterRecipientUseCaseResponse = Either<
   | RecipientDoesNotExistError,
   object
 >
-
+@Injectable()
 export class RegisterRecipientUseCase {
   constructor(
     private readonly recipientsRepository: RecipientsRepository,

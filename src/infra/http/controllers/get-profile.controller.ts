@@ -2,10 +2,17 @@ import { AdministratorsRepository } from '@/domain/delivery/application/reposito
 import { DeliveryMansRepository } from '@/domain/delivery/application/repositories/delivery-mans-repository'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common'
 import { DeliveryManPresenter } from '../presenters/delivery-man-presenter'
 import { AdministratorPresenter } from '../presenters/administrator-presenter'
 import { Roles } from '../guards/roles.decorator'
+import { RolesGuards } from '../guards/roles.guards'
 
 @Controller('/profile')
 export class GetProfileController {
@@ -16,6 +23,7 @@ export class GetProfileController {
 
   @Get()
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
+  @UseGuards(RolesGuards)
   @HttpCode(HttpStatus.OK)
   async handler(@CurrentUser() user: UserPayload) {
     const { sub: userId } = user

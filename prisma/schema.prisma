@@ -68,7 +68,7 @@ model Photo {
 model Recipient {
     id        String   @id @default(uuid())
     name      String
-    email     String
+    email     String   @unique
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt() @map("updated_at")
     orders    Order[]
