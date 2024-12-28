@@ -1,8 +1,8 @@
-version: '3.8'
+version: '2.32.0'
 
 services:
   database:
-    container_name: fastfeet
+    container_name: database
     image: postgres:latest
     ports:
       - 5432:5432
@@ -10,3 +10,19 @@ services:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: docker
       POSTGRES_DB: fastfeet
+    # volumes:
+    #   - pg-data:/var/lib/postgresql/data
+    # command: > 
+    #   sh -c "npx prisma migrate deploy && npm run start" 
+  # application:
+  #   container_name: api
+  #   build: .
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - database
+
+# volumes: 
+#   pg-data:
