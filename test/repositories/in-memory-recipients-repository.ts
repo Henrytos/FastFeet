@@ -66,4 +66,10 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
     this.items[index] = recipient
   }
+
+  async fetchRecipients(page: number, perPage: number): Promise<Recipient[]> {
+    const recipients = this.items.slice((page - 1) * perPage, page * perPage)
+
+    return recipients
+  }
 }

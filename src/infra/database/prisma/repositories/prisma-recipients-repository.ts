@@ -76,4 +76,16 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
       data,
     })
   }
+
+  async fetchRecipients(page: number, perPage: number): Promise<Recipient[]> {
+    const recipients = await this.prisma.recipient.findMany({
+      skip: (page - 1) * perPage,
+      take: perPage,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return recipients.map(PrismaRecipientMapper.toDomain)
+  }
 }
