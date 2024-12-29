@@ -60,7 +60,7 @@
 ## Destinatários
 
 ### Criar Destinatário
-- **[ ] POST /recipients**: Cadastrar um novo destinatário (somente admin).
+- **[ x  ] POST /recipients**: Cadastrar um novo destinatário (somente admin).
 
 ### Listar Destinatários
 - **[ ] GET /recipients**: Listar todos os destinatários (somente admin).
@@ -72,7 +72,7 @@
 - **[ ] PUT /recipients/{id}**: Atualizar dados de um destinatário (somente admin).
 
 ### Excluir Destinatário
-- **[ ] DELETE /recipients/{id}**: Excluir um destinatário (somente admin).
+- **[ x ] DELETE /recipients/{id}**: Excluir um destinatário (somente admin).
 
 ---
 

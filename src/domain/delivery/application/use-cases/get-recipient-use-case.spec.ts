@@ -1,39 +1,54 @@
 import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
-import { GetRecipientByIdUseCase } from './get-recipient-by-id-use-case'
+import { GetRecipientUseCase } from './get-recipient-use-case'
 import { makeRecipient } from '@/test/factories/make-recipient'
 import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error'
 import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-repository'
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository'
+import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository'
+import { makeAdministrator } from '@/test/factories/make-administrator'
 
 describe('get recipient by id use case', () => {
-  let sut: GetRecipientByIdUseCase
+  let sut: GetRecipientUseCase
   let inMemoryRecipientsRepository: InMemoryRecipientsRepository
   let inMemoryOrdersRepository: InMemoryOrdersRepository
   let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository
+  let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository
 
   beforeEach(() => {
+    inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository()
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
       inMemoryDeliveryAddressRepository,
     )
-    sut = new GetRecipientByIdUseCase(inMemoryRecipientsRepository)
+    sut = new GetRecipientUseCase(
+      inMemoryRecipientsRepository,
+      inMemoryAdministratorsRepository,
+    )
   })
 
   it('should return an recipient by the id', async () => {
+    const administrator = makeAdministrator()
+    inMemoryAdministratorsRepository.items.push(administrator)
+
     const recipient = makeRecipient()
     inMemoryRecipientsRepository.items.push(recipient)
 
     const result = await sut.execute({
       recipientId: recipient.id.toString(),
+      administratorId: administrator.id.toString(),
     })
 
     expect(result.isRight()).toEqual(true)
     expect(result.value).toMatchObject({ recipient })
   })
 
-  it('should not return an envomenda if it does not exist', async () => {
+  it('should not return if it does not exist', async () => {
+    const administrator = makeAdministrator()
+    inMemoryAdministratorsRepository.items.push(administrator)
+
     const result = await sut.execute({
       recipientId: 'invalid-recipient-id',
+      administratorId: administrator.id.toString(),
     })
 
     expect(result.isLeft()).toEqual(true)
