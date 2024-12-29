@@ -30,6 +30,8 @@ import { DeleteRecipientController } from './controllers/delete-recipient.contro
 import { DeleteRecipientUseCase } from '@/domain/delivery/application/use-cases/delete-recipient-use-case'
 import { GetRecipientController } from './controllers/get-recipient.controller'
 import { GetRecipientUseCase } from '@/domain/delivery/application/use-cases/get-recipient-use-case'
+import { UpdateRecipientController } from './controllers/update-recipient.controller'
+import { UpdateRecipientUseCase } from '@/domain/delivery/application/use-cases/update-recipient-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -47,6 +49,7 @@ import { GetRecipientUseCase } from '@/domain/delivery/application/use-cases/get
     RegisterRecipientController,
     DeleteRecipientController,
     GetRecipientController,
+    UpdateRecipientController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -63,6 +66,7 @@ import { GetRecipientUseCase } from '@/domain/delivery/application/use-cases/get
     RegisterRecipientUseCase,
     DeleteRecipientUseCase,
     GetRecipientUseCase,
+    UpdateRecipientUseCase,
   ],
 })
 export class HttpModule {}

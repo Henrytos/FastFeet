@@ -3,6 +3,7 @@ import { RecipientsRepository } from '../repositories/recipients-repository'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error'
+import { Injectable } from '@nestjs/common'
 
 interface UpdateRecipientUseCaseRequest {
   administratorId: string
@@ -12,9 +13,11 @@ interface UpdateRecipientUseCaseRequest {
 }
 
 type UpdateRecipientUseCaseResponse = Either<
-  AdministratorDoesNotExistError,
+  AdministratorDoesNotExistError | RecipientDoesNotExistError,
   object
 >
+
+@Injectable()
 export class UpdateRecipientUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,

@@ -66,7 +66,7 @@
 - **[ ] GET /recipients**: Listar todos os destinatários (somente admin).
 
 ### Visualizar Destinatário por ID
-- **[ ] GET /recipients/{id}**: Visualizar um destinatário específico (somente admin).
+- **[ x ] GET /recipients/{id}**: Visualizar um destinatário específico (somente admin).
 
 ### Atualizar Destinatário
 - **[ ] PUT /recipients/{id}**: Atualizar dados de um destinatário (somente admin).
