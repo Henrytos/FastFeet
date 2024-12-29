@@ -46,6 +46,7 @@ export class UpdateRecipientController {
     @CurrentUser() administrator: UserPayload,
   ) {
     const { email, name } = recipient
+
     const result = await this.updateRecipientUseCase.execute({
       name,
       email,

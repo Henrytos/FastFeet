@@ -69,8 +69,7 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
     }
 
     const data = PrismaRecipientMapper.toPrisma(recipient)
-
-    this.prisma.recipient.update({
+    await this.prisma.recipient.update({
       where: {
         id: recipient.id.toString(),
       },

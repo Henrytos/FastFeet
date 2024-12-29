@@ -49,11 +49,15 @@ describe('UpdateRecipientController (e2e)', () => {
 
     expect(response.status).toBe(HttpStatus.CREATED)
 
-    const deliveryManOnDatabase = await prisma.recipient.findMany({
-      where: {},
+    const recipientInDatabase = await prisma.recipient.findUnique({
+      where: {
+        email: 'john.doe@gmail.com',
+      },
     })
 
-    console.table(deliveryManOnDatabase)
-    expect(deliveryManOnDatabase).toBeTruthy()
+    expect(recipientInDatabase).toMatchObject({
+      name: 'John Doe',
+      email: 'john.doe@gmail.com',
+    })
   })
 })
