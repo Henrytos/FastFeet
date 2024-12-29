@@ -3,6 +3,7 @@ import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-er
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { RecipientsRepository } from '../repositories/recipients-repository'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
+import { Injectable } from '@nestjs/common'
 
 interface DeleteRecipientUseCaseRequest {
   recipientId: string
@@ -14,6 +15,7 @@ type DeleteRecipientUseCaseResponse = Either<
   object
 >
 
+@Injectable()
 export class DeleteRecipientUseCase {
   constructor(
     private readonly recipientsRepository: RecipientsRepository,

@@ -26,6 +26,8 @@ import { FetchOrderByDeliveryManIdUseCase } from '@/domain/delivery/application/
 import { FetchOrderByDeliveryManIdController } from './controllers/fetch-order-by-delivery-man-id.controller'
 import { RegisterRecipientController } from './controllers/register-recipient.controller'
 import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-cases/register-recipient-use-case'
+import { DeleteRecipientController } from './controllers/delete-recipient.controller'
+import { DeleteRecipientUseCase } from '@/domain/delivery/application/use-cases/delete-recipient-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -41,6 +43,7 @@ import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-case
     FetchDeliveryManController,
     FetchOrderByDeliveryManIdController,
     RegisterRecipientController,
+    DeleteRecipientController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -55,6 +58,7 @@ import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-case
     FetchOrderByDeliveryManIdUseCase,
     FetchOrderByDeliveryManIdUseCase,
     RegisterRecipientUseCase,
+    DeleteRecipientUseCase,
   ],
 })
 export class HttpModule {}
