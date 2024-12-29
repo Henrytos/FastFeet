@@ -37,7 +37,6 @@ describe('UpdateRecipientController (e2e)', () => {
     })
 
     const recipient = await recipientFactory.makePrismaRecipient()
-    console.table(recipient)
 
     const response = await request(app.getHttpServer())
       .put(`/recipients/${recipient.id}`)
