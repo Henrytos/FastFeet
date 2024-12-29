@@ -40,6 +40,11 @@ describe('GetRecipientController (e2e)', () => {
       .get(`/recipients/${recipient.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send()
-    expect(response.status).toBe(HttpStatus.NO_CONTENT)
+
+    expect(response.status).toBe(HttpStatus.OK)
+    expect(response.body.recipient).toEqual({
+      name: recipient.name,
+      email: recipient.email,
+    })
   })
 })

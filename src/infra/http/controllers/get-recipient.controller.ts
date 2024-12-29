@@ -17,6 +17,7 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
+import { RecipientPresenter } from '../presenters/recipient-presenter'
 
 const getRecipientParamsSchema = z.object({
   recipientId: z.string().uuid(),
@@ -31,7 +32,7 @@ export class GetRecipientController {
   @Get()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   async handler(
     @Param(new ZodValidationPipe(getRecipientParamsSchema))
     { recipientId }: GetRecipientParams,
@@ -51,6 +52,10 @@ export class GetRecipientController {
         default:
           throw new InternalServerErrorException(result.value.message)
       }
+    }
+
+    return {
+      recipient: RecipientPresenter.toHTTP(result.value.recipient),
     }
   }
 }
