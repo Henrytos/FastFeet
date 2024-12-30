@@ -16,7 +16,6 @@ export class PrismaOrderMapper {
         updatedAt: raw.updatedAt,
         deliveryAt: raw.deliveryAt,
         withdrawnAt: raw.withdrawnAt,
-        
       },
       new UniqueEntityID(raw.id),
     )
@@ -24,11 +23,15 @@ export class PrismaOrderMapper {
 
   static toPrisma(order: Order): Prisma.OrderUncheckedCreateInput {
     return {
-      id: order.id.toValue(),
-      deliveryAddressId: order.deliveryAddressId.toValue(),
-      recipientId: order.recipientId.toValue(),
-      deliveryManId: order.deliveryManId.toValue(),
-      photoId: order.photoId.toValue(),
+      id: order.id.toString(),
+      deliveryAddressId: order.deliveryAddressId
+        ? order.deliveryAddressId.toString()
+        : null,
+      recipientId: order.recipientId ? order.recipientId.toString() : null,
+      deliveryManId: order.deliveryManId
+        ? order.deliveryManId.toString()
+        : null,
+      photoId: order.photoId ? order.photoId.toString() : null,
       orderStatus: order.status,
       withdrawnAt: order.withdrawnAt,
       deliveryAt: order.deliveryAt,

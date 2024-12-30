@@ -4,7 +4,6 @@ import { AdministratorsRepository } from '@/domain/delivery/application/reposito
 import { PrismaAdministratorsRepository } from './prisma/repositories/prisma-administrators-repository'
 import { DeliveryMansRepository } from '@/domain/delivery/application/repositories/delivery-mans-repository'
 import { PrismaDeliveryMansRepository } from './prisma/repositories/prisma-delivery-mans-repository'
-import { DeliveryAddress } from '@/domain/delivery/enterprise/entities/delivery-address'
 import { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
 import { PrismaNotificationMapper } from './prisma/mappers/prisma-notification-mapper'
 import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository'
@@ -13,6 +12,8 @@ import { PhotosRepository } from '@/domain/delivery/application/repositories/pho
 import { PrismaPhotosRepository } from './prisma/repositories/prisma-photos-repository'
 import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository'
 import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipients-repository'
+import { PrismaDeliveryAddressRepository } from './prisma/repositories/prisma-delivery-address-repository'
+import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository'
 
 @Module({
   providers: [
@@ -22,8 +23,8 @@ import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipie
       useClass: PrismaAdministratorsRepository,
     },
     {
-      provide: DeliveryAddress,
-      useClass: PrismaDeliveryMansRepository,
+      provide: DeliveryAddressRepository,
+      useClass: PrismaDeliveryAddressRepository,
     },
     {
       provide: DeliveryMansRepository,
@@ -49,7 +50,7 @@ import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipie
   exports: [
     PrismaService,
     AdministratorsRepository,
-    DeliveryAddress,
+    DeliveryAddressRepository,
     DeliveryMansRepository,
     NotificationsRepository,
     OrdersRepository,

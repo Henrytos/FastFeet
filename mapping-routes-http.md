@@ -60,7 +60,7 @@
 ## Destinatários
 
 ### Criar Destinatário
-- **[ x  ] POST /recipients**: Cadastrar um novo destinatário (somente admin).
+- **[ x ] POST /recipients**: Cadastrar um novo destinatário (somente admin).
 
 ### Listar Destinatários
 - **[ x ] GET /recipients**: Listar todos os destinatários (somente admin).

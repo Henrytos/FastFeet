@@ -3,6 +3,7 @@ import { AdministratorsRepository } from '../repositories/administrators-reposit
 import { DeliveryAddressRepository } from '../repositories/delivery-address-repository'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { DeliveryAddress } from '../../enterprise/entities/delivery-address'
+import { Injectable } from '@nestjs/common'
 
 interface RegisterDeliveryAddressUseCaseRequest {
   administratorId: string
@@ -22,6 +23,8 @@ type RegisterDeliveryAddressUseCaseResponse = Either<
     deliveryAddress: DeliveryAddress
   }
 >
+
+@Injectable()
 export class RegisterDeliveryAddressUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
@@ -56,7 +59,7 @@ export class RegisterDeliveryAddressUseCase {
       longitude,
     })
 
-    this.deliveryAddressRepository.create(deliveryAddress)
+    await this.deliveryAddressRepository.create(deliveryAddress)
 
     return right({ deliveryAddress })
   }

@@ -16,6 +16,9 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async findById(id: string): Promise<Order | null> {
     const order = await this.prisma.order.findUnique({ where: { id } })
+    if (!order) {
+      return null
+    }
     return PrismaOrderMapper.toDomain(order)
   }
 
@@ -64,6 +67,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async fetchManyNearby(coordinate: Coordinate): Promise<Order[]> {
+    console.log('fetchManyNearby', coordinate)
     throw new Error('Method not implemented.')
   }
 

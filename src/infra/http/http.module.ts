@@ -34,6 +34,9 @@ import { UpdateRecipientController } from './controllers/update-recipient.contro
 import { UpdateRecipientUseCase } from '@/domain/delivery/application/use-cases/update-recipient-use-case'
 import { FetchRecipientController } from './controllers/fetch-recipient.controller'
 import { FetchRecipientUseCase } from '@/domain/delivery/application/use-cases/fetch-recipient-use-case'
+import { RegisterOrderForRecipientUseCase } from '@/domain/delivery/application/use-cases/register-order-for-recipient-use-case'
+import { RegisterOrderForRecipientController } from './controllers/register-order-for-recipient.controller'
+import { RegisterDeliveryAddressUseCase } from '@/domain/delivery/application/use-cases/register-delivery-address-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -53,6 +56,7 @@ import { FetchRecipientUseCase } from '@/domain/delivery/application/use-cases/f
     GetRecipientController,
     UpdateRecipientController,
     FetchRecipientController,
+    RegisterOrderForRecipientController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -71,6 +75,8 @@ import { FetchRecipientUseCase } from '@/domain/delivery/application/use-cases/f
     GetRecipientUseCase,
     UpdateRecipientUseCase,
     FetchRecipientUseCase,
+    RegisterOrderForRecipientUseCase,
+    RegisterDeliveryAddressUseCase,
   ],
 })
 export class HttpModule {}

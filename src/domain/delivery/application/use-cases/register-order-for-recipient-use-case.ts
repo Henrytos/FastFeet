@@ -9,6 +9,7 @@ import { DeliveryAddressRepository } from '@/domain/delivery/application/reposit
 import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
 import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { Injectable } from '@nestjs/common'
 
 interface RegisterOrderForRecipientUseCaseRequest {
   administratorId: string
@@ -22,6 +23,7 @@ type RegisterOrderForRecipientUseCaseResponse = Either<
   object
 >
 
+@Injectable()
 export class RegisterOrderForRecipientUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,
@@ -52,12 +54,14 @@ export class RegisterOrderForRecipientUseCase {
       return left(new DeliveryAddressDoesNotExistError())
     }
 
-    const newOrderForRecipient = Order.create({
+    const order = Order.create({
       status: ORDER_STATUS.PENDING,
       recipientId: recipient.id,
+      deliveryAddressId: deliveryAddress.id,
     })
 
-    this.ordersRepository.create(newOrderForRecipient)
+    await this.ordersRepository.create(order)
+
     return right({})
   }
 }
