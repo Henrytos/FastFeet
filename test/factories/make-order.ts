@@ -32,10 +32,16 @@ export class OrderFactory {
   async makePrismaOrder(overwide: Partial<OrderProps> = {}) {
     const prismaOrder = await this.prisma.order.create({
       data: {
-        deliveryManId: overwide.deliveryManId.toString() ?? undefined,
-        photoId: overwide.photoId.toString() ?? undefined,
-        deliveryAddressId: overwide.deliveryAddressId.toString() ?? undefined,
-        recipientId: overwide.recipientId.toString() ?? undefined,
+        deliveryManId: overwide.deliveryManId
+          ? overwide.deliveryManId.toString()
+          : null,
+        photoId: overwide.photoId ? overwide.photoId.toString() : null,
+        deliveryAddressId: overwide.deliveryAddressId
+          ? overwide.deliveryAddressId.toString()
+          : null,
+        recipientId: overwide.recipientId
+          ? overwide.recipientId.toString()
+          : null,
         orderStatus: overwide.status || ORDER_STATUS.PENDING,
         createdAt: overwide.createdAt || new Date(),
         updatedAt: overwide.updatedAt,

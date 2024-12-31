@@ -37,6 +37,8 @@ import { FetchRecipientUseCase } from '@/domain/delivery/application/use-cases/f
 import { RegisterOrderForRecipientUseCase } from '@/domain/delivery/application/use-cases/register-order-for-recipient-use-case'
 import { RegisterOrderForRecipientController } from './controllers/register-order-for-recipient.controller'
 import { RegisterDeliveryAddressUseCase } from '@/domain/delivery/application/use-cases/register-delivery-address-use-case'
+import { DeleteAnOrderController } from './controllers/delete-an-order.controller'
+import { DeleteAnOrderUseCase } from '@/domain/delivery/application/use-cases/delete-an-order-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -57,6 +59,7 @@ import { RegisterDeliveryAddressUseCase } from '@/domain/delivery/application/us
     UpdateRecipientController,
     FetchRecipientController,
     RegisterOrderForRecipientController,
+    DeleteAnOrderController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -77,6 +80,7 @@ import { RegisterDeliveryAddressUseCase } from '@/domain/delivery/application/us
     FetchRecipientUseCase,
     RegisterOrderForRecipientUseCase,
     RegisterDeliveryAddressUseCase,
+    DeleteAnOrderUseCase,
   ],
 })
 export class HttpModule {}
