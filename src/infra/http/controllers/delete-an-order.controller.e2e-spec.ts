@@ -40,7 +40,8 @@ describe('DeleteAnOrderController (e2e)', () => {
       role: administrator.role,
     })
 
-    const order = await orderFactory.makePrismaOrder()
+    const order = await orderFactory.makePrismaOrder({})
+
     const response = await request(app.getHttpServer())
       .delete(`/orders/${order.id}`)
       .set('Authorization', `Bearer ${token}`)

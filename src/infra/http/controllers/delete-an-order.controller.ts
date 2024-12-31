@@ -17,6 +17,7 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const routeParamsDeleteAnOrderSchema = z.object({
   orderId: z.string(),
@@ -32,7 +33,7 @@ export class DeleteAnOrderController {
   @Roles('ADMINISTRATOR')
   @HttpCode(HttpStatus.NO_CONTENT)
   async handle(
-    @Param(routeParamsDeleteAnOrderSchema)
+    @Param(new ZodValidationPipe(routeParamsDeleteAnOrderSchema))
     { orderId }: RouteParamsDeleteAnOrder,
     @CurrentUser() administrator: UserPayload,
   ) {
