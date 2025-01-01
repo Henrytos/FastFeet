@@ -8,9 +8,9 @@ import { OrderCanceledEvent } from '../events/order-canceled-event'
 import { ORDER_STATUS } from '@/core/entities/order-status.enum'
 
 export interface OrderProps {
-  deliveryManId?: UniqueEntityID
-  recipientId: UniqueEntityID
-  deliveryAddressId?: UniqueEntityID
+  deliveryManId?: UniqueEntityID | null
+  recipientId?: UniqueEntityID | null
+  deliveryAddressId?: UniqueEntityID | null
   status: ORDER_STATUS
   createdAt: Date
   updatedAt?: Date | null
@@ -20,7 +20,7 @@ export interface OrderProps {
 }
 
 export class Order extends AggregateRoot<OrderProps> {
-  get deliveryManId(): UniqueEntityID | undefined {
+  get deliveryManId(): UniqueEntityID | null | undefined {
     return this.props.deliveryManId
   }
 
@@ -29,7 +29,7 @@ export class Order extends AggregateRoot<OrderProps> {
     this.touch()
   }
 
-  get recipientId() {
+  get recipientId(): UniqueEntityID | null | undefined {
     return this.props.recipientId
   }
 
@@ -41,7 +41,7 @@ export class Order extends AggregateRoot<OrderProps> {
     this.props.photoId = photoId
   }
 
-  get deliveryAddressId(): UniqueEntityID | undefined {
+  get deliveryAddressId(): UniqueEntityID | null | undefined {
     return this.props.deliveryAddressId
   }
 
@@ -116,7 +116,7 @@ export class Order extends AggregateRoot<OrderProps> {
       {
         createdAt: new Date(),
         updatedAt: props.updatedAt ?? new Date(),
-
+        status: ORDER_STATUS.PENDING,
         ...props,
       },
       id,

@@ -42,7 +42,7 @@ export class OrderFactory {
         recipientId: overwide.recipientId
           ? overwide.recipientId.toString()
           : null,
-        orderStatus: overwide.status || ORDER_STATUS.PENDING,
+        orderStatus: overwide.status ? overwide.status : ORDER_STATUS.PENDING,
         createdAt: overwide.createdAt || new Date(),
         updatedAt: overwide.updatedAt,
         deliveryAt: overwide.deliveryAt,

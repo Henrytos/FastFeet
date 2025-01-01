@@ -7,11 +7,17 @@ export class PrismaOrderMapper {
   static toDomain(raw: PrismaOrder): Order {
     return Order.create(
       {
-        status: ORDER_STATUS[raw.orderStatus],
-        recipientId: new UniqueEntityID(raw.recipientId),
-        photoId: new UniqueEntityID(raw.photoId),
-        deliveryAddressId: new UniqueEntityID(raw.deliveryAddressId),
-        deliveryManId: new UniqueEntityID(raw.deliveryManId),
+        status: ORDER_STATUS[raw.orderStatus.toLocaleUpperCase()],
+        recipientId: raw.recipientId
+          ? new UniqueEntityID(raw.recipientId)
+          : null,
+        photoId: raw.photoId ? new UniqueEntityID(raw.photoId) : null,
+        deliveryAddressId: raw.deliveryAddressId
+          ? new UniqueEntityID(raw.deliveryAddressId)
+          : null,
+        deliveryManId: raw.deliveryManId
+          ? new UniqueEntityID(raw.deliveryManId)
+          : null,
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
         deliveryAt: raw.deliveryAt,

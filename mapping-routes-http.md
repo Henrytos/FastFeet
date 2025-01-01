@@ -79,7 +79,7 @@
 ## Encomendas
 
 ### Criar Encomenda
-- **[ ] POST /orders**: Cadastrar uma nova encomenda (somente admin).
+- **[ x ] POST /orders**: Cadastrar uma nova encomenda (somente admin).
 
 ### Listar Encomendas
 - **[ ] GET /orders**: Listar todas as encomendas (somente admin).
@@ -91,7 +91,7 @@
 - **[ ] PUT /orders/{id}**: Atualizar os dados de uma encomenda (somente admin).
 
 ### Excluir Encomenda
-- **[ ] DELETE /orders/{id}**: Excluir uma encomenda (somente admin).
+- **[ x ] DELETE /orders/{id}**: Excluir uma encomenda (somente admin).
 
 ### Marcar Encomenda como Aguardando Retirada
 - **[ ] PATCH /orders/{id}/pending**: Marcar uma encomenda como disponível para retirada (somente admin).
