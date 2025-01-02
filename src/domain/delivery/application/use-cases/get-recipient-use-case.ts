@@ -32,7 +32,7 @@ export class GetRecipientUseCase {
     const administrator =
       await this.administratorsRepository.findById(administratorId)
     if (!administrator) {
-      return left(new RecipientDoesNotExistError())
+      return left(new AdministratorDoesNotExistError())
     }
 
     const recipient = await this.recipientsRepository.findById(recipientId)

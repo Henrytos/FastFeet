@@ -5,6 +5,7 @@ import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-de
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man'
 import { makeOrder } from '@/test/factories/make-order'
 import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 
 describe('fetch nearby orders use case', () => {
   let sut: FetchOrderByDeliveryManIdUseCase
@@ -52,5 +53,16 @@ describe('fetch nearby orders use case', () => {
         }),
       ]),
     })
+  })
+
+  it('should not return requests if you are not a delivery', async () => {
+    const result = await sut.execute({
+      deliveryManId: 'invalid-delivery-man-id',
+      page: 1,
+      perPage: 10,
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError)
   })
 })
