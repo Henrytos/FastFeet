@@ -5,4 +5,6 @@ export abstract class AdministratorsRepository {
   abstract findByCpf(cpf: Cpf): Promise<Administrator | null>
   abstract findById(id: string): Promise<Administrator | null>
   abstract create(administrator: Administrator): Promise<void>
+
+  abstract exists(id: string): Promise<boolean>
 }

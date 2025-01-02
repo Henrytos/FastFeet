@@ -18,9 +18,21 @@ export abstract class OrdersRepository {
   abstract deleteManyByRecipientId(recipientId: string): Promise<void>
   abstract save(order: Order): Promise<void>
   abstract delete(order: Order): Promise<void>
-  abstract fetchOrderByDeliveryManId(
-    deliveryManId: string,
-    page: number,
-    perPage: number,
-  ): Promise<Order[]>
+  abstract fetchOrderByDeliveryManId({
+    deliveryManId,
+    page,
+    perPage,
+  }: {
+    deliveryManId: string
+    page: number
+    perPage: number
+  }): Promise<Order[]>
+
+  abstract fetchRecentOrder({
+    page,
+    perPage,
+  }: {
+    page: number
+    perPage: number
+  }): Promise<Order[]>
 }

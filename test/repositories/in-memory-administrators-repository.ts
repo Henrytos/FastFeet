@@ -32,4 +32,12 @@ export class InMemoryAdministratorsRepository
 
     return deliveryMan
   }
+
+  async exists(id: string): Promise<boolean> {
+    const administratorDoesExists: boolean = this.items.some(
+      (item) => item.id.toString() === id,
+    )
+
+    return administratorDoesExists
+  }
 }

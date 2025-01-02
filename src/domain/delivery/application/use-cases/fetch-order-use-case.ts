@@ -1,10 +1,10 @@
-import { Either } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
-import { Order } from '@prisma/client'
-import { Injectable } from '@nestjs/common'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { OrdersRepository } from '../repositories/orders-repository'
+import { Order } from '../../enterprise/entities/order'
 
+import { Injectable } from '@nestjs/common'
 interface FetchOrderUseCaseRequest {
   page: number
   perPage: number
@@ -23,7 +23,23 @@ export class FetchOrderUseCase {
     private readonly ordersRepository: OrdersRepository,
   ) {}
 
-  async execute(
-    request: FetchOrderUseCaseRequest,
-  ): Promise<FetchOrderUseCaseResponse> {}
+  async execute({
+    page,
+    perPage,
+    administratorId,
+  }: FetchOrderUseCaseRequest): Promise<FetchOrderUseCaseResponse> {
+    const administratorDoesNotExist =
+      !(await this.administratorsRepository.exists(administratorId))
+
+    if (administratorDoesNotExist) {
+      return left(new AdministratorDoesNotExistError())
+    }
+
+    const orders = await this.ordersRepository.fetchRecentOrder({
+      page,
+      perPage,
+    })
+
+    return right({ orders })
+  }
 }

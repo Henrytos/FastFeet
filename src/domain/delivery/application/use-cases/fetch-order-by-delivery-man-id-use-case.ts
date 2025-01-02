@@ -35,11 +35,11 @@ export class FetchOrderByDeliveryManIdUseCase {
       return left(new DeliveryManDoesNotExistError())
     }
 
-    const orders = await this.ordersRepository.fetchOrderByDeliveryManId(
+    const orders = await this.ordersRepository.fetchOrderByDeliveryManId({
       deliveryManId,
       page,
       perPage,
-    )
+    })
 
     return right({ orders })
   }

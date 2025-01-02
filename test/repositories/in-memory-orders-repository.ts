@@ -129,16 +129,42 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     return ordersPaginated
   }
 
-  async fetchOrderByDeliveryManId(
-    deliveryManId: string,
-    page: number,
-    perPage: number,
-  ): Promise<Order[]> {
+  async fetchOrderByDeliveryManId({
+    deliveryManId,
+    page,
+    perPage,
+  }: {
+    deliveryManId: string
+    page: number
+    perPage: number
+  }): Promise<Order[]> {
     const orders = this.items
       .filter((order) => {
         return order.deliveryManId?.toValue() === deliveryManId
       })
       .slice((page - 1) * perPage, (page - 1) * perPage + perPage)
+
+    return orders
+  }
+
+  async fetchRecentOrder({
+    page,
+    perPage,
+  }: {
+    page: number
+    perPage: number
+  }): Promise<Order[]> {
+    const orders = this.items
+      .sort((orderA, orderB) => {
+        if (orderA.createdAt > orderB.createdAt) {
+          return -1
+        }
+        if (orderA.createdAt < orderB.createdAt) {
+          return 1
+        }
+        return 0
+      })
+      .slice((page - 1) * perPage, perPage * page)
 
     return orders
   }
