@@ -5,19 +5,19 @@ import { OrdersRepository } from '../repositories/orders-repository'
 import { Order } from '../../enterprise/entities/order'
 
 import { Injectable } from '@nestjs/common'
-interface FetchOrderUseCaseRequest {
+interface FetchRecentOrderUseCaseRequest {
   page: number
   perPage: number
   administratorId: string
 }
 
-type FetchOrderUseCaseResponse = Either<
+type FetchRecentOrderUseCaseResponse = Either<
   AdministratorDoesNotExistError,
   { orders: Order[] }
 >
 
 @Injectable()
-export class FetchOrderUseCase {
+export class FetchRecentOrderUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
     private readonly ordersRepository: OrdersRepository,
@@ -27,7 +27,7 @@ export class FetchOrderUseCase {
     page,
     perPage,
     administratorId,
-  }: FetchOrderUseCaseRequest): Promise<FetchOrderUseCaseResponse> {
+  }: FetchRecentOrderUseCaseRequest): Promise<FetchRecentOrderUseCaseResponse> {
     const administratorDoesNotExist =
       !(await this.administratorsRepository.exists(administratorId))
 
