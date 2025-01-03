@@ -49,7 +49,7 @@ model Order {
     createdAt         DateTime    @default(now()) @map("created_at")
     deliveryAt        DateTime?   @map("delivery_at")
     withdrawnAt       DateTime?   @map("withdrawn_at")
-    updatedAt         DateTime    @updatedAt() @map("updated_at")
+    updatedAt         DateTime?   @updatedAt() @map("updated_at")
 
     @@map("orders")
 }

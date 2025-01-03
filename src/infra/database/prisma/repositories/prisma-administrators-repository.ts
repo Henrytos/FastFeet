@@ -46,4 +46,18 @@ export class PrismaAdministratorsRepository
       data,
     })
   }
+
+  async exists(id: string): Promise<boolean> {
+    const administrator = await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!administrator) {
+      return false
+    }
+
+    return true
+  }
 }

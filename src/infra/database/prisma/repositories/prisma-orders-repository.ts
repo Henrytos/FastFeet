@@ -47,11 +47,15 @@ export class PrismaOrdersRepository implements OrdersRepository {
     return orders.map(PrismaOrderMapper.toDomain)
   }
 
-  async fetchOrderByDeliveryManId(
-    deliveryManId: string,
-    page: number,
-    perPage: number,
-  ): Promise<Order[]> {
+  async fetchOrderByDeliveryManId({
+    deliveryManId,
+    page,
+    perPage,
+  }: {
+    deliveryManId: string
+    page: number
+    perPage: number
+  }): Promise<Order[]> {
     const orders = await this.prisma.order.findMany({
       where: {
         deliveryManId,
@@ -86,5 +90,23 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async delete(order: Order): Promise<void> {
     await this.prisma.order.delete({ where: { id: order.id.toValue() } })
+  }
+
+  async fetchRecentOrder({
+    page,
+    perPage,
+  }: {
+    page: number
+    perPage: number
+  }): Promise<Order[]> {
+    const orders = await this.prisma.order.findMany({
+      skip: (page - 1) * perPage,
+      take: perPage,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return orders.map(PrismaOrderMapper.toDomain)
   }
 }
