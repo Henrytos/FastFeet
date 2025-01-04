@@ -11,6 +11,14 @@ import { Roles } from '../guards/roles.decorator'
 import { GetDeliveryManByIdUseCase } from '@/domain/delivery/application/use-cases/get-delivery-man-by-id-use-case'
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
+import { z } from 'zod'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+
+const routeParamsGetDeliveryManSchema = z.object({
+  deliveryManId: z.string().uuid(),
+})
+
+type RouteParamsGetDeliveryMan = z.infer<typeof routeParamsGetDeliveryManSchema>
 
 @Controller('/user/:deliveryManId')
 export class GetDeliveryManByIdController {
@@ -21,7 +29,10 @@ export class GetDeliveryManByIdController {
   @Get()
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
   @HttpCode(HttpStatus.OK)
-  async handler(@Param('deliveryManId') deliveryManId: string) {
+  async handler(
+    @Param(new ZodValidationPipe(routeParamsGetDeliveryManSchema))
+    { deliveryManId }: RouteParamsGetDeliveryMan,
+  ) {
     const result = await this.getDeliveryManByIdUseCase.execute({
       deliveryManId,
     })

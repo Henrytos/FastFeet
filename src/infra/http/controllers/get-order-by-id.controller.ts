@@ -43,6 +43,7 @@ export class GetORderByIdController {
           throw new InternalServerErrorException()
       }
     }
+
     return {
       order: OrderPresenter.toHTTP(result.value.order),
     }

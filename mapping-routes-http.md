@@ -82,10 +82,10 @@
 - **[ x ] POST /orders**: Cadastrar uma nova encomenda (somente admin).
 
 ### Listar Encomendas
-- **[ ] GET /orders**: Listar todas as encomendas (somente admin).
+- **[ x ] GET /orders**: Listar todas as encomendas (somente admin).
 
 ### Visualizar Encomenda por ID
-- **[ ] GET /orders/{id}**: Visualizar uma encomenda específica (somente admin).
+- **[ x ] GET /orders/{id}**: Visualizar uma encomenda específica (somente admin).
 
 ### Atualizar Encomenda
 - **[ ] PUT /orders/{id}**: Atualizar os dados de uma encomenda (somente admin).
