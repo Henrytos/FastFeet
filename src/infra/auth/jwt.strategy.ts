@@ -17,7 +17,8 @@ export class AuthStrategy extends PassportStrategy(Strategy) {
   constructor(envService: EnvService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: envService.get('JWT_SECRET_KEY'),
+      secretOrKey: envService.get('JWT_PUBLIC_KEY'),
+      algorithms: ['RS256'],
     })
   }
 
