@@ -4,7 +4,6 @@ import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { PhotosRepository } from '../repositories/photos-repository'
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error'
 import { ORDER_STATUS } from '@/core/entities/order-status.enum'
@@ -45,15 +44,11 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new DeliveryManDoesNotExistError())
     }
 
-    if (order.deliveryManId?.toValue() !== deliveryMan.id.toValue()) {
+    if (!order.deliveryManId.equals(deliveryMan.id)) {
       return left(new WrongCredentialsError())
     }
 
-    if (
-      order.status === ORDER_STATUS.PENDING ||
-      order.status === ORDER_STATUS.DELIVERED ||
-      order.status === ORDER_STATUS.CANCELED
-    ) {
+    if (!order.isValidForDelivered()) {
       return left(new WrongCredentialsError())
     }
 
@@ -64,7 +59,7 @@ export class MarkAnOrderAsDeliveredUseCase {
 
     order.status = ORDER_STATUS.DELIVERED
     order.deliveryAt = new Date()
-    order.photoId = new UniqueEntityID(photoId)
+    order.photoId = photo.id
 
     await this.ordersRepository.save(order)
 

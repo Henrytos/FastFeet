@@ -107,8 +107,46 @@ export class Order extends AggregateRoot<OrderProps> {
     this.touch()
   }
 
-  touch() {
+  private touch() {
     this.props.updatedAt = new Date()
+  }
+
+  public isValidForCanceled(): boolean {
+    const invalidValues = [ORDER_STATUS.CANCELED, ORDER_STATUS.DELIVERED]
+    if (invalidValues.includes(this.status)) {
+      return false
+    }
+
+    return true
+  }
+
+  public isValidForWithdrawn(): boolean {
+    const invalidValues = [
+      ORDER_STATUS.WITHDRAWN,
+      ORDER_STATUS.CANCELED,
+      ORDER_STATUS.DELIVERED,
+      ORDER_STATUS.DELIVERED,
+    ]
+
+    if (invalidValues.includes(this.status)) {
+      return false
+    }
+
+    return true
+  }
+
+  public isValidForDelivered(): boolean {
+    const invalidValues = [
+      ORDER_STATUS.PENDING,
+      ORDER_STATUS.DELIVERED,
+      ORDER_STATUS.CANCELED,
+    ]
+
+    if (invalidValues.includes(this.status)) {
+      return false
+    }
+
+    return true
   }
 
   static create(props: Optional<OrderProps, 'createdAt'>, id?: UniqueEntityID) {
