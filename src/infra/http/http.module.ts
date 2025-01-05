@@ -43,10 +43,12 @@ import { GetORderByIdController } from './controllers/get-order-by-id.controller
 import { GetOrderByIdUseCase } from '@/domain/delivery/application/use-cases/get-order-by-id-use-case'
 import { FetchRecentOrderController } from './controllers/fetch-recent-order.controller'
 import { FetchRecentOrderUseCase } from '@/domain/delivery/application/use-cases/fetch-recent-order-use-case'
+import { HelloWorldController } from './controllers/hello-world.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
   controllers: [
+    HelloWorldController,
     AuthenticateController,
     CreateAccountController,
     GetProfileController,
