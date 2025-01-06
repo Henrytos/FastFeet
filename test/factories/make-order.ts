@@ -5,7 +5,14 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 
-export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
+interface OverwideOrderProps extends Partial<OrderProps> {
+  withdrawnAt?: Date | null
+  deliveryAt?: Date | null
+}
+export function makeOrder(
+  overwide: OverwideOrderProps = {},
+  id?: UniqueEntityID,
+) {
   const order = Order.create(
     {
       recipientId: new UniqueEntityID(randomUUID()),
@@ -14,9 +21,9 @@ export function makeOrder(overwide?: Partial<OrderProps>, id?: UniqueEntityID) {
       status: ORDER_STATUS.PENDING,
       createdAt: new Date(),
       photoId: new UniqueEntityID(randomUUID()),
-      updatedAt: null,
-      deliveryAt: null,
-      withdrawnAt: null,
+      updatedAt: overwide.updatedAt ? overwide.updatedAt : null,
+      deliveryAt: overwide.deliveryAt ? overwide.deliveryAt : null,
+      withdrawnAt: overwide.withdrawnAt ? overwide.withdrawnAt : null,
       ...overwide,
     },
     id,

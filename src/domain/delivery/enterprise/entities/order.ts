@@ -58,13 +58,15 @@ export class Order extends AggregateRoot<OrderProps> {
       case ORDER_STATUS.PENDING:
         this.addDomainEvent(new OrderCreatedEvent(this))
         break
-      case ORDER_STATUS.DELIVERED:
-        this.addDomainEvent(new OrderMakeDeliveredEvent(this))
-        break
-      case 'withdrawn':
+      case ORDER_STATUS.WITHDRAWN:
+        this.withdrawnAt = new Date()
         this.addDomainEvent(new OrderWithdrawnEvent(this))
         break
-      case 'canceled':
+      case ORDER_STATUS.DELIVERED:
+        this.deliveryAt = new Date()
+        this.addDomainEvent(new OrderMakeDeliveredEvent(this))
+        break
+      case ORDER_STATUS.CANCELED:
         this.addDomainEvent(new OrderCanceledEvent(this))
         break
     }
@@ -86,7 +88,7 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.deliveryAt
   }
 
-  set deliveryAt(deliveryAt: Date) {
+  private set deliveryAt(deliveryAt: Date) {
     if (!this.withdrawnAt) {
       throw new Error('Order is already withdrawn')
     }
@@ -102,7 +104,7 @@ export class Order extends AggregateRoot<OrderProps> {
     return this.props.withdrawnAt
   }
 
-  set withdrawnAt(withdrawnAt: Date) {
+  private set withdrawnAt(withdrawnAt: Date) {
     this.props.withdrawnAt = withdrawnAt
     this.touch()
   }
