@@ -35,4 +35,6 @@ export abstract class OrdersRepository {
     page: number
     perPage: number
   }): Promise<Order[]>
+
+  abstract exists(id: string): Promise<boolean>
 }

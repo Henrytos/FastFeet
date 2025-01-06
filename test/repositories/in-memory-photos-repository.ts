@@ -17,4 +17,12 @@ export class InMemoryPhotosRepository implements PhotosRepository {
 
     return photo
   }
+
+  async exists(id: string): Promise<boolean> {
+    const photoDoesExists: boolean = this.items.some(
+      (item) => item.id.toString() === id,
+    )
+
+    return photoDoesExists
+  }
 }

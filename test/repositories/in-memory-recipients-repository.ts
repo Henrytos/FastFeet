@@ -72,4 +72,12 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
     return recipients
   }
+
+  async exists(id: string): Promise<boolean> {
+    const recipientDoesExists: boolean = this.items.some(
+      (item) => item.id.toString() === id,
+    )
+
+    return recipientDoesExists
+  }
 }

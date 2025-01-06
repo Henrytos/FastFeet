@@ -55,7 +55,9 @@ describe('On Answer mark Delivered', () => {
     const order = makeOrder({
       recipientId: recipient.id,
       status: ORDER_STATUS.WITHDRAWN,
+      withdrawnAt: new Date(),
     })
+
     order.status = ORDER_STATUS.DELIVERED
     await inMemoryOrdersRepository.save(order)
 

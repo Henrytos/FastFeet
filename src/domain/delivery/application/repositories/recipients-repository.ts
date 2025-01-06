@@ -7,4 +7,5 @@ export abstract class RecipientsRepository {
   abstract delete(recipient: Recipient): Promise<void>
   abstract save(recipient: Recipient): Promise<void>
   abstract fetchRecipients(page: number, perPage: number): Promise<Recipient[]>
+  abstract exists(id: string): Promise<boolean>
 }

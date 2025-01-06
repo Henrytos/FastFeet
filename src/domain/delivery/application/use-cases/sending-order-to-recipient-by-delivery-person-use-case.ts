@@ -74,7 +74,6 @@ export class SendingOrderToRecipientByDeliveryManUseCase {
 
     order.status = ORDER_STATUS.WITHDRAWN
     order.deliveryManId = deliveryMan.id
-    order.withdrawnAt = new Date()
     order.deliveryAddressId = deliveryAddress.id
 
     this.ordersRepository.save(order)

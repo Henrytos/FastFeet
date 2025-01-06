@@ -12,5 +12,5 @@ export abstract class DeliveryMansRepository {
     perPage: number,
   ): Promise<DeliveryMan[]>
 
-
+  abstract exists(id: string): Promise<boolean>
 }

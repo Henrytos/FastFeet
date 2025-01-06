@@ -43,4 +43,12 @@ export class InMemoryDeliveryAddressRepository
 
     this.items[index] = deliveryAddress
   }
+
+  async exists(id: string): Promise<boolean> {
+    const deliveryAddressDoesExists: boolean = this.items.some(
+      (item) => item.id.toString() === id,
+    )
+
+    return deliveryAddressDoesExists
+  }
 }

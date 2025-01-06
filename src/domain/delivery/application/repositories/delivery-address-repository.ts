@@ -5,4 +5,5 @@ export abstract class DeliveryAddressRepository {
   abstract delete(id: string): Promise<void>
   abstract create(deliveryAddress: DeliveryAddress): Promise<void>
   abstract save(deliveryAddress: DeliveryAddress): Promise<void>
+  abstract exists(id: string): Promise<boolean>
 }

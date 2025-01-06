@@ -46,4 +46,12 @@ export class InMemoryDeliveryMansRepository implements DeliveryMansRepository {
 
     return deliveryMans
   }
+
+  async exists(id: string): Promise<boolean> {
+    const deliveryManDoesExists: boolean = this.items.some(
+      (item) => item.id.toString() === id,
+    )
+
+    return deliveryManDoesExists
+  }
 }

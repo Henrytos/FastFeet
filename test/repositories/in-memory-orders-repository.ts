@@ -168,4 +168,12 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     return orders
   }
+
+  async exists(id: string): Promise<boolean> {
+    const orderDoesExists: boolean = this.items.some(
+      (item) => item.id.toString() === id,
+    )
+
+    return orderDoesExists
+  }
 }

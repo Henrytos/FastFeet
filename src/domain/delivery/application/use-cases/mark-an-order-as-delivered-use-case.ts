@@ -58,7 +58,6 @@ export class MarkAnOrderAsDeliveredUseCase {
     }
 
     order.status = ORDER_STATUS.DELIVERED
-    order.deliveryAt = new Date()
     order.photoId = photo.id
 
     await this.ordersRepository.save(order)
