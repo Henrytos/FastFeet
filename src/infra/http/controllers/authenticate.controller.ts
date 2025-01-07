@@ -30,6 +30,26 @@ const authenticateBodySchema = z.object({
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Public()
+@ApiTags('sing in')
+@ApiResponse({
+  status: HttpStatus.OK,
+  description: 'Authenticated',
+  type: AccessTokenResponseDto,
+})
+@ApiResponse({
+  status: HttpStatus.UNAUTHORIZED,
+  description: 'Administrator or DeliveryMan does not exist',
+  type: AdministratorDoesNotExistMessageDTO,
+})
+@ApiResponse({
+  status: HttpStatus.INTERNAL_SERVER_ERROR,
+  description: 'Internal Server Error',
+})
+@ApiResponse({
+  status: HttpStatus.BAD_REQUEST,
+  description: 'Wrong credentials',
+  type: WrongCredentialMessageDTO,
+})
 @Controller('/sessions')
 export class AuthenticateController {
   constructor(
@@ -38,29 +58,9 @@ export class AuthenticateController {
   ) {}
 
   @Post()
-  @ApiTags('sessions')
   @ApiBody({
     type: AuthenticateBodyDto,
     required: true,
-  })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Authenticated',
-    type: AccessTokenResponseDto,
-  })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: 'Administrator or DeliveryMan does not exist',
-    type: AdministratorDoesNotExistMessageDTO,
-  })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: 'Internal Server Error',
-  })
-  @ApiResponse({
-    status: HttpStatus.BAD_REQUEST,
-    description: 'Wrong credentials',
-    type: WrongCredentialMessageDTO,
   })
   @HttpCode(HttpStatus.OK)
   async handler(
