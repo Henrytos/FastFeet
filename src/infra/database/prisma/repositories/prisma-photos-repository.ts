@@ -29,4 +29,9 @@ export class PrismaPhotosRepository implements PhotosRepository {
       data,
     })
   }
+
+  async exists(id: string): Promise<boolean> {
+    const photo = await this.findById(id)
+    return !!photo
+  }
 }

@@ -9,6 +9,8 @@ services:
       - "3000:3000"
     volumes:
       - .:/home/app
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres?schema=sample"
     depends_on:
       - postgres
   postgres:

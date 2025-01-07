@@ -96,4 +96,9 @@ export class PrismaDeliveryMansRepository implements DeliveryMansRepository {
       },
     })
   }
+
+  async exists(id: string): Promise<boolean> {
+    const deliveryMans = await this.findById(id)
+    return !!deliveryMans
+  }
 }

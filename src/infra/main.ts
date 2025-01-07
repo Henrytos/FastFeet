@@ -12,7 +12,6 @@ async function bootstrap() {
       'API para controle de encomendas de uma transportadora fictícia, a FastFeet.',
     )
     .setVersion('1.0')
-    .addTag('sessions')
     .build()
   const documentFactory = () => SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('api', app, documentFactory)

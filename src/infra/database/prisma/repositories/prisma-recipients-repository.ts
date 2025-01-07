@@ -88,4 +88,9 @@ export class PrismaRecipientsRepository implements RecipientsRepository {
 
     return recipients.map(PrismaRecipientMapper.toDomain)
   }
+
+  async exists(id: string): Promise<boolean> {
+    const recipient = await this.findById(id)
+    return !!recipient
+  }
 }

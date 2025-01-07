@@ -109,4 +109,9 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
     return orders.map(PrismaOrderMapper.toDomain)
   }
+
+  async exists(id: string): Promise<boolean> {
+    const order = await this.findById(id)
+    return !!order
+  }
 }

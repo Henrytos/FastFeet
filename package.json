@@ -18,7 +18,7 @@
     "test:e2e": "vitest run --config ./vitest.config.e2e.ts",
     "test:e2e:watch": "vitest  --config ./vitest.config.e2e.ts"
   },
-  "prisma":{
+  "prisma": {
     "generate": "npx prisma generate",
     "schema": "./prisma/schema.prisma",
     "migrate:deploy": "npx prisma migrate deploy",
@@ -70,7 +70,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.0.0",
-    "@nestjs/swagger": "^8.0.0",
+    "@nestjs/swagger": "^8.1.0",
     "@prisma/client": "^5.20.0",
     "bcryptjs": "^2.4.3",
     "ntl": "^5.1.0",

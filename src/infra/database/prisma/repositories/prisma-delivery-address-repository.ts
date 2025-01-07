@@ -46,4 +46,9 @@ export class PrismaDeliveryAddressRepository
       data,
     })
   }
+
+  async exists(id: string): Promise<boolean> {
+    const deliveryAddress = await this.findById(id)
+    return !!deliveryAddress
+  }
 }
