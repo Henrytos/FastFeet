@@ -1,7 +1,5 @@
-import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case'
 import { Public } from '@/infra/auth/public'
 import {
-  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -12,7 +10,7 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case'
+import { AuthenticateUserUseCase } from '@/domain/delivery/application/use-cases/authenticate-user-use-case'
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { AuthenticateBodyDto } from '../dtos/authenticate-body.dto'
 import { AccessTokenResponseDto } from '../dtos/access-token-response.dto'
@@ -53,8 +51,7 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 @Controller('/sessions')
 export class AuthenticateController {
   constructor(
-    private readonly authenticateAdministratorUseCase: AuthenticateAdministratorUseCase,
-    private readonly authenticateDeliveryManUseCase: AuthenticateDeliveryManUseCase,
+    private readonly authenticateUserUseCase: AuthenticateUserUseCase,
   ) {}
 
   @Post()
@@ -68,58 +65,27 @@ export class AuthenticateController {
     body: AuthenticateBodySchema,
   ) {
     const { cpf, password } = body
-    const resultAuthenticateUseCaseAdministrator =
-      await this.authenticateAdministratorUseCase.execute({
-        cpf,
-        password,
-      })
 
-    if (resultAuthenticateUseCaseAdministrator.isLeft()) {
-      switch (resultAuthenticateUseCaseAdministrator.value.constructor) {
+    const result = await this.authenticateUserUseCase.execute({
+      cpf,
+      password,
+    })
+
+    if (result.isLeft()) {
+      switch (result.value.constructor) {
         case AdministratorDoesNotExistError:
-          throw new UnauthorizedException(
-            resultAuthenticateUseCaseAdministrator.value.message,
-          )
-        case WrongCredentialsError:
-          throw new BadRequestException(
-            resultAuthenticateUseCaseAdministrator.value.message,
-          )
-        default:
-          throw new InternalServerErrorException()
-      }
-    }
-
-    if (resultAuthenticateUseCaseAdministrator.isRight()) {
-      return {
-        accessToken: resultAuthenticateUseCaseAdministrator.value.accessToken,
-      }
-    }
-
-    const resultAuthenticateUseCaseDeliveryMan =
-      await this.authenticateDeliveryManUseCase.execute({
-        cpf,
-        password,
-      })
-
-    if (resultAuthenticateUseCaseDeliveryMan.isLeft()) {
-      switch (resultAuthenticateUseCaseDeliveryMan.value.constructor) {
+          throw new UnauthorizedException(result.value.message)
         case DeliveryManDoesNotExistError:
-          throw new UnauthorizedException(
-            resultAuthenticateUseCaseDeliveryMan.value.message,
-          )
+          throw new UnauthorizedException(result.value.message)
         case WrongCredentialsError:
-          throw new BadRequestException(
-            resultAuthenticateUseCaseDeliveryMan.value.message,
-          )
+          throw new UnauthorizedException(result.value.message)
         default:
           throw new InternalServerErrorException()
       }
     }
 
-    if (resultAuthenticateUseCaseDeliveryMan.isRight()) {
-      return {
-        accessToken: resultAuthenticateUseCaseDeliveryMan.value.accessToken,
-      }
+    return {
+      accessToken: result.value.accessToken,
     }
   }
 }

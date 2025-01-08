@@ -10,7 +10,7 @@ import { RecipientsRepository } from '../repositories/recipients-repository'
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
   administratorId: string

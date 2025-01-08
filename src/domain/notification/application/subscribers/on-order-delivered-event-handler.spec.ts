@@ -16,7 +16,7 @@ import {
   MarkAnOrderAsDeliveredUseCaseResponse,
 } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case'
 import { OnOrderDeliveredEventHandler } from './on-order-delivered-event-handler'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 let sendNotificationUseCase: SendNotificationUseCase
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository

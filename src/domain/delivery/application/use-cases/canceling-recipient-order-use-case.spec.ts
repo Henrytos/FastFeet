@@ -7,7 +7,7 @@ import { AdministratorDoesNotExistError } from './errors/administrator-does-not-
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 describe('cancelling recipient order  use case', () => {
   let sut: CancelingRecipientOrderUseCase

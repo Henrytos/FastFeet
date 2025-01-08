@@ -6,7 +6,7 @@ import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exi
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { PhotosRepository } from '../repositories/photos-repository'
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 export interface MarkAnOrderAsDeliveredUseCaseRequest {
   orderId: string

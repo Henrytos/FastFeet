@@ -5,7 +5,7 @@ import { OrderCreatedEvent } from '../events/order-created-event'
 import { OrderMakeDeliveredEvent } from '../events/order-make-delivered-event'
 import { OrderWithdrawnEvent } from '../events/order-withdrawn-event'
 import { OrderCanceledEvent } from '../events/order-canceled-event'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 export interface OrderProps {
   deliveryManId?: UniqueEntityID | null

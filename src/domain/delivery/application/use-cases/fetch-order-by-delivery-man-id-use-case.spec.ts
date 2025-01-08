@@ -4,7 +4,7 @@ import { FetchOrderByDeliveryManIdUseCase } from './fetch-order-by-delivery-man-
 import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository'
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man'
 import { makeOrder } from '@/test/factories/make-order'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 
 describe('fetch nearby orders use case', () => {

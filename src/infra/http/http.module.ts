@@ -7,8 +7,7 @@ import { DatabaseModule } from '@/infra/database/database.module'
 import { CreateAccountController } from './controllers/create-account.controller'
 import { RegisterDeliveryManUseCase } from '@/domain/delivery/application/use-cases/register-delivery-man-use-case'
 import { AuthenticateController } from './controllers/authenticate.controller'
-import { AuthenticateAdministratorUseCase } from '@/domain/delivery/application/use-cases/authenticate-administrator-use-case'
-import { AuthenticateDeliveryManUseCase } from '@/domain/delivery/application/use-cases/authenticate-delivery-man-use-case'
+import { AuthenticateUserUseCase } from '@/domain/delivery/application/use-cases/authenticate-user-use-case'
 import { GetProfileController } from './controllers/get-profile.controller'
 import { DeleteDeliveryManController } from './controllers/delete-delivery-man.controller'
 import { UpdateDeliveryManController } from './controllers/update-delivery-man.controller'
@@ -72,8 +71,8 @@ import { HelloWorldController } from './controllers/hello-world.controller'
   providers: [
     AdministratorRegistrationUseCase,
     RegisterDeliveryManUseCase,
-    AuthenticateAdministratorUseCase,
-    AuthenticateDeliveryManUseCase,
+    AuthenticateUserUseCase,
+    AuthenticateUserUseCase,
     DeleteDeliveryManByIdUseCase,
     UpdateDeliveryManByAdministratorUseCase,
     ChangeDeliveryManPasswordUseCase,

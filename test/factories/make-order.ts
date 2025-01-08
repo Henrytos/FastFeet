@@ -1,4 +1,4 @@
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Order, OrderProps } from '@/domain/delivery/enterprise/entities/order'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'

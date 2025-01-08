@@ -8,7 +8,7 @@ import { OrdersRepository } from '@/domain/delivery/application/repositories/ord
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository'
 import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { Injectable } from '@nestjs/common'
 
 interface RegisterOrderForRecipientUseCaseRequest {

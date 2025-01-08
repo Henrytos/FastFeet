@@ -17,7 +17,7 @@ import { waitFor } from '@/test/utils/wait-for'
 import { SpyInstance } from 'vitest'
 
 import { OnOrderCreatedEventHandler } from './on-order-created-event-handler'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 let sendNotificationUseCase: SendNotificationUseCase
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository

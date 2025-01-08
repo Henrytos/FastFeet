@@ -4,7 +4,7 @@ import { AdministratorDoesNotExistError } from './errors/administrator-does-not-
 import { OrdersRepository } from '../repositories/orders-repository'
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 interface CancelingRecipientOrderUseCaseRequest {
   administratorId: string

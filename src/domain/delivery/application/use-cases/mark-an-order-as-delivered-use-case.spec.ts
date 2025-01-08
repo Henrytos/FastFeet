@@ -10,7 +10,7 @@ import { InMemoryPhotosRepository } from '@/test/repositories/in-memory-photos-r
 import { makePhoto } from '@/test/factories/make-photo'
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository'
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error'
-import { ORDER_STATUS } from '@/core/entities/order-status.enum'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 describe('mark an order as delivered use case', () => {
   let sut: MarkAnOrderAsDeliveredUseCase
