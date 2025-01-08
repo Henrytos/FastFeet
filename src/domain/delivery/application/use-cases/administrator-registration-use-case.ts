@@ -37,7 +37,7 @@ export class AdministratorRegistrationUseCase {
       await this.administratorsRepository.findByCpf(Cpf.create(cpf))
 
     if (administratorAlreadyExists) {
-      return left(new WrongCredentialsError())
+      return left(new WrongCredentialsError(cpf))
     }
 
     const administrator = Administrator.create({

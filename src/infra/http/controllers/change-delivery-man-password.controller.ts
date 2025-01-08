@@ -21,6 +21,7 @@ import { Roles } from '../guards/roles.decorator'
 import { RolesGuards } from '../guards/roles.guards'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiInternalServerErrorResponse,
   ApiParam,
   ApiResponse,
@@ -35,6 +36,7 @@ const validationPasswordSchema = z.string().min(6).max(20)
 type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>
 
 @ApiTags('deliveryman')
+@ApiBearerAuth()
 @ApiUnauthorizedResponse({
   type: AdministratorDoesNotExistMessageDTO,
 })

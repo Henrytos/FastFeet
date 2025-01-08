@@ -13,8 +13,8 @@ async function bootstrap() {
   const PORT = envService.get('PORT')
 
   const config = new DocumentBuilder()
-    .setTitle('nest clean Forum')
-    .setDescription('nest clean api description endpoints')
+    .setTitle('fastfeet')
+    .setDescription('Fastfeet API')
     .setVersion('1.0')
     .build()
 
