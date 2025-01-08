@@ -46,7 +46,7 @@ export class AdministratorRegistrationUseCase {
       cpf: Cpf.create(cpf),
     })
 
-    this.administratorsRepository.create(administrator)
+    await this.administratorsRepository.create(administrator)
 
     return right({ administrator })
   }

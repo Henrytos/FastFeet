@@ -18,12 +18,23 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiInternalServerErrorResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { OrderDoesNotExistMessageDTO } from '../dtos/order-does-not-exists-message.dto'
 
 const routeParamsDeleteAnOrderSchema = z.object({
   orderId: z.string(),
 })
 type RouteParamsDeleteAnOrder = z.infer<typeof routeParamsDeleteAnOrderSchema>
 
+@ApiTags('Orders')
 @Controller('/orders/:orderId')
 export class DeleteAnOrderController {
   constructor(private readonly deleteAnOrderUseCase: DeleteAnOrderUseCase) {}
@@ -31,8 +42,28 @@ export class DeleteAnOrderController {
   @Delete()
   @UseGuards(RolesGuards)
   @Roles('ADMINISTRATOR')
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'orderId',
+    type: 'uuid',
+    description: 'The ID of the order to be deleted',
+    required: true,
+    schema: {
+      type: 'string',
+      format: 'uuid',
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+    type: AdministratorDoesNotExistMessageDTO,
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid order ID',
+    type: OrderDoesNotExistMessageDTO,
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
-  async handle(
+  async handler(
     @Param(new ZodValidationPipe(routeParamsDeleteAnOrderSchema))
     { orderId }: RouteParamsDeleteAnOrder,
     @CurrentUser() administrator: UserPayload,

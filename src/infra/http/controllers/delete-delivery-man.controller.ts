@@ -9,7 +9,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
-  NotFoundException,
+  InternalServerErrorException,
   Param,
   ParseUUIDPipe,
   UnauthorizedException,
@@ -17,6 +17,16 @@ import {
 } from '@nestjs/common'
 import { RolesGuards } from '../guards/roles.guards'
 import { Roles } from '../guards/roles.decorator'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
+  ApiParam,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
+import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-message.dto'
 
 @Controller('/deliverymen/:deliveryManId')
 export class DeleteDeliveryManController {
@@ -27,6 +37,29 @@ export class DeleteDeliveryManController {
   @Delete()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'deliveryManId',
+    type: 'uuid',
+    description: 'The delivery man identifier',
+    required: true,
+    schema: {
+      type: 'string',
+      format: 'uuid',
+    },
+  })
+  @ApiNoContentResponse({
+    description: 'Delivery man deleted',
+  })
+  @ApiBadRequestResponse({
+    type: DeliveryManDoesNotExistMessageDTO,
+    description: 'Delivery man does not exist',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+    type: WrongCredentialMessageDTO,
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,
@@ -40,11 +73,11 @@ export class DeleteDeliveryManController {
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case DeliveryManDoesNotExistError:
-          throw new NotFoundException(result.value.message)
+          throw new BadRequestException(result.value.message)
         case WrongCredentialsError:
           throw new UnauthorizedException(result.value.message)
         default:
-          throw new BadRequestException()
+          throw new InternalServerErrorException()
       }
     }
   }

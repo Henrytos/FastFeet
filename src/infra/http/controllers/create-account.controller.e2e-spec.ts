@@ -24,8 +24,16 @@ describe('CreateAccountController (e2e)', () => {
   })
 
   test('[POST] /accounts/admin ', async () => {
+    const administrator = await administratorFactory.makePrismaAdministrator()
+
+    const accessToken = jwt.sign({
+      sub: administrator.id,
+      role: administrator.role,
+    })
+
     const response = await request(app.getHttpServer())
       .post('/accounts/admin')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',
         cpf: '12345678901',

@@ -36,13 +36,6 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Public()
 @ApiTags('sing in')
-@ApiUnauthorizedResponse({
-  type: AdministratorDoesNotExistMessageDTO,
-})
-@ApiInternalServerErrorResponse()
-@ApiBadRequestResponse({
-  type: WrongCredentialMessageDTO,
-})
 @Controller('/sessions')
 export class AuthenticateController {
   constructor(
@@ -58,6 +51,13 @@ export class AuthenticateController {
     status: HttpStatus.OK,
     description: 'Authenticated',
     type: AccessTokenResponseDTO,
+  })
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+  })
+  @ApiInternalServerErrorResponse()
+  @ApiBadRequestResponse({
+    type: WrongCredentialMessageDTO,
   })
   @HttpCode(HttpStatus.OK)
   async handler(
