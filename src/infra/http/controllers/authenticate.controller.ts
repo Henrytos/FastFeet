@@ -11,10 +11,17 @@ import {
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { AuthenticateUserUseCase } from '@/domain/delivery/application/use-cases/authenticate-user-use-case'
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiInternalServerErrorResponse,
+  ApiResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
 import { AuthenticateBodyDto } from '../dtos/authenticate-body.dto'
-import { AccessTokenResponseDto } from '../dtos/access-token-response.dto'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
+import { AccessTokenResponseDTO } from '../dtos/access-token-response.dto'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
@@ -29,23 +36,11 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 
 @Public()
 @ApiTags('sing in')
-@ApiResponse({
-  status: HttpStatus.OK,
-  description: 'Authenticated',
-  type: AccessTokenResponseDto,
-})
-@ApiResponse({
-  status: HttpStatus.UNAUTHORIZED,
-  description: 'Administrator or DeliveryMan does not exist',
+@ApiUnauthorizedResponse({
   type: AdministratorDoesNotExistMessageDTO,
 })
-@ApiResponse({
-  status: HttpStatus.INTERNAL_SERVER_ERROR,
-  description: 'Internal Server Error',
-})
-@ApiResponse({
-  status: HttpStatus.BAD_REQUEST,
-  description: 'Wrong credentials',
+@ApiInternalServerErrorResponse()
+@ApiBadRequestResponse({
   type: WrongCredentialMessageDTO,
 })
 @Controller('/sessions')
@@ -58,6 +53,11 @@ export class AuthenticateController {
   @ApiBody({
     type: AuthenticateBodyDto,
     required: true,
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Authenticated',
+    type: AccessTokenResponseDTO,
   })
   @HttpCode(HttpStatus.OK)
   async handler(
