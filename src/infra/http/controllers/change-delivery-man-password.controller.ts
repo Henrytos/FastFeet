@@ -37,13 +37,6 @@ type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>
 
 @ApiTags('deliveryman')
 @ApiBearerAuth()
-@ApiUnauthorizedResponse({
-  type: AdministratorDoesNotExistMessageDTO,
-})
-@ApiBadRequestResponse({
-  type: DeliveryManDoesNotExistMessageDTO,
-})
-@ApiInternalServerErrorResponse()
 @Controller('/deliverymen/:deliveryManCpf/password')
 export class ChangeDeliveryManPasswordController {
   constructor(
@@ -67,6 +60,13 @@ export class ChangeDeliveryManPasswordController {
     status: HttpStatus.OK,
     description: 'password changed successfully',
   })
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+  })
+  @ApiBadRequestResponse({
+    type: DeliveryManDoesNotExistMessageDTO,
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,
