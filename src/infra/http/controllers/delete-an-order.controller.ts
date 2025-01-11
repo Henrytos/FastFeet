@@ -21,6 +21,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiParam,
   ApiTags,
@@ -28,6 +29,7 @@ import {
 } from '@nestjs/swagger'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { OrderDoesNotExistMessageDTO } from '../dtos/order-does-not-exists-message.dto'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsDeleteAnOrderSchema = z.object({
   orderId: z.string(),
@@ -42,6 +44,7 @@ export class DeleteAnOrderController {
   @Delete()
   @UseGuards(RolesGuards)
   @Roles('ADMINISTRATOR')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBearerAuth()
   @ApiParam({
     name: 'orderId',

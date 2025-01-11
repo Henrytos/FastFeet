@@ -16,6 +16,8 @@ import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { Roles } from '../guards/roles.decorator'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const updateDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -33,6 +35,7 @@ export class UpdateDeliveryManController {
 
   @Put()
   @Roles('ADMINISTRATOR')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.NO_CONTENT)
   async handler(
     @CurrentUser() user: UserPayload,

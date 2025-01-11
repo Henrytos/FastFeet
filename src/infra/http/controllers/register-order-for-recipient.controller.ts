@@ -21,6 +21,8 @@ import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const paramsRegisterOrderSchema = z.object({
   recipientId: z.string().uuid(),
@@ -49,6 +51,7 @@ export class RegisterOrderForRecipientController {
   @Post()
   @UseGuards(RolesGuards)
   @Roles('ADMINISTRATOR')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @Param(new ZodValidationPipe(paramsRegisterOrderSchema))

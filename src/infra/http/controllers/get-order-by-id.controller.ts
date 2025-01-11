@@ -15,6 +15,8 @@ import { Roles } from '../guards/roles.decorator'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
 import { OrderPresenter } from '../presenters/order-presenter'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsGetOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -28,6 +30,7 @@ export class GetORderByIdController {
   @Get()
   @UseGuards(RolesGuards)
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.OK)
   async handler(
     @Param(new ZodValidationPipe(routeParamsGetOrderSchema))

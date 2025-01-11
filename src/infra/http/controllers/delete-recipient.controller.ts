@@ -21,6 +21,7 @@ import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-ca
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiParam,
   ApiTags,
@@ -28,6 +29,7 @@ import {
 } from '@nestjs/swagger'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const paramsDeleteRecipientSchema = z.object({
   recipientId: z.string().uuid(),
@@ -44,6 +46,7 @@ export class DeleteRecipientController {
   @Delete()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiParam({
     name: 'recipientId',
     description: 'The recipient id',

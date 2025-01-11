@@ -13,6 +13,8 @@ import { DeliveryManPresenter } from '../presenters/delivery-man-presenter'
 import { AdministratorPresenter } from '../presenters/administrator-presenter'
 import { Roles } from '../guards/roles.decorator'
 import { RolesGuards } from '../guards/roles.guards'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 @Controller('/profile')
 export class GetProfileController {
@@ -23,6 +25,7 @@ export class GetProfileController {
 
   @Get()
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @UseGuards(RolesGuards)
   @HttpCode(HttpStatus.OK)
   async handler(@CurrentUser() user: UserPayload) {

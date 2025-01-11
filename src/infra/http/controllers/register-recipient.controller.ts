@@ -19,6 +19,8 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const registerRecipientBodySchema = z.object({
   name: z.string().min(3),
@@ -34,6 +36,7 @@ export class RegisterRecipientController {
   @Post()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @Body(new ZodValidationPipe(registerRecipientBodySchema))

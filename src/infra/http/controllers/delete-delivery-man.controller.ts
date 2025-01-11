@@ -20,6 +20,7 @@ import { Roles } from '../guards/roles.decorator'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
   ApiParam,
@@ -27,6 +28,7 @@ import {
 } from '@nestjs/swagger'
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
 import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-message.dto'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 @Controller('/deliverymen/:deliveryManId')
 export class DeleteDeliveryManController {
@@ -37,6 +39,7 @@ export class DeleteDeliveryManController {
   @Delete()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBearerAuth()
   @ApiParam({
     name: 'deliveryManId',

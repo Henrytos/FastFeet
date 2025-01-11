@@ -15,6 +15,8 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { OrderPresenter } from '../presenters/order-presenter'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const queryParamsFetchRecentOrdersSchema = z.object({
   page: z.coerce.number().int().positive().optional().default(1),
@@ -34,6 +36,7 @@ export class FetchRecentOrderController {
   @Get()
   @UseGuards(RolesGuards)
   @Roles('ADMINISTRATOR')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   async handler(
     @Query(new ZodValidationPipe(queryParamsFetchRecentOrdersSchema))
     { page, perPage }: QueryParamsFetchRecentOrders,

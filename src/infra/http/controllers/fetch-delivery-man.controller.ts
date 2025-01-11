@@ -17,6 +17,8 @@ import { AdministratorDoesNotExistError } from '@/domain/delivery/application/us
 import { RolesGuards } from '../guards/roles.guards'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const queryParamsSchema = z.object({
   page: z.coerce.number().min(1).optional().default(1),
@@ -34,6 +36,7 @@ export class FetchDeliveryManController {
   @Get()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.OK)
   async handler(
     @CurrentUser() { sub }: UserPayload,

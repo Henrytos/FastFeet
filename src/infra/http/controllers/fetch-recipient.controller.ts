@@ -17,6 +17,8 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientPresenter } from '../presenters/recipient-presenter'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const queryParamsFetchRecipientSchema = z.object({
   page: z.coerce.number().optional().default(0),
@@ -32,6 +34,7 @@ export class FetchRecipientController {
   @Get()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.OK)
   async handler(
     @Query(new ZodValidationPipe(queryParamsFetchRecipientSchema))

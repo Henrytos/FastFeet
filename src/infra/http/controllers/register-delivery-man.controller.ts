@@ -17,6 +17,8 @@ import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
 import { RolesGuards } from '../guards/roles.guards'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const registerDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -37,6 +39,7 @@ export class RegisterDeliveryManController {
   @Post()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @CurrentUser() administrator: UserPayload,

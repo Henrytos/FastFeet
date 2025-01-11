@@ -18,6 +18,8 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { RecipientPresenter } from '../presenters/recipient-presenter'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const getRecipientParamsSchema = z.object({
   recipientId: z.string().uuid(),
@@ -32,6 +34,7 @@ export class GetRecipientController {
   @Get()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.OK)
   async handler(
     @Param(new ZodValidationPipe(getRecipientParamsSchema))

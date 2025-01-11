@@ -19,6 +19,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiResponse,
   ApiTags,
@@ -27,6 +28,7 @@ import { CreateUserBodyDTO } from '../dtos/create-user-body.dto'
 import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-message.dto'
 import { AdministratorCreatedResponseDTO } from '../dtos/administrator-created-response.dto'
 import { DeliveryManCreatedResponseDTO } from '../dtos/delivery-man-created-response.dto'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -48,6 +50,7 @@ export class CreateAccountController {
   @Post('/admin')
   @ApiTags('Accounts')
   @ApiBearerAuth()
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -89,6 +92,7 @@ export class CreateAccountController {
   @Post('/user')
   @ApiTags('Accounts')
   @ApiBearerAuth()
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })
   @ApiResponse({
     status: HttpStatus.CREATED,

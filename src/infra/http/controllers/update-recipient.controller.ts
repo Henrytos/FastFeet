@@ -1,12 +1,13 @@
 import {
+  BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
   Param,
   Put,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
@@ -18,6 +19,18 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { RecipientBodyDTO } from '../dtos/recipient-body.dto'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const updateRecipientBodySchema = z.object({
   name: z.string().min(3),
@@ -30,6 +43,8 @@ const updateRecipientParams = z.object({
 })
 type UpdateRecipientParams = z.infer<typeof updateRecipientParams>
 
+@ApiTags('recipient')
+@ApiBearerAuth()
 @Controller('/recipients/:recipientId')
 export class UpdateRecipientController {
   constructor(private updateRecipientUseCase: UpdateRecipientUseCase) {}
@@ -37,6 +52,21 @@ export class UpdateRecipientController {
   @Put()
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiParam({
+    name: 'recipientId',
+    description: 'The recipient id',
+    type: 'string',
+    required: true,
+  })
+  @ApiBody({
+    description: 'The recipient data',
+    required: true,
+    type: RecipientBodyDTO,
+  })
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @Body(new ZodValidationPipe(updateRecipientBodySchema))
@@ -57,9 +87,9 @@ export class UpdateRecipientController {
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case AdministratorDoesNotExistError:
-          throw new ConflictException(result.value.message)
+          throw new UnauthorizedException(result.value.message)
         case RecipientDoesNotExistError:
-          throw new ConflictException(result.value.message)
+          throw new BadRequestException(result.value.message)
         default:
           throw new InternalServerErrorException(result.value.message)
       }

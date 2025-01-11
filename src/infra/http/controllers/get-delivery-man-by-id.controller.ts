@@ -13,6 +13,8 @@ import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsGetDeliveryManSchema = z.object({
   deliveryManId: z.string().uuid(),
@@ -28,6 +30,7 @@ export class GetDeliveryManByIdController {
 
   @Get()
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.OK)
   async handler(
     @Param(new ZodValidationPipe(routeParamsGetDeliveryManSchema))

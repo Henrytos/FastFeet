@@ -16,6 +16,8 @@ import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { FetchOrderByDeliveryManIdUseCase } from '@/domain/delivery/application/use-cases/fetch-order-by-delivery-man-id-use-case'
 import { OrderPresenter } from '../presenters/order-presenter'
+import { ApiHeader } from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const queryParamsSchema = z.object({
   page: z.coerce.number().min(1).optional().default(1),
@@ -39,6 +41,7 @@ export class FetchOrderByDeliveryManIdController {
   @Get()
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.OK)
   async handler(
     @Query(new ZodValidationPipe(queryParamsSchema))
