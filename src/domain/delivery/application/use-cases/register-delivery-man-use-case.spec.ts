@@ -8,6 +8,7 @@ import { HashGenerator } from '../cryptography/hash-generator'
 import { Cpf } from '../../enterprise/entities/value-object/cpf'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 
 describe('create delivery man  use case', () => {
   let sut: RegisterDeliveryManUseCase
@@ -33,7 +34,7 @@ describe('create delivery man  use case', () => {
 
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
-      cpf: '12345678900',
+      cpf: CPF_VALID,
       name: 'john doe',
       password: '123456',
     })
@@ -49,7 +50,7 @@ describe('create delivery man  use case', () => {
 
   it('should not be possible to create delivery with repeated CPF', async () => {
     const deliveryMan = makeDeliveryMan({
-      cpf: Cpf.create('12345678911'),
+      cpf: Cpf.create(CPF_VALID),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 
@@ -71,7 +72,7 @@ describe('create delivery man  use case', () => {
   it('should not be possible to create without being administrator', async () => {
     const result = await sut.execute({
       administratorId: 'invalid-administrator-id',
-      cpf: '12345678900',
+      cpf: CPF_VALID,
       name: 'john doe',
       password: '123456',
     })

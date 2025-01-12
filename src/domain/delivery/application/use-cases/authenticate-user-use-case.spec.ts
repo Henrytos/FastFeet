@@ -9,6 +9,7 @@ import { makeDeliveryMan } from '@/test/factories/make-delivery-man'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 import { AuthenticateUserUseCase } from './authenticate-user-use-case'
 import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository'
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 
 describe('authenticate administrator use case', () => {
   let sut: AuthenticateUserUseCase
@@ -34,13 +35,13 @@ describe('authenticate administrator use case', () => {
   it('should be able possible to login with CPF and password', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
-      cpf: Cpf.create('12345678900'),
+      cpf: Cpf.create(CPF_VALID),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 
     const result = await sut.execute({
       password: '123456',
-      cpf: Cpf.create('12345678900').value,
+      cpf: Cpf.create(CPF_VALID).value,
     })
 
     expect(result.isRight()).toBe(true)
@@ -52,13 +53,13 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate with the invalid password ', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
-      cpf: Cpf.create('12345678900'),
+      cpf: Cpf.create(CPF_VALID),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 
     const result = await sut.execute({
       password: '654321',
-      cpf: Cpf.create('12345678900').value,
+      cpf: Cpf.create(CPF_VALID).value,
     })
 
     expect(result.isLeft()).toBe(true)
@@ -68,13 +69,13 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate with the invalid CPF ', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
-      cpf: Cpf.create('12345678901'),
+      cpf: Cpf.create(CPF_VALID),
     })
     inMemoryDeliveryMansRepository.items.push(deliveryMan)
 
     const result = await sut.execute({
       password: '123456',
-      cpf: '12345678900',
+      cpf: 'invalid-cpf',
     })
 
     expect(result.isLeft()).toBe(true)
@@ -84,7 +85,7 @@ describe('authenticate administrator use case', () => {
   it('should not be possible to authenticate a nonexistent administrator', async () => {
     const result = await sut.execute({
       password: '123456',
-      cpf: '00987654321',
+      cpf: 'xpf-invalid',
     })
 
     expect(result.isLeft()).toBe(true)

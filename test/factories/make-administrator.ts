@@ -1,3 +1,4 @@
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   Administrator,
@@ -15,9 +16,7 @@ export function makeAdministrator(
 ) {
   const administrator = Administrator.create(
     {
-      cpf: Cpf.create(
-        faker.number.int({ min: 10000000000, max: 99999999999 }).toString(),
-      ),
+      cpf: Cpf.create(CPF_VALID),
       name: faker.internet.userName(),
       password: faker.internet.password(),
       ...overwide,

@@ -7,6 +7,7 @@ import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { Cpf } from '../../enterprise/entities/value-object/cpf'
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 
 describe('update delivery use case', () => {
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository
@@ -30,7 +31,7 @@ describe('update delivery use case', () => {
     const administrator = makeAdministrator()
     inMemoryAdministratorsRepository.items.push(administrator)
     const deliveryMan = makeDeliveryMan({
-      cpf: Cpf.create('12345678900'),
+      cpf: Cpf.create(CPF_VALID),
       name: 'john doe',
       password: '123456',
     })

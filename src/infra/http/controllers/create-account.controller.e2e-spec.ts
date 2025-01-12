@@ -43,7 +43,7 @@ describe('CreateAccountController (e2e)', () => {
     expect(response.status).toBe(HttpStatus.CREATED)
   })
 
-  test('[POST] /accounts/user ', async () => {
+  test('[POST] /accounts/deliverymans ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
 
     const accessToken = jwt.sign({
@@ -52,7 +52,7 @@ describe('CreateAccountController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post('/accounts/user')
+      .post('/accounts/deliverymans')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',

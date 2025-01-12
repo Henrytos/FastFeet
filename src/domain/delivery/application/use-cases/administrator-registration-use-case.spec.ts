@@ -2,8 +2,8 @@ import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-
 import { AdministratorRegistrationUseCase } from './administrator-registration-use-case'
 import { FakeHashGenerator } from '@/test/cryptography/fake-hash-generator'
 import { makeAdministrator } from '@/test/factories/make-administrator'
-import { Cpf } from '../../enterprise/entities/value-object/cpf'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 
 describe('administrator registration use case', () => {
   let sut: AdministratorRegistrationUseCase
@@ -21,7 +21,7 @@ describe('administrator registration use case', () => {
 
   it('should be able to register a new administrator', async () => {
     const result = await sut.execute({
-      cpf: '12345678900',
+      cpf: CPF_VALID,
       name: 'any_name',
       password: '123456',
     })
@@ -31,9 +31,7 @@ describe('administrator registration use case', () => {
   })
 
   it('It should not be possible to create an administrator with repeated CPF', async () => {
-    const administrator = makeAdministrator({
-      cpf: Cpf.create('12345678900'),
-    })
+    const administrator = makeAdministrator()
     inMemoryAdministratorsRepository.items.push(administrator)
 
     const result = await sut.execute({

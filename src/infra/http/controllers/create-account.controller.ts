@@ -89,7 +89,7 @@ export class CreateAccountController {
     }
   }
 
-  @Post('/user')
+  @Post('/deliverymans')
   @ApiTags('Accounts')
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)

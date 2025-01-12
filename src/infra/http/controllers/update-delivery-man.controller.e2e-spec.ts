@@ -30,7 +30,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[PUT] /users/{deliveryManId} ', async () => {
+  test('[PUT] /deliverymanss/{deliveryManId} ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator({
       name: 'John Doe',
     })
@@ -46,7 +46,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .put(`/users/${deliveryMan.id}`)
+      .put(`/deliverymanss/${deliveryMan.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'John Doe Updated',

@@ -1,3 +1,4 @@
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   DeliveryMan,
@@ -15,9 +16,7 @@ export function makeDeliveryMan(
 ) {
   const deliveryMan = DeliveryMan.create(
     {
-      cpf: Cpf.create(
-        faker.number.int({ min: 10000000000, max: 99999999999 }).toString(),
-      ),
+      cpf: Cpf.create(CPF_VALID),
       name: faker.person.firstName(),
       password: faker.internet.password(),
       ...overwide,

@@ -31,6 +31,8 @@ import {
 } from '@nestjs/swagger'
 import { RecipientBodyDTO } from '../dtos/recipient-body.dto'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
 
 const updateRecipientBodySchema = z.object({
   name: z.string().min(3),
@@ -64,8 +66,14 @@ export class UpdateRecipientController {
     required: true,
     type: RecipientBodyDTO,
   })
-  @ApiUnauthorizedResponse()
-  @ApiBadRequestResponse()
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+    type: AdministratorDoesNotExistMessageDTO,
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid recipient data',
+    type: RecipientDoesNotExistErrorMessageDTO,
+  })
   @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.CREATED)
   async handler(

@@ -2,7 +2,7 @@
 
 ## Autenticação
 - **[ x ] POST /accounts/admin**: Realizar sing up com CPF e senha.
-- **[ x ] POST /accounts/user**: Realizar sing up com CPF e senha.
+- **[ x ] POST /accounts/deliverymans**: Realizar sing up com CPF e senha.
 
 
 ## Profile
@@ -16,22 +16,22 @@
 ## Usuários (Admin e Entregador)
 
 ### Cadastrar Usuário (Admin ou Entregador)
-- **[ x ] POST /users**: Cadastrar um novo usuário.
+- **[ x ] POST /deliverymanss**: Cadastrar um novo usuário.
 
 ### Listar Usuários
-- **[ X ] GET /users**: Listar todos os usuários.
+- **[ X ] GET /deliverymanss**: Listar todos os usuários.
 
 ### Visualizar Usuário por ID
-- **[ x ] GET /users/{id}**: Visualizar um usuário específico.
+- **[ x ] GET /deliverymanss/{id}**: Visualizar um usuário específico.
 
 ### Atualizar Usuário
-- **[ x ] PUT /users/{id}**: Atualizar informações de um usuário.
+- **[ x ] PUT /deliverymanss/{id}**: Atualizar informações de um usuário.
 
 ### Excluir Usuário
-- **[ x ] DELETE /users/{id}**: Excluir um usuário.
+- **[ x ] DELETE /deliverymanss/{id}**: Excluir um usuário.
 
 ### Alterar Senha
-- **[ x ] PATCH /users/{id}/password**: Alterar a senha de um usuário (somente o admin pode realizar essa operação).
+- **[ x ] PATCH /deliverymanss/{id}/password**: Alterar a senha de um usuário (somente o admin pode realizar essa operação).
 
 ---
 
