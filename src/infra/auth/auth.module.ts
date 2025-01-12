@@ -5,15 +5,28 @@ import { EnvService } from '../env/env.service'
 import { JwtAuthGuard } from './jwt-auth-guard'
 import { APP_GUARD } from '@nestjs/core'
 import { AuthStrategy } from './jwt.strategy'
+import { EnvModule } from '../env/env.module'
 
 @Module({
   imports: [
     PassportModule,
-    JwtModule.register({
-      signOptions: { expiresIn: '60s', algorithm: 'RS256' },
+    JwtModule.registerAsync({
+      imports: [EnvModule],
+      inject: [EnvService],
       global: true,
-      privateKey: process.env.JWT_PRIVATE_KEY,
-      publicKey: process.env.JWT_PUBLIC_KEY,
+      useFactory: (envService: EnvService) => {
+        const publicKEy = envService.get('JWT_PUBLIC_KEY')
+        const privateKey = envService.get('JWT_PRIVATE_KEY')
+
+        return {
+          signOptions: {
+            algorithm: 'RS256',
+            expiresIn: '60s',
+          },
+          publicKey: Buffer.from(publicKEy, 'base64'),
+          privateKey: Buffer.from(privateKey, 'base64'),
+        }
+      },
     }),
   ],
   providers: [
