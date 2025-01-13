@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   Query,
   UnauthorizedException,
   UseGuards,
@@ -54,7 +54,7 @@ export class FetchDeliveryManController {
         case AdministratorDoesNotExistError:
           throw new UnauthorizedException(result.value.message)
         default:
-          throw new BadRequestException()
+          throw new InternalServerErrorException()
       }
     }
 

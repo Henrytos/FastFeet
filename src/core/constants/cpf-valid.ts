@@ -15,11 +15,13 @@ function generateCPF() {
   return [...base, digit1, digit2].join('')
 }
 
-function getCpfInvalid() {
+export function getRandomCpfValid() {
   const CPFS = Array.from({ length: 50 }, generateCPF)
 
   const randomIndex: number = Number(Math.floor(Math.random() * CPFS.length))
   return CPFS[randomIndex]
 }
 
-export const CPF_VALID = getCpfInvalid()
+export const CPF_VALID = getRandomCpfValid()
+
+export const CPFS = Array.from({ length: 50 }, generateCPF)

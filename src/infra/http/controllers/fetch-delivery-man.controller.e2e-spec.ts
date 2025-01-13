@@ -1,3 +1,4 @@
+import { getRandomCpfValid } from '@/core/constants/cpf-valid'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -27,21 +28,20 @@ describe('FetchDeliveryManController (e2e)', () => {
   })
 
   test('[GET] /deliverymen ', async () => {
-    const administrator = await administratorFactory.makePrismaAdministrator({
-      name: 'John Doe',
-    })
+    const administrator = await administratorFactory.makePrismaAdministrator()
 
+    const CPFS = [getRandomCpfValid(), getRandomCpfValid()]
     await prisma.user.createMany({
       data: [
         {
           name: 'John Doe',
-          cpf: '123456789',
+          cpf: CPFS[0],
           passwordHash: '123456789',
           role: 'DELIVERY_MAN',
         },
         {
           name: 'John Doe',
-          cpf: '123456788',
+          cpf: CPFS[1],
           passwordHash: '123456789',
           role: 'DELIVERY_MAN',
         },
@@ -63,11 +63,11 @@ describe('FetchDeliveryManController (e2e)', () => {
       user: expect.arrayContaining([
         expect.objectContaining({
           name: 'John Doe',
-          cpf: '123456789',
+          cpf: CPFS[0],
         }),
         expect.objectContaining({
           name: 'John Doe',
-          cpf: '123456788',
+          cpf: CPFS[1],
         }),
       ]),
     })

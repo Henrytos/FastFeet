@@ -1,3 +1,4 @@
+import { getRandomCpfValid } from '@/core/constants/cpf-valid'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
 import { AdministratorFactory } from '@/test/factories/make-administrator'
@@ -36,7 +37,7 @@ describe('CreateAccountController (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',
-        cpf: '12345678901',
+        cpf: getRandomCpfValid(),
         password: 'password',
       })
 
@@ -56,7 +57,7 @@ describe('CreateAccountController (e2e)', () => {
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',
-        cpf: '12345678902',
+        cpf: getRandomCpfValid(),
         password: 'password',
       })
 

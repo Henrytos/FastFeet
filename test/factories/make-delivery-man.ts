@@ -1,4 +1,4 @@
-import { CPF_VALID } from '@/core/constants/cpf-valid'
+import { getRandomCpfValid } from '@/core/constants/cpf-valid'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   DeliveryMan,
@@ -16,7 +16,7 @@ export function makeDeliveryMan(
 ) {
   const deliveryMan = DeliveryMan.create(
     {
-      cpf: Cpf.create(CPF_VALID),
+      cpf: Cpf.create(getRandomCpfValid()),
       name: faker.person.firstName(),
       password: faker.internet.password(),
       ...overwide,

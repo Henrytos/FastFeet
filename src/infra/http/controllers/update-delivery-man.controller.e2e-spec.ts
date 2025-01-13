@@ -1,3 +1,4 @@
+import { getRandomCpfValid } from '@/core/constants/cpf-valid'
 import { Cpf } from '@/domain/delivery/enterprise/entities/value-object/cpf'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
@@ -30,7 +31,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[PUT] /deliverymanss/{deliveryManId} ', async () => {
+  test('[PUT] /deliverymans/{deliveryManId} ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator({
       name: 'John Doe',
     })
@@ -45,12 +46,13 @@ describe('UpdateDeliveryManController (e2e)', () => {
       role: administrator.role,
     })
 
+    const cpfValid = getRandomCpfValid()
     const response = await request(app.getHttpServer())
-      .put(`/deliverymanss/${deliveryMan.id}`)
+      .put(`/deliverymans/${deliveryMan.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'John Doe Updated',
-        cpf: '12345678909',
+        cpf: cpfValid,
         password: '123456',
       })
 
@@ -62,7 +64,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     })
     expect(deliveryManOnDatabase).toMatchObject({
       name: 'John Doe Updated',
-      cpf: '12345678909',
+      cpf: cpfValid,
     })
   })
 })

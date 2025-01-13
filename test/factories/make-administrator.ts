@@ -1,4 +1,4 @@
-import { CPF_VALID } from '@/core/constants/cpf-valid'
+import { getRandomCpfValid } from '@/core/constants/cpf-valid'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import {
   Administrator,
@@ -16,7 +16,7 @@ export function makeAdministrator(
 ) {
   const administrator = Administrator.create(
     {
-      cpf: Cpf.create(CPF_VALID),
+      cpf: Cpf.create(getRandomCpfValid()),
       name: faker.internet.userName(),
       password: faker.internet.password(),
       ...overwide,
