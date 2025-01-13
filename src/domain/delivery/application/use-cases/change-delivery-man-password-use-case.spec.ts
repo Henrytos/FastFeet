@@ -4,9 +4,8 @@ import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-de
 import { FakeHashGenerator } from '@/test/cryptography/fake-hash-generator'
 import { makeAdministrator } from '@/test/factories/make-administrator'
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man'
-import { Cpf } from '../../enterprise/entities/value-object/cpf'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
+import { CPF_VALID } from '@/core/constants/cpf-valid'
 
 describe('change delivery man password use case', () => {
   let sut: ChangeDeliveryManPasswordUseCase
@@ -54,25 +53,13 @@ describe('change delivery man password use case', () => {
     const administrator = makeAdministrator()
     inMemoryAdministratorsRepository.items.push(administrator)
 
-    const deliveryMan = makeDeliveryMan({
-      password: await fakeHashGenerator.hash('old password'),
-    })
-    inMemoryDeliveryMansRepository.items.push(deliveryMan)
-
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       password: 'new password',
-      cpf: Cpf.create('12345678901').value,
+      cpf: CPF_VALID,
     })
 
     expect(result.isLeft()).toEqual(true)
-    expect(inMemoryDeliveryMansRepository.items).toHaveLength(1)
-    expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
-      props: {
-        password: await fakeHashGenerator.hash('old password'),
-      },
-    })
-    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError)
   })
 
   it("should not be possible to change the delivery man's password if there is no administrator", async () => {

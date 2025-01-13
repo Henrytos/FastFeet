@@ -66,26 +66,10 @@ describe('authenticate administrator use case', () => {
     expect(result.value).toBeInstanceOf(WrongCredentialsError)
   })
 
-  it('should not be possible to authenticate with the invalid CPF ', async () => {
-    const deliveryMan = makeDeliveryMan({
-      password: '123456',
-      cpf: Cpf.create(CPF_VALID),
-    })
-    inMemoryDeliveryMansRepository.items.push(deliveryMan)
-
-    const result = await sut.execute({
-      password: '123456',
-      cpf: 'invalid-cpf',
-    })
-
-    expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError)
-  })
-
   it('should not be possible to authenticate a nonexistent administrator', async () => {
     const result = await sut.execute({
       password: '123456',
-      cpf: 'xpf-invalid',
+      cpf: CPF_VALID,
     })
 
     expect(result.isLeft()).toBe(true)

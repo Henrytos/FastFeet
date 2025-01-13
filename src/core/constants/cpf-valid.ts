@@ -15,8 +15,11 @@ function generateCPF() {
   return [...base, digit1, digit2].join('')
 }
 
-const CPFS = Array.from({ length: 50 }, generateCPF)
+function getCpfInvalid() {
+  const CPFS = Array.from({ length: 50 }, generateCPF)
 
-const randomIndex: number = Number(Math.floor(Math.random() * CPFS.length))
+  const randomIndex: number = Number(Math.floor(Math.random() * CPFS.length))
+  return CPFS[randomIndex]
+}
 
-export const CPF_VALID = CPFS[randomIndex]
+export const CPF_VALID = getCpfInvalid()

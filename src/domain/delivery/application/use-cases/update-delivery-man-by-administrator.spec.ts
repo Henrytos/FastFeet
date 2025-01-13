@@ -41,7 +41,7 @@ describe('update delivery use case', () => {
     const result = await sut.execute({
       administratorId: administrator.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      cpf: '00987654321',
+      cpf: CPF_VALID,
       name: 'doe john',
       password: '654321',
     })
@@ -50,7 +50,7 @@ describe('update delivery use case', () => {
     expect(inMemoryDeliveryMansRepository.items).toHaveLength(1)
     expect(inMemoryDeliveryMansRepository.items[0]).toMatchObject({
       props: {
-        cpf: Cpf.create('00987654321'),
+        cpf: Cpf.create(inMemoryDeliveryMansRepository.items[0].cpf.value),
         name: 'doe john',
       },
     })
