@@ -1,12 +1,12 @@
 import {
+  BadRequestException,
   Body,
-  ConflictException,
   Controller,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
-  NotFoundException,
   Post,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
@@ -19,8 +19,17 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
-import { ApiHeader } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { RecipientBodyDTO } from '../dtos/recipient-body.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 
 const registerRecipientBodySchema = z.object({
   name: z.string().min(3),
@@ -29,6 +38,8 @@ const registerRecipientBodySchema = z.object({
 
 type RegisterRecipientBody = z.infer<typeof registerRecipientBodySchema>
 
+@ApiTags('recipient')
+@ApiBearerAuth()
 @Controller('/recipients')
 export class RegisterRecipientController {
   constructor(private registerRecipientUseCase: RegisterRecipientUseCase) {}
@@ -37,6 +48,25 @@ export class RegisterRecipientController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiBody({
+    type: RecipientBodyDTO,
+    description: 'Recipient data',
+    required: true,
+  })
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          example: 'Recipient created successfully',
+        },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+    description: 'Administrator does not exist',
+  })
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @Body(new ZodValidationPipe(registerRecipientBodySchema))
@@ -53,18 +83,18 @@ export class RegisterRecipientController {
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case AdministratorDoesNotExistError:
-          throw new ConflictException(result.value.message)
+          throw new UnauthorizedException(result.value.message)
         case DeliveryAddressDoesNotExistError:
-          throw new NotFoundException(result.value.message)
+          throw new BadRequestException(result.value.message)
         case RecipientDoesNotExistError:
-          throw new ConflictException(result.value.message)
+          throw new BadRequestException(result.value.message)
         default:
           throw new InternalServerErrorException(result.value.message)
       }
     }
 
     return {
-      message: 'recipient created',
+      message: 'Recipient created successfully',
     }
   }
 }
