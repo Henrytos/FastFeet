@@ -19,6 +19,7 @@ import { AdministratorDoesNotExistError } from '@/domain/delivery/application/us
 import { Roles } from '../guards/roles.decorator'
 import {
   ApiBadRequestResponse,
+  ApiBody,
   ApiHeader,
   ApiInternalServerErrorResponse,
   ApiResponse,
@@ -29,6 +30,7 @@ import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
+import { DeliveryManBody } from '../dtos/delivery-man-body.dto'
 
 const updateDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -48,6 +50,9 @@ export class UpdateDeliveryManController {
   @Put()
   @Roles('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiBody({
+    type: DeliveryManBody,
+  })
   @ApiResponse({
     description: 'Update delivery man data',
     status: HttpStatus.NO_CONTENT,
