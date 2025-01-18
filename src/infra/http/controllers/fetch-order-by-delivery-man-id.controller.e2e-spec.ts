@@ -45,7 +45,7 @@ describe('FetchDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[GET] /deliverymen/:deliveryMan.id/deliveries ', async () => {
+  test('[GET] /delivery-man/:deliveryMan.id/deliveries ', async () => {
     const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan()
     const recipient = await recipientFactory.makePrismaRecipient()
     const photo = await photoFactory.makePrismaPhoto()
@@ -64,7 +64,7 @@ describe('FetchDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/deliverymen/${deliveryMan.id}/deliveries?page=1&perPage=10`)
+      .get(`/delivery-man/${deliveryMan.id}/deliveries?page=1&perPage=10`)
       .set('Authorization', `Bearer ${accessToken}`)
 
     expect(response.status).toBe(HttpStatus.OK)

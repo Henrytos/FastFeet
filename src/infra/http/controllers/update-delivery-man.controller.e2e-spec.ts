@@ -31,7 +31,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[PUT] /deliverymans/{deliveryManId} ', async () => {
+  test('[PUT] /delivery-mans/{deliveryManId} ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator({
       name: 'John Doe',
     })
@@ -48,7 +48,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
 
     const cpfValid = getRandomCpfValid()
     const response = await request(app.getHttpServer())
-      .put(`/deliverymans/${deliveryMan.id}`)
+      .put(`/delivery-mans/${deliveryMan.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'John Doe Updated',

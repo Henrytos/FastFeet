@@ -22,7 +22,7 @@ const routeParamsGetDeliveryManSchema = z.object({
 
 type RouteParamsGetDeliveryMan = z.infer<typeof routeParamsGetDeliveryManSchema>
 
-@Controller('/deliverymans/:deliveryManId')
+@Controller('/delivery-mans/:deliveryManId')
 export class GetDeliveryManByIdController {
   constructor(
     private readonly getDeliveryManByIdUseCase: GetDeliveryManByIdUseCase,

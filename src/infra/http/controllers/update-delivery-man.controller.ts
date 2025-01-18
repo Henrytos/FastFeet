@@ -30,7 +30,7 @@ import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
-import { DeliveryManBody } from '../dtos/delivery-man-body.dto'
+import { DeliveryManBodyDTO } from '../dtos/delivery-man-body.dto'
 
 const updateDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -41,7 +41,7 @@ const updateDeliveryManBodySchema = z.object({
 type UpdateDeliveryManBodySchema = z.infer<typeof updateDeliveryManBodySchema>
 
 @ApiTags('delivery-man')
-@Controller('/deliverymans/:deliveryManId')
+@Controller('/delivery-mans/:deliveryManId')
 export class UpdateDeliveryManController {
   constructor(
     private readonly updateDeliveryManByAdministratorUseCase: UpdateDeliveryManByAdministratorUseCase,
@@ -51,7 +51,7 @@ export class UpdateDeliveryManController {
   @Roles('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({
-    type: DeliveryManBody,
+    type: DeliveryManBodyDTO,
   })
   @ApiResponse({
     description: 'Update delivery man data',

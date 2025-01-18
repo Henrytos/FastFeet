@@ -5,6 +5,7 @@ import {
   Controller,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   Post,
   UnauthorizedException,
   UseGuards,
@@ -17,8 +18,19 @@ import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
 import { RolesGuards } from '../guards/roles.guards'
-import { ApiHeader } from '@nestjs/swagger'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { DeliveryManBodyDTO } from '../dtos/delivery-man-body.dto'
 
 const registerDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -30,7 +42,9 @@ type RegisterDeliveryManBody = z.infer<typeof registerDeliveryManBodySchema>
 
 const validationZodPipe = new ZodValidationPipe(registerDeliveryManBodySchema)
 
-@Controller('/deliverymen')
+@ApiTags('deliveryman')
+@ApiBearerAuth()
+@Controller('/delivery-man')
 export class RegisterDeliveryManController {
   constructor(
     private readonly registerDeliveryManUseCase: RegisterDeliveryManUseCase,
@@ -40,6 +54,26 @@ export class RegisterDeliveryManController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiBody({
+    type: DeliveryManBodyDTO,
+  })
+  @ApiCreatedResponse()
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+    description: 'Unauthorized access',
+  })
+  @ApiBadRequestResponse({
+    description: 'Bad request',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          example: 'Wrong credentials [cpf]',
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @CurrentUser() administrator: UserPayload,
@@ -61,7 +95,7 @@ export class RegisterDeliveryManController {
         case WrongCredentialsError:
           throw new BadRequestException(result.value.message)
         default:
-          throw new BadRequestException()
+          throw new InternalServerErrorException()
       }
     }
   }

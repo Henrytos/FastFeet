@@ -26,7 +26,7 @@ describe('RegisterDeliveryManController (e2e)', () => {
     await app.init()
   })
 
-  test('[POST] /deliverymen ', async () => {
+  test('[POST] /delivery-man ', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
     const token = jwt.sign({
       sub: administrator.id,
@@ -34,7 +34,7 @@ describe('RegisterDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post(`/deliverymen`)
+      .post(`/delivery-man`)
       .set('Authorization', `Bearer ${token}`)
       .send({
         name: 'John Doe Updated',

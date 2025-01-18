@@ -30,7 +30,7 @@ import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not
 import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-message.dto'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
-@Controller('/deliverymen/:deliveryManId')
+@Controller('/delivery-man/:deliveryManId')
 export class DeleteDeliveryManController {
   constructor(
     private readonly deleteDeliveryManUseCase: DeleteDeliveryManByIdUseCase,

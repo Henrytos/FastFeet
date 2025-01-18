@@ -32,7 +32,7 @@ describe('ChangeDeliveryManPasswordController (e2e)', () => {
     await app.init()
   })
 
-  test('[PATCH] /deliverymen/{deliveryManCpf}/password', async () => {
+  test('[PATCH] /delivery-man/{deliveryManCpf}/password', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
     const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan({
       password: await hash('password', 8),
@@ -44,7 +44,7 @@ describe('ChangeDeliveryManPasswordController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .patch(`/deliverymen/${deliveryMan.cpf}/password`)
+      .patch(`/delivery-man/${deliveryMan.cpf}/password`)
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         password: 'new password',

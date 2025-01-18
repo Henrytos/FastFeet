@@ -39,7 +39,7 @@ type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>
 
 @ApiTags('deliveryman')
 @ApiBearerAuth()
-@Controller('/deliverymen/:deliveryManCpf/password')
+@Controller('/delivery-man/:deliveryManCpf/password')
 export class ChangeDeliveryManPasswordController {
   constructor(
     private readonly changeDeliveryManPasswordUseCase: ChangeDeliveryManPasswordUseCase,

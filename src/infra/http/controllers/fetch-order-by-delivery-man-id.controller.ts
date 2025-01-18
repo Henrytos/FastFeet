@@ -32,7 +32,7 @@ const routeParamsSchema = z.object({
 
 type RouteParams = z.infer<typeof routeParamsSchema>
 
-@Controller('/deliverymen/:deliveryManId/deliveries')
+@Controller('/delivery-man/:deliveryManId/deliveries')
 export class FetchOrderByDeliveryManIdController {
   constructor(
     private readonly fetchOrderByDeliveryManIdUseCase: FetchOrderByDeliveryManIdUseCase,

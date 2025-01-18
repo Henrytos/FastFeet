@@ -54,7 +54,7 @@ describe('FetchDeliveryManController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/deliverymen?page=1&perPage=10`)
+      .get(`/delivery-mans?page=1&perPage=10`)
       .set('Authorization', `Bearer ${token}`)
       .send()
 

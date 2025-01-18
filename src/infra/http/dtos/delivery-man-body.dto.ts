@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export class DeliveryManBody {
+export class DeliveryManBodyDTO {
   @ApiProperty({
     type: 'string',
     description: 'name delivery man',

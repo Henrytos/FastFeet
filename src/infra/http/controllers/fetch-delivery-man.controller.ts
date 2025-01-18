@@ -27,7 +27,7 @@ const queryParamsSchema = z.object({
 
 type QueryParams = z.infer<typeof queryParamsSchema>
 
-@Controller('/deliverymen')
+@Controller('/delivery-mans')
 export class FetchDeliveryManController {
   constructor(
     private readonly fetchDeliveryMansUseCase: FetchDeliveryMansUseCase,

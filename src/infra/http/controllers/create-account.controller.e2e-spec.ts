@@ -53,7 +53,7 @@ describe('CreateAccountController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .post('/accounts/deliverymans')
+      .post('/accounts/delivery-man')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'John Doe',

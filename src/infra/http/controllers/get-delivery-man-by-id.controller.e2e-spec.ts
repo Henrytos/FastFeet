@@ -23,7 +23,7 @@ describe('GetDeliveryByIdController (e2e)', () => {
     await app.init()
   })
 
-  test('[GET] /deliverymans/{deliveryManId} ', async () => {
+  test('[GET] /delivery-mans/{deliveryManId} ', async () => {
     const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan({
       name: 'John Doe',
     })
@@ -34,7 +34,7 @@ describe('GetDeliveryByIdController (e2e)', () => {
     })
 
     const response = await request(app.getHttpServer())
-      .get(`/deliverymans/${deliveryMan.id}`)
+      .get(`/delivery-mans/${deliveryMan.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send()
 
