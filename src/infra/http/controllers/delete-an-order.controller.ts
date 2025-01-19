@@ -36,7 +36,8 @@ const routeParamsDeleteAnOrderSchema = z.object({
 })
 type RouteParamsDeleteAnOrder = z.infer<typeof routeParamsDeleteAnOrderSchema>
 
-@ApiTags('Orders')
+@ApiTags('order')
+@ApiBearerAuth()
 @Controller('/orders/:orderId')
 export class DeleteAnOrderController {
   constructor(private readonly deleteAnOrderUseCase: DeleteAnOrderUseCase) {}

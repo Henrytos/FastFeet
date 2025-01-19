@@ -19,6 +19,7 @@ import { AdministratorDoesNotExistError } from '@/domain/delivery/application/us
 import { Roles } from '../guards/roles.decorator'
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiHeader,
   ApiInternalServerErrorResponse,
@@ -41,6 +42,7 @@ const updateDeliveryManBodySchema = z.object({
 type UpdateDeliveryManBodySchema = z.infer<typeof updateDeliveryManBodySchema>
 
 @ApiTags('delivery-man')
+@ApiBearerAuth()
 @Controller('/delivery-mans/:deliveryManId')
 export class UpdateDeliveryManController {
   constructor(

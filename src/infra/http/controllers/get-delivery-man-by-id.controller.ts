@@ -13,7 +13,7 @@ import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsGetDeliveryManSchema = z.object({
@@ -22,6 +22,8 @@ const routeParamsGetDeliveryManSchema = z.object({
 
 type RouteParamsGetDeliveryMan = z.infer<typeof routeParamsGetDeliveryManSchema>
 
+@ApiTags('delivery-man')
+@ApiBearerAuth()
 @Controller('/delivery-mans/:deliveryManId')
 export class GetDeliveryManByIdController {
   constructor(

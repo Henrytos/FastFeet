@@ -37,8 +37,8 @@ const validationPasswordSchema = z.string().min(6).max(20)
 
 type ValidationPasswordSchema = z.infer<typeof validationPasswordSchema>
 
-@ApiTags('deliveryman')
 @ApiBearerAuth()
+@ApiTags('delivery-man')
 @Controller('/delivery-man/:deliveryManCpf/password')
 export class ChangeDeliveryManPasswordController {
   constructor(

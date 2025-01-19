@@ -21,7 +21,7 @@ import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const paramsRegisterOrderSchema = z.object({
@@ -41,6 +41,8 @@ const bodyRegisterOrderSchema = z.object({
 })
 type BodyRegisterOrder = z.infer<typeof bodyRegisterOrderSchema>
 
+@ApiTags('order')
+@ApiBearerAuth()
 @Controller('/orders/:recipientId')
 export class RegisterOrderForRecipientController {
   constructor(

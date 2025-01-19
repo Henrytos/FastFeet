@@ -38,7 +38,7 @@ const createUserBodySchema = z.object({
 
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
 
-@ApiTags('Accounts')
+@ApiTags('sing up')
 @ApiBearerAuth()
 @Controller('/accounts')
 export class CreateAccountController {
@@ -48,7 +48,6 @@ export class CreateAccountController {
   ) {}
 
   @Post('/admin')
-  @ApiTags('Accounts')
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })
@@ -90,7 +89,6 @@ export class CreateAccountController {
   }
 
   @Post('/delivery-man')
-  @ApiTags('Accounts')
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })

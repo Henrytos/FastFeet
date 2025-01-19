@@ -15,7 +15,7 @@ import { Roles } from '../guards/roles.decorator'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
 import { OrderPresenter } from '../presenters/order-presenter'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsGetOrderSchema = z.object({
@@ -23,6 +23,8 @@ const routeParamsGetOrderSchema = z.object({
 })
 type RouteParamsGetOrder = z.infer<typeof routeParamsGetOrderSchema>
 
+@ApiTags('order')
+@ApiBearerAuth()
 @Controller('/orders/:orderId')
 export class GetORderByIdController {
   constructor(private readonly getOrderByIdUseCase: GetOrderByIdUseCase) {}

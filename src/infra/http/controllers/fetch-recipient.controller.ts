@@ -17,7 +17,7 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientPresenter } from '../presenters/recipient-presenter'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const queryParamsFetchRecipientSchema = z.object({
@@ -27,6 +27,8 @@ const queryParamsFetchRecipientSchema = z.object({
 
 type QueryParamsFetchRecipient = z.infer<typeof queryParamsFetchRecipientSchema>
 
+@ApiTags('recipient')
+@ApiBearerAuth()
 @Controller('/recipients')
 export class FetchRecipientController {
   constructor(private fetchRecipientUseCase: FetchRecipientUseCase) {}

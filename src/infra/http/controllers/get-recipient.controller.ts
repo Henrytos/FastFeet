@@ -18,7 +18,7 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { RecipientPresenter } from '../presenters/recipient-presenter'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const getRecipientParamsSchema = z.object({
@@ -27,6 +27,8 @@ const getRecipientParamsSchema = z.object({
 
 type GetRecipientParams = z.infer<typeof getRecipientParamsSchema>
 
+@ApiTags('recipient')
+@ApiBearerAuth()
 @Controller('/recipients/:recipientId')
 export class GetRecipientController {
   constructor(private getRecipientUseCase: GetRecipientUseCase) {}

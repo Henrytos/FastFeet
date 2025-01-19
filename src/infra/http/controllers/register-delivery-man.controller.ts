@@ -42,7 +42,7 @@ type RegisterDeliveryManBody = z.infer<typeof registerDeliveryManBodySchema>
 
 const validationZodPipe = new ZodValidationPipe(registerDeliveryManBodySchema)
 
-@ApiTags('deliveryman')
+@ApiTags('delivery-man')
 @ApiBearerAuth()
 @Controller('/delivery-man')
 export class RegisterDeliveryManController {

@@ -24,12 +24,15 @@ import {
   ApiInternalServerErrorResponse,
   ApiNoContentResponse,
   ApiParam,
+  ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
 import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-message.dto'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
+@ApiTags('delivery-man')
+@ApiBearerAuth()
 @Controller('/delivery-man/:deliveryManId')
 export class DeleteDeliveryManController {
   constructor(
@@ -40,7 +43,6 @@ export class DeleteDeliveryManController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
-  @ApiBearerAuth()
   @ApiParam({
     name: 'deliveryManId',
     type: 'uuid',

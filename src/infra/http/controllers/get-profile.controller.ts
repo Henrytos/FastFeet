@@ -13,9 +13,11 @@ import { DeliveryManPresenter } from '../presenters/delivery-man-presenter'
 import { AdministratorPresenter } from '../presenters/administrator-presenter'
 import { Roles } from '../guards/roles.decorator'
 import { RolesGuards } from '../guards/roles.guards'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
+@ApiTags('profile')
+@ApiBearerAuth()
 @Controller('/profile')
 export class GetProfileController {
   constructor(

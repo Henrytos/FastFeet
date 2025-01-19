@@ -17,7 +17,7 @@ import { AdministratorDoesNotExistError } from '@/domain/delivery/application/us
 import { RolesGuards } from '../guards/roles.guards'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { ApiHeader } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const queryParamsSchema = z.object({
@@ -27,6 +27,8 @@ const queryParamsSchema = z.object({
 
 type QueryParams = z.infer<typeof queryParamsSchema>
 
+@ApiTags('delivery-man')
+@ApiBearerAuth()
 @Controller('/delivery-mans')
 export class FetchDeliveryManController {
   constructor(
