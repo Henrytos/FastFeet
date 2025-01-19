@@ -19,9 +19,9 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
+  ApiCreatedResponse,
   ApiHeader,
   ApiInternalServerErrorResponse,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger'
 import { CreateUserBodyDTO } from '../dtos/create-user-body.dto'
@@ -47,12 +47,11 @@ export class CreateAccountController {
     private readonly registerDeliveryManUseCase: RegisterDeliveryManUseCase,
   ) {}
 
-  @Post('/admin')
+  @Post('/administrator')
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
+  @ApiCreatedResponse({
     description: 'Administrator created successfully',
     type: AdministratorCreatedResponseDTO,
   })
@@ -92,8 +91,7 @@ export class CreateAccountController {
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
+  @ApiCreatedResponse({
     description: 'Delivery man created successfully',
     type: DeliveryManCreatedResponseDTO,
   })
