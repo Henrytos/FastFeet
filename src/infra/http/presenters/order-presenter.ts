@@ -3,6 +3,7 @@ import { Order } from '@/domain/delivery/enterprise/entities/order'
 export class OrderPresenter {
   static toHTTP(order: Order) {
     return {
+      id: order.id.toString(),
       deliveryManId: order.deliveryManId
         ? order.deliveryManId?.toString()
         : null,

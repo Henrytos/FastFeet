@@ -3,6 +3,7 @@ import { Administrator } from '@/domain/delivery/enterprise/entities/administrat
 export class AdministratorPresenter {
   static toHTTP(administrator: Administrator) {
     return {
+      id: administrator.id.toString(),
       name: administrator.name,
       cpf: administrator.cpf.value,
       role: 'ADMINISTRATOR',
