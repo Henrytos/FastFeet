@@ -15,7 +15,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiInternalServerErrorResponse,
-  ApiResponse,
+  ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
@@ -47,8 +47,7 @@ export class AuthenticateController {
     type: AuthenticateBodyDto,
     required: true,
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
+  @ApiOkResponse({
     description: 'Authenticated',
     type: AccessTokenResponseDTO,
   })
