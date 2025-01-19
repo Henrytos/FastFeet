@@ -23,7 +23,8 @@ import {
   ApiBody,
   ApiHeader,
   ApiInternalServerErrorResponse,
-  ApiResponse,
+  ApiOkResponse,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
@@ -52,12 +53,17 @@ export class UpdateDeliveryManController {
   @Put()
   @Roles('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiParam({
+    name: 'deliveryManId',
+    type: 'string',
+    required: true,
+    format: 'uuid',
+  })
   @ApiBody({
     type: DeliveryManBodyDTO,
   })
-  @ApiResponse({
+  @ApiOkResponse({
     description: 'Update delivery man data',
-    status: HttpStatus.NO_CONTENT,
     schema: {
       example: {
         message: 'Delivery man updated successfully',
@@ -73,7 +79,7 @@ export class UpdateDeliveryManController {
     description: 'Delivery man does not exist',
   })
   @ApiInternalServerErrorResponse()
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @HttpCode(HttpStatus.OK)
   async handler(
     @CurrentUser() user: UserPayload,
     @Param('deliveryManId', ParseUUIDPipe) deliveryManId: string,

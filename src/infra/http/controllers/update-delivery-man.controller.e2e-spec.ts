@@ -56,7 +56,7 @@ describe('UpdateDeliveryManController (e2e)', () => {
         password: '123456',
       })
 
-    expect(response.status).toBe(HttpStatus.NO_CONTENT)
+    expect(response.status).toBe(HttpStatus.OK)
     const deliveryManOnDatabase = await prisma.user.findUnique({
       where: {
         id: deliveryMan.id,
