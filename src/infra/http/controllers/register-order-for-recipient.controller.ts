@@ -21,8 +21,21 @@ import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
+import { DeliveryAddressBodyDTO } from '../dtos/delivery-address-body.dto'
 
 const paramsRegisterOrderSchema = z.object({
   recipientId: z.string().uuid(),
@@ -54,6 +67,42 @@ export class RegisterOrderForRecipientController {
   @UseGuards(RolesGuards)
   @Roles('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiParam({
+    name: 'recipientId',
+    type: 'string',
+    format: 'uuid',
+    description: 'The recipient id',
+    required: true,
+  })
+  @ApiBody({
+    description: 'The delivery address data',
+    type: DeliveryAddressBodyDTO,
+    required: true,
+  })
+  @ApiOkResponse({
+    description: 'Order registered successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Order registered successfully',
+        },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+    description: 'Unauthorized access',
+  })
+  @ApiBadRequestResponse({
+    type: RecipientDoesNotExistErrorMessageDTO,
+    description: 'Invalid recipient',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid delivery address',
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @Param(new ZodValidationPipe(paramsRegisterOrderSchema))
@@ -76,9 +125,14 @@ export class RegisterOrderForRecipientController {
       })
 
     if (resultCreatedDeliveryAddress.isLeft()) {
-      throw new UnauthorizedException(
-        resultCreatedDeliveryAddress.value.message,
-      )
+      switch (resultCreatedDeliveryAddress.value.constructor) {
+        case AdministratorDoesNotExistError:
+          throw new UnauthorizedException(
+            resultCreatedDeliveryAddress.value.message,
+          )
+        default:
+          throw new InternalServerErrorException('An unexpected error occurred')
+      }
     }
 
     const result = await this.registerOrderUseCase.execute({

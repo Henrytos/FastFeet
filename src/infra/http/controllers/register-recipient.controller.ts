@@ -20,9 +20,11 @@ import { AdministratorDoesNotExistError } from '@/domain/delivery/application/us
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiBody,
   ApiHeader,
+  ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -30,6 +32,8 @@ import {
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { RecipientBodyDTO } from '../dtos/recipient-body.dto'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
+import { DeliveryAddressDoesNotExistMessageDTO } from '../dtos/delivery-address-does-not-exist-messge.dto'
 
 const registerRecipientBodySchema = z.object({
   name: z.string().min(3),
@@ -67,6 +71,15 @@ export class RegisterRecipientController {
     type: AdministratorDoesNotExistMessageDTO,
     description: 'Administrator does not exist',
   })
+  @ApiBadRequestResponse({
+    type: DeliveryAddressDoesNotExistMessageDTO,
+    description: 'Delivery address does not exist',
+  })
+  @ApiBadRequestResponse({
+    type: RecipientDoesNotExistErrorMessageDTO,
+    description: 'Recipient already exists',
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.CREATED)
   async handler(
     @Body(new ZodValidationPipe(registerRecipientBodySchema))
