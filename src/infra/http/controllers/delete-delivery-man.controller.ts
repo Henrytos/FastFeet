@@ -43,6 +43,7 @@ export class DeleteDeliveryManController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiNoContentResponse()
   @ApiParam({
     name: 'deliveryManId',
     type: 'uuid',

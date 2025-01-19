@@ -23,6 +23,7 @@ import {
   ApiBearerAuth,
   ApiHeader,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
   ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -37,8 +38,8 @@ const paramsDeleteRecipientSchema = z.object({
 
 type ParamsDeleteRecipient = z.infer<typeof paramsDeleteRecipientSchema>
 
-@ApiBearerAuth()
 @ApiTags('recipient')
+@ApiBearerAuth()
 @Controller('/recipients/:recipientId')
 export class DeleteRecipientController {
   constructor(private deleteRecipientUseCase: DeleteRecipientUseCase) {}
@@ -52,6 +53,7 @@ export class DeleteRecipientController {
     description: 'The recipient id',
     type: 'string',
   })
+  @ApiNoContentResponse()
   @ApiUnauthorizedResponse({
     type: AdministratorDoesNotExistMessageDTO,
     description: 'Unauthorized access',

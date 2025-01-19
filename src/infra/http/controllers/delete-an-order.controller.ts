@@ -23,6 +23,7 @@ import {
   ApiBearerAuth,
   ApiHeader,
   ApiInternalServerErrorResponse,
+  ApiNoContentResponse,
   ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -57,6 +58,7 @@ export class DeleteAnOrderController {
       format: 'uuid',
     },
   })
+  @ApiNoContentResponse()
   @ApiUnauthorizedResponse({
     description: 'Unauthorized',
     type: AdministratorDoesNotExistMessageDTO,
