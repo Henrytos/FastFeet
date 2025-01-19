@@ -17,8 +17,18 @@ import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientPresenter } from '../presenters/recipient-presenter'
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { FetchSchemaDTO } from '../dtos/fetch-schema.dto'
 
 const queryParamsFetchRecipientSchema = z.object({
   page: z.coerce.number().optional().default(0),
@@ -37,6 +47,15 @@ export class FetchRecipientController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiQuery({
+    type: FetchSchemaDTO,
+  })
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+    description: 'Unauthorized access',
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.OK)
   async handler(
     @Query(new ZodValidationPipe(queryParamsFetchRecipientSchema))

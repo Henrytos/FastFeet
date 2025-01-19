@@ -70,7 +70,11 @@ describe(' fetch recipient controller [E2E]', () => {
     expect(response.body).toHaveProperty('recipients')
     expect(response.body.recipients).toHaveLength(1)
     expect(response.body.recipients).toEqual([
-      { email: 'jhonDoe@gmail.com', name: 'John Doe' },
+      expect.objectContaining({
+        id: expect.any(String),
+        email: 'jhonDoe@gmail.com',
+        name: 'John Doe',
+      }),
     ])
   })
 })

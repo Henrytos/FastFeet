@@ -17,8 +17,18 @@ import { AdministratorDoesNotExistError } from '@/domain/delivery/application/us
 import { RolesGuards } from '../guards/roles.guards'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
+import { FetchSchemaDTO } from '../dtos/fetch-schema.dto'
 
 const queryParamsSchema = z.object({
   page: z.coerce.number().min(1).optional().default(1),
@@ -39,6 +49,15 @@ export class FetchDeliveryManController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiQuery({
+    type: FetchSchemaDTO,
+  })
+  @ApiOkResponse({})
+  @ApiUnauthorizedResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+    description: 'Unauthorized access',
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.OK)
   async handler(
     @CurrentUser() { sub }: UserPayload,
