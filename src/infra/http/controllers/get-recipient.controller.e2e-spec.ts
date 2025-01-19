@@ -42,7 +42,8 @@ describe('GetRecipientController (e2e)', () => {
       .send()
 
     expect(response.status).toBe(HttpStatus.OK)
-    expect(response.body.recipient).toEqual({
+    expect(response.body.recipient).toMatchObject({
+      id: expect.any(String),
       name: recipient.name,
       email: recipient.email,
     })

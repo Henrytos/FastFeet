@@ -1,12 +1,13 @@
 import { GetRecipientUseCase } from '@/domain/delivery/application/use-cases/get-recipient-use-case'
 import {
-  ConflictException,
+  BadRequestException,
   Controller,
   Get,
   HttpCode,
   HttpStatus,
   InternalServerErrorException,
   Param,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
@@ -18,8 +19,19 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { RecipientPresenter } from '../presenters/recipient-presenter'
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { RecipientDTO } from '../dtos/recipient.dto'
+import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
+import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 
 const getRecipientParamsSchema = z.object({
   recipientId: z.string().uuid(),
@@ -37,6 +49,25 @@ export class GetRecipientController {
   @Roles('ADMINISTRATOR')
   @UseGuards(RolesGuards)
   @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiParam({
+    name: 'recipientId',
+    type: 'string',
+    required: true,
+    format: 'uuid',
+  })
+  @ApiOkResponse({
+    type: RecipientDTO,
+    description: 'Recipient details',
+  })
+  @ApiBadRequestResponse({
+    type: RecipientDoesNotExistErrorMessageDTO,
+    description: 'Recipient does not exist',
+  })
+  @ApiBadRequestResponse({
+    type: AdministratorDoesNotExistMessageDTO,
+    description: 'Unauthorized',
+  })
+  @ApiInternalServerErrorResponse()
   @HttpCode(HttpStatus.OK)
   async handler(
     @Param(new ZodValidationPipe(getRecipientParamsSchema))
@@ -51,9 +82,9 @@ export class GetRecipientController {
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case RecipientDoesNotExistError:
-          throw new ConflictException(result.value.message)
+          throw new BadRequestException(result.value.message)
         case AdministratorDoesNotExistError:
-          throw new ConflictException(result.value.message)
+          throw new UnauthorizedException(result.value.message)
         default:
           throw new InternalServerErrorException(result.value.message)
       }

@@ -1,5 +1,3 @@
-import { AdministratorsRepository } from '@/domain/delivery/application/repositories/administrators-repository'
-import { DeliveryMansRepository } from '@/domain/delivery/application/repositories/delivery-mans-repository'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import {
@@ -9,38 +7,41 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common'
-import { DeliveryManPresenter } from '../presenters/delivery-man-presenter'
-import { AdministratorPresenter } from '../presenters/administrator-presenter'
 import { Roles } from '../guards/roles.decorator'
 import { RolesGuards } from '../guards/roles.guards'
-import { ApiBearerAuth, ApiHeader, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiHeader,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { UserPresenter } from '../presenters/user-presenter'
+import { UserBodyDTO } from '../dtos/user-body.dto'
 
 @ApiTags('profile')
 @ApiBearerAuth()
 @Controller('/profile')
 export class GetProfileController {
-  constructor(
-    private readonly administratorsRepository: AdministratorsRepository,
-    private readonly deliveryMansRepository: DeliveryMansRepository,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   @Get()
   @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
-  @ApiHeader(FORMAT_TOKEN_DTO)
   @UseGuards(RolesGuards)
+  @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiOkResponse({
+    type: UserBodyDTO,
+    description: 'User profile',
+  })
   @HttpCode(HttpStatus.OK)
-  async handler(@CurrentUser() user: UserPayload) {
-    const { sub: userId } = user
+  async handler(@CurrentUser() { sub }: UserPayload) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: sub },
+    })
 
-    const administrator = await this.administratorsRepository.findById(userId)
-    if (administrator) {
-      return { user: AdministratorPresenter.toHTTP(administrator) }
-    }
-
-    const deliveryMan = await this.deliveryMansRepository.findById(userId)
-    if (deliveryMan) {
-      return { user: DeliveryManPresenter.toHTTP(deliveryMan) }
+    return {
+      user: UserPresenter.toHTTP(user),
     }
   }
 }
