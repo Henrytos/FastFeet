@@ -8,12 +8,12 @@ import { Injectable } from '@nestjs/common'
 @Injectable()
 export class PrismaRecipientsRepository implements RecipientsRepository {
   constructor(
-    private prisma: PrismaService,
+    private readonly prisma: PrismaService,
     private readonly ordersRepository: OrdersRepository,
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
-    const recipient = await this.prisma.recipient.findUnique({
+    const recipient = await this.prisma.recipient.findFirst({
       where: {
         id,
       },

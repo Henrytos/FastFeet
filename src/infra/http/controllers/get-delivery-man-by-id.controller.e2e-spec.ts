@@ -1,5 +1,6 @@
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
+import { AdministratorFactory } from '@/test/factories/make-administrator'
 import { DeliveryManFactory } from '@/test/factories/make-delivery-man'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -10,16 +11,19 @@ describe('GetDeliveryByIdController (e2e)', () => {
   let app: INestApplication
   let jwt: JwtService
   let deliveryManFactory: DeliveryManFactory
+  let administratorFactory: AdministratorFactory
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [DeliveryManFactory],
+      providers: [DeliveryManFactory, AdministratorFactory],
     }).compile()
 
     app = moduleRef.createNestApplication()
     jwt = moduleRef.get(JwtService)
     deliveryManFactory = moduleRef.get(DeliveryManFactory)
+    administratorFactory = moduleRef.get(AdministratorFactory)
+
     await app.init()
   })
 
@@ -28,9 +32,11 @@ describe('GetDeliveryByIdController (e2e)', () => {
       name: 'John Doe',
     })
 
+    const administrator = await administratorFactory.makePrismaAdministrator()
+
     const token = jwt.sign({
-      sub: deliveryMan.id,
-      role: deliveryMan.role,
+      sub: administrator.id,
+      role: administrator.role,
     })
 
     const response = await request(app.getHttpServer())
