@@ -7,13 +7,10 @@ import {
   InternalServerErrorException,
   Post,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { RegisterRecipientUseCase } from '@/domain/delivery/application/use-cases/register-recipient-use-case'
-import { RolesGuards } from '../guards/roles.guards'
-import { Roles } from '../guards/roles.decorator'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
@@ -34,6 +31,7 @@ import { RecipientBodyDTO } from '../dtos/recipient-body.dto'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
 import { DeliveryAddressDoesNotExistMessageDTO } from '../dtos/delivery-address-does-not-exist-messge.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const registerRecipientBodySchema = z.object({
   name: z.string().min(3),
@@ -49,8 +47,7 @@ export class RegisterRecipientController {
   constructor(private registerRecipientUseCase: RegisterRecipientUseCase) {}
 
   @Post()
-  @Roles('ADMINISTRATOR')
-  @UseGuards(RolesGuards)
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({
     type: RecipientBodyDTO,
@@ -106,8 +103,6 @@ export class RegisterRecipientController {
       }
     }
 
-    return {
-      message: 'Recipient created successfully',
-    }
+    return {}
   }
 }

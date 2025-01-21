@@ -7,11 +7,8 @@ import {
   HttpStatus,
   InternalServerErrorException,
   Param,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
-import { RolesGuards } from '../guards/roles.guards'
-import { Roles } from '../guards/roles.decorator'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
 import { OrderPresenter } from '../presenters/order-presenter'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
@@ -27,6 +24,7 @@ import {
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { OrderBodyDTO } from '../dtos/order-body.dto'
 import { OrderDoesNotExistMessageDTO } from '../dtos/order-does-not-exists-message.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const routeParamsGetOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -40,8 +38,7 @@ export class GetORderByIdController {
   constructor(private readonly getOrderByIdUseCase: GetOrderByIdUseCase) {}
 
   @Get()
-  @UseGuards(RolesGuards)
-  @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
+  @UseRolesGuards('ADMINISTRATOR', 'DELIVERY_MAN')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiParam({
     name: 'orderId',

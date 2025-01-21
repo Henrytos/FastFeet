@@ -16,7 +16,6 @@ import {
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
-import { Roles } from '../guards/roles.decorator'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -33,6 +32,7 @@ import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
 import { DeliveryManBodyDTO } from '../dtos/delivery-man-body.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const updateDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -51,7 +51,7 @@ export class UpdateDeliveryManController {
   ) {}
 
   @Put()
-  @Roles('ADMINISTRATOR')
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiParam({
     name: 'deliveryManId',

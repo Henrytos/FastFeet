@@ -8,16 +8,13 @@ import {
   InternalServerErrorException,
   Post,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
-import { RolesGuards } from '../guards/roles.guards'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -31,6 +28,7 @@ import {
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { DeliveryManBodyDTO } from '../dtos/delivery-man-body.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const registerDeliveryManBodySchema = z.object({
   name: z.string(),
@@ -51,8 +49,7 @@ export class RegisterDeliveryManController {
   ) {}
 
   @Post()
-  @Roles('ADMINISTRATOR')
-  @UseGuards(RolesGuards)
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({
     type: DeliveryManBodyDTO,

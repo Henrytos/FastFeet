@@ -10,14 +10,11 @@ import {
   Param,
   Post,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { RolesGuards } from '../guards/roles.guards'
-import { Roles } from '../guards/roles.decorator'
 import { AdministratorDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/administrator-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-address-does-not-exist-error'
@@ -36,6 +33,7 @@ import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { RecipientDoesNotExistErrorMessageDTO } from '../dtos/recipient-does-note-exist-message.dto'
 import { DeliveryAddressBodyDTO } from '../dtos/delivery-address-body.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const paramsRegisterOrderSchema = z.object({
   recipientId: z.string().uuid(),
@@ -64,8 +62,7 @@ export class RegisterOrderForRecipientController {
   ) {}
 
   @Post()
-  @UseGuards(RolesGuards)
-  @Roles('ADMINISTRATOR')
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiParam({
     name: 'recipientId',

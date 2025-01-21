@@ -13,10 +13,7 @@ import {
   Param,
   ParseUUIDPipe,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
-import { RolesGuards } from '../guards/roles.guards'
-import { Roles } from '../guards/roles.decorator'
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -30,6 +27,7 @@ import {
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
 import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-message.dto'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 @ApiTags('delivery-man')
 @ApiBearerAuth()
@@ -40,8 +38,7 @@ export class DeleteDeliveryManController {
   ) {}
 
   @Delete()
-  @Roles('ADMINISTRATOR')
-  @UseGuards(RolesGuards)
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiNoContentResponse()
   @ApiParam({

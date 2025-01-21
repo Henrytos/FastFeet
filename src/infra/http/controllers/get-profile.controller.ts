@@ -1,14 +1,6 @@
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
-import {
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  UseGuards,
-} from '@nestjs/common'
-import { Roles } from '../guards/roles.decorator'
-import { RolesGuards } from '../guards/roles.guards'
+import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common'
 import {
   ApiBearerAuth,
   ApiHeader,
@@ -19,6 +11,7 @@ import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { UserPresenter } from '../presenters/user-presenter'
 import { UserBodyDTO } from '../dtos/user-body.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 @ApiTags('profile')
 @ApiBearerAuth()
@@ -27,8 +20,7 @@ export class GetProfileController {
   constructor(private readonly prisma: PrismaService) {}
 
   @Get()
-  @Roles('ADMINISTRATOR', 'DELIVERY_MAN')
-  @UseGuards(RolesGuards)
+  @UseRolesGuards('ADMINISTRATOR', 'DELIVERY_MAN')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiOkResponse({
     type: UserBodyDTO,

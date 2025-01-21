@@ -7,11 +7,8 @@ import {
   HttpStatus,
   Query,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
 import { z } from 'zod'
-import { Roles } from '../guards/roles.decorator'
-import { RolesGuards } from '../guards/roles.guards'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
@@ -29,6 +26,7 @@ import {
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { FetchSchemaDTO } from '../dtos/fetch-schema.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const queryParamsFetchRecipientSchema = z.object({
   page: z.coerce.number().optional().default(0),
@@ -44,8 +42,7 @@ export class FetchRecipientController {
   constructor(private fetchRecipientUseCase: FetchRecipientUseCase) {}
 
   @Get()
-  @Roles('ADMINISTRATOR')
-  @UseGuards(RolesGuards)
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiQuery({
     type: FetchSchemaDTO,

@@ -29,6 +29,7 @@ import { WrongCredentialMessageDTO } from '../dtos/wrong-credential-error-messag
 import { AdministratorCreatedResponseDTO } from '../dtos/administrator-created-response.dto'
 import { DeliveryManCreatedResponseDTO } from '../dtos/delivery-man-created-response.dto'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -48,6 +49,7 @@ export class CreateAccountController {
   ) {}
 
   @Post('/administrator')
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })
@@ -88,6 +90,7 @@ export class CreateAccountController {
   }
 
   @Post('/delivery-man')
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiBearerAuth()
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBody({ type: CreateUserBodyDTO })

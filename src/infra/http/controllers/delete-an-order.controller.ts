@@ -8,10 +8,7 @@ import {
   InternalServerErrorException,
   Param,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common'
-import { RolesGuards } from '../guards/roles.guards'
-import { Roles } from '../guards/roles.decorator'
 import { z } from 'zod'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
@@ -31,6 +28,7 @@ import {
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { OrderDoesNotExistMessageDTO } from '../dtos/order-does-not-exists-message.dto'
 import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 const routeParamsDeleteAnOrderSchema = z.object({
   orderId: z.string(),
@@ -44,8 +42,7 @@ export class DeleteAnOrderController {
   constructor(private readonly deleteAnOrderUseCase: DeleteAnOrderUseCase) {}
 
   @Delete()
-  @UseGuards(RolesGuards)
-  @Roles('ADMINISTRATOR')
+  @UseRolesGuards('ADMINISTRATOR')
   @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiBearerAuth()
   @ApiParam({
