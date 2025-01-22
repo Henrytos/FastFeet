@@ -12,6 +12,8 @@ async function bootstrap() {
   const envService = app.get(EnvService)
   const PORT = envService.get('PORT')
 
+  console.log(`Server running on port http://localhost:${PORT}`)
+
   const config = new DocumentBuilder()
     .setTitle('fastfeet')
     .setDescription('Fastfeet API')

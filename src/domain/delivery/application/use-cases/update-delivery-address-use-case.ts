@@ -3,6 +3,7 @@ import { DeliveryAddressRepository } from '../repositories/delivery-address-repo
 import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does-not-exist-error'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
+import { Injectable } from '@nestjs/common'
 
 interface UpdateDeliveryAddressUseCaseRequest {
   administratorId: string
@@ -22,6 +23,7 @@ type UpdateDeliveryAddressUseCaseResponse = Either<
   object
 >
 
+@Injectable()
 export class UpdateDeliveryAddressUseCase {
   constructor(
     private readonly administratorsRepository: AdministratorsRepository,
