@@ -20,10 +20,7 @@ interface UpdateOrderUseCaseRequest {
   orderId: string
   administratorId: string
   deliveryManId: string
-  recipientId: string
-  deliveryAddressId: string
   status: ORDER_STATUS
-  photoId: string
   deliveryAt: Date
   withdrawnAt: Date
 }
@@ -55,10 +52,7 @@ export class UpdateOrderUseCase {
     orderId,
     administratorId,
     deliveryManId,
-    recipientId,
-    deliveryAddressId,
     status,
-    photoId,
     deliveryAt,
     withdrawnAt,
   }: UpdateOrderUseCaseRequest): Promise<UpdateOrderUseCaseResponse> {
@@ -78,30 +72,13 @@ export class UpdateOrderUseCase {
     if (!deliveryMan) {
       return left(new DeliveryManDoesNotExistError())
     }
-
-    const deliveryAddress =
-      await this.deliveryAddressRepository.findById(deliveryAddressId)
-    if (!deliveryAddress) {
-      return left(new DeliveryAddressDoesNotExistError())
-    }
-
-    const recipient = await this.recipientsRepository.findById(recipientId)
-    if (!recipient) {
-      return left(new RecipientDoesNotExistError())
-    }
-
-    const photo = await this.photosRepository.findById(photoId)
-    if (!photo) {
-      return left(new PhotoDoesNotExistError())
-    }
-
     const updatedOrder = Order.create(
       {
         status,
-        deliveryAddressId: new UniqueEntityID(deliveryAddressId),
+        deliveryAddressId: order.deliveryAddressId,
         deliveryManId: new UniqueEntityID(deliveryManId),
-        recipientId: new UniqueEntityID(recipientId),
-        photoId: new UniqueEntityID(photoId),
+        recipientId: order.recipientId,
+        photoId: order.photoId,
         withdrawnAt,
         deliveryAt,
       },

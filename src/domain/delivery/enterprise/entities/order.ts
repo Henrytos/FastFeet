@@ -162,7 +162,9 @@ export class Order extends AggregateRoot<OrderProps> {
       id,
     )
 
-    order.addDomainEvent(new OrderCreatedEvent(order))
+    if (!id) {
+      order.addDomainEvent(new OrderCreatedEvent(order))
+    }
 
     return order
   }
