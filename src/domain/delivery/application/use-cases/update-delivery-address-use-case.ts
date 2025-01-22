@@ -4,18 +4,19 @@ import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does
 import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { Injectable } from '@nestjs/common'
+import { DeliveryAddress } from '../../enterprise/entities/delivery-address'
 
 interface UpdateDeliveryAddressUseCaseRequest {
   administratorId: string
   deliveryAddressId: string
-  state?: string | null
-  city?: string | null
-  neighborhood?: string | null
-  street?: string | null
-  zip?: string | null
-  number?: string | null
-  latitude?: number | null
-  longitude?: number | null
+  state: string
+  city: string
+  neighborhood: string
+  street: string
+  zip: string
+  number: string
+  latitude: number
+  longitude: number
 }
 
 type UpdateDeliveryAddressUseCaseResponse = Either<
@@ -54,16 +55,21 @@ export class UpdateDeliveryAddressUseCase {
       return left(new DeliveryAddressDoesNotExistError())
     }
 
-    deliveryAddress.state = state ?? deliveryAddress.state
-    deliveryAddress.city = city ?? deliveryAddress.city
-    deliveryAddress.neighborhood = neighborhood ?? deliveryAddress.neighborhood
-    deliveryAddress.street = street ?? deliveryAddress.street
-    deliveryAddress.zip = zip ?? deliveryAddress.zip
-    deliveryAddress.number = number ?? deliveryAddress.number
-    deliveryAddress.latitude = latitude ?? deliveryAddress.latitude
-    deliveryAddress.longitude = longitude ?? deliveryAddress.longitude
+    const deliveryAddressUpdated = DeliveryAddress.create(
+      {
+        state,
+        city,
+        neighborhood,
+        street,
+        zip,
+        number,
+        latitude,
+        longitude,
+      },
+      deliveryAddress.id,
+    )
 
-    this.deliveryAddressRepository.save(deliveryAddress)
+    this.deliveryAddressRepository.save(deliveryAddressUpdated)
 
     return right({})
   }

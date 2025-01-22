@@ -56,6 +56,14 @@ describe('update delivery address use case', () => {
     const result = await sut.execute({
       deliveryAddressId: 'invalid-delivery-address-id',
       administratorId: administrator.id.toString(),
+      city: 'Rio De janeiro',
+      latitude: 123,
+      longitude: 123,
+      neighborhood: 'Copacabana',
+      number: '123',
+      state: 'RJ',
+      street: 'Rua 1',
+      zip: '123',
     })
 
     expect(result.isLeft()).toEqual(true)
@@ -69,6 +77,14 @@ describe('update delivery address use case', () => {
     const result = await sut.execute({
       deliveryAddressId: deliveryAddress.id.toString(),
       administratorId: 'invalid-administrator-id',
+      city: 'Rio De janeiro',
+      latitude: 123,
+      longitude: 123,
+      neighborhood: 'Copacabana',
+      number: '123',
+      state: 'RJ',
+      street: 'Rua 1',
+      zip: '123',
     })
 
     expect(result.isLeft()).toEqual(true)
