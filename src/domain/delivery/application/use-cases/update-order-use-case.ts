@@ -3,17 +3,11 @@ import { Either, left, right } from '@/core/either'
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
-import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does-not-exist-error'
-import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error'
 import { Order } from '../../enterprise/entities/order'
 import { Injectable } from '@nestjs/common'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
-import { DeliveryAddressRepository } from '../repositories/delivery-address-repository'
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
 import { OrdersRepository } from '../repositories/orders-repository'
-import { PhotosRepository } from '../repositories/photos-repository'
-import { RecipientsRepository } from '../repositories/recipients-repository'
-import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 interface UpdateOrderUseCaseRequest {
@@ -28,10 +22,7 @@ interface UpdateOrderUseCaseRequest {
 type UpdateOrderUseCaseResponse = Either<
   | OrderDoesNotExistError
   | AdministratorDoesNotExistError
-  | RecipientDoesNotExistError
-  | DeliveryManDoesNotExistError
-  | DeliveryAddressDoesNotExistError
-  | PhotoDoesNotExistError,
+  | DeliveryManDoesNotExistError,
   {
     order: Order
   }
@@ -43,9 +34,6 @@ export class UpdateOrderUseCase {
     private readonly ordersRepository: OrdersRepository,
     private readonly administratorsRepository: AdministratorsRepository,
     private readonly deliveryMansRepository: DeliveryMansRepository,
-    private readonly deliveryAddressRepository: DeliveryAddressRepository,
-    private readonly recipientsRepository: RecipientsRepository,
-    private readonly photosRepository: PhotosRepository,
   ) {}
 
   async execute({

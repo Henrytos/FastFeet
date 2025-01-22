@@ -39,9 +39,6 @@ describe('update order use case', () => {
       inMemoryOrdersRepository,
       inMemoryAdministratorsRepository,
       inMemoryDeliveryMansRepository,
-      inMemoryDeliveryAddressRepository,
-      inMemoryRecipientsRepository,
-      inMemoryPhotosRepository,
     )
   })
 
@@ -68,9 +65,6 @@ describe('update order use case', () => {
       orderId: order.id.toString(),
       administratorId: administrator.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
-      deliveryAddressId: deliveryAddress.id.toString(),
-      photoId: photo.id.toString(),
-      recipientId: recipient.id.toString(),
       status: ORDER_STATUS.DELIVERED,
       withdrawnAt: new Date(),
       deliveryAt: new Date(),
@@ -83,10 +77,7 @@ describe('update order use case', () => {
 
     expect(updatedOrder).toMatchObject(
       expect.objectContaining({
-        deliveryAddressId: deliveryAddress.id,
         deliveryManId: deliveryMan.id,
-        photoId: photo.id,
-        recipientId: recipient.id,
         status: ORDER_STATUS.DELIVERED,
         withdrawnAt: expect.any(Date),
         deliveryAt: expect.any(Date),
@@ -98,12 +89,9 @@ describe('update order use case', () => {
 
   it('should be possible to update order', async () => {
     const result = await sut.execute({
-      administratorId: 'invalid-administrator-id',
-      deliveryAddressId: 'invalid-delivery-address-id',
-      deliveryManId: 'invalid-delivery-man-id',
-      photoId: 'invalid-photo-id',
       orderId: 'invalid-order-id',
-      recipientId: 'invalid-recipient-id',
+      administratorId: 'invalid-administrator-id',
+      deliveryManId: 'invalid-delivery-man-id',
       status: ORDER_STATUS.DELIVERED,
       withdrawnAt: new Date(),
       deliveryAt: new Date(),
