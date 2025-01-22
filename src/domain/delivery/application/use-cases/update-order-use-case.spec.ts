@@ -18,7 +18,7 @@ describe('update order use case', () => {
   let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository
   let inMemoryAdministratorsRepository: InMemoryAdministratorsRepository
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository
-  let inMemoryRecipientRepository: InMemoryRecipientsRepository
+  let inMemoryRecipientsRepository: InMemoryRecipientsRepository
   let inMemoryPhotosRepository: InMemoryPhotosRepository
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('update order use case', () => {
     inMemoryAdministratorsRepository = new InMemoryAdministratorsRepository()
 
     inMemoryDeliveryMansRepository = new InMemoryDeliveryMansRepository()
-    inMemoryRecipientRepository = new InMemoryRecipientsRepository(
+    inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
       inMemoryDeliveryAddressRepository,
     )
@@ -40,7 +40,7 @@ describe('update order use case', () => {
       inMemoryAdministratorsRepository,
       inMemoryDeliveryMansRepository,
       inMemoryDeliveryAddressRepository,
-      inMemoryRecipientRepository,
+      inMemoryRecipientsRepository,
       inMemoryPhotosRepository,
     )
   })
@@ -59,31 +59,54 @@ describe('update order use case', () => {
     inMemoryPhotosRepository.items.push(photo)
 
     const recipient = makeRecipient()
-    inMemoryRecipientRepository.items.push(recipient)
+    inMemoryRecipientsRepository.items.push(recipient)
 
-    const order = makeOrder({
-      deliveryAddressId: deliveryAddress.id,
-      deliveryManId: deliveryMan.id,
-      status: ORDER_STATUS.WITHDRAWN,
-      photoId: photo.id,
-      recipientId: recipient.id,
-      withdrawnAt: new Date(),
-    })
+    const order = makeOrder()
     inMemoryOrdersRepository.items.push(order)
 
     const result = await sut.execute({
       orderId: order.id.toString(),
       administratorId: administrator.id.toString(),
       deliveryManId: deliveryMan.id.toString(),
+      deliveryAddressId: deliveryAddress.id.toString(),
+      photoId: photo.id.toString(),
+      recipientId: recipient.id.toString(),
       status: ORDER_STATUS.DELIVERED,
+      withdrawnAt: new Date(),
+      deliveryAt: new Date(),
     })
 
     expect(result.isRight()).toBe(true)
+    expect(inMemoryOrdersRepository.items).toHaveLength(1)
+
+    const updatedOrder = inMemoryOrdersRepository.items[0]
+
+    expect(updatedOrder).toMatchObject(
+      expect.objectContaining({
+        deliveryAddressId: deliveryAddress.id,
+        deliveryManId: deliveryMan.id,
+        photoId: photo.id,
+        recipientId: recipient.id,
+        status: ORDER_STATUS.DELIVERED,
+        withdrawnAt: expect.any(Date),
+        deliveryAt: expect.any(Date),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
+      }),
+    )
   })
 
   it('should be possible to update order', async () => {
     const result = await sut.execute({
       administratorId: 'invalid-administrator-id',
+      deliveryAddressId: 'invalid-delivery-address-id',
+      deliveryManId: 'invalid-delivery-man-id',
+      photoId: 'invalid-photo-id',
+      orderId: 'invalid-order-id',
+      recipientId: 'invalid-recipient-id',
+      status: ORDER_STATUS.DELIVERED,
+      withdrawnAt: new Date(),
+      deliveryAt: new Date(),
     })
 
     expect(result.isLeft()).toBe(true)
