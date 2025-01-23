@@ -1,10 +1,10 @@
 import { InMemoryPhotosRepository } from '@/test/repositories/in-memory-photos-repository'
-import { UploadAndCreatePhotoUseCase } from './upload-and-create-photo-use-case'
+import { UploadPhotoForStorageUseCase } from './upload-and-create-photo-use-case'
 import { FakeUploader } from '@/test/storage/fake-uploader'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 
 describe('upload and create photo use case', () => {
-  let sut: UploadAndCreatePhotoUseCase
+  let sut: UploadPhotoForStorageUseCase
   let fakeUploader: FakeUploader
   let inMemoryPhotosRepository: InMemoryPhotosRepository
 
@@ -12,7 +12,7 @@ describe('upload and create photo use case', () => {
     fakeUploader = new FakeUploader()
     inMemoryPhotosRepository = new InMemoryPhotosRepository()
 
-    sut = new UploadAndCreatePhotoUseCase(
+    sut = new UploadPhotoForStorageUseCase(
       fakeUploader,
       inMemoryPhotosRepository,
     )

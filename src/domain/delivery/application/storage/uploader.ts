@@ -4,7 +4,7 @@ export interface UploadParams {
   body: Buffer
 }
 
-export interface Uploader {
+export abstract class Uploader {
   upload: ({
     fileName,
     fileType,

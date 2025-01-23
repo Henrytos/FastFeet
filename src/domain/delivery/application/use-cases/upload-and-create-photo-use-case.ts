@@ -4,20 +4,20 @@ import { Photo } from '../../enterprise/entities/photo'
 import { PhotosRepository } from '../repositories/photos-repository'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 
-interface UploadAndCreatePhotoUseCaseRequest {
+interface UploadPhotoForStorageUseCaseRequest {
   photo: Buffer
   fileName: string
   fileType: string
 }
 
-type UploadAndCreatePhotoUseCaseResponse = Either<
+type UploadPhotoForStorageUseCaseResponse = Either<
   WrongCredentialsError,
   {
     url: string
   }
 >
 
-export class UploadAndCreatePhotoUseCase {
+export class UploadPhotoForStorageUseCase {
   constructor(
     private readonly uploader: Uploader,
     private readonly photosRepository: PhotosRepository,
@@ -27,7 +27,7 @@ export class UploadAndCreatePhotoUseCase {
     photo,
     fileName,
     fileType,
-  }: UploadAndCreatePhotoUseCaseRequest): Promise<UploadAndCreatePhotoUseCaseResponse> {
+  }: UploadPhotoForStorageUseCaseRequest): Promise<UploadPhotoForStorageUseCaseResponse> {
     if (!/^image\/(jpg|jpeg|png)$/.test(fileType)) {
       return left(new WrongCredentialsError())
     }
