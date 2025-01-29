@@ -1,7 +1,5 @@
 import { Either, left, right } from '@/core/either'
 
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
-import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { DeliveryAddressDoesNotExistError } from './errors/delivery-address-does-not-exist-error'
 import { RecipientDoesNotExistError } from './errors/recipient-does-not-exist-error'
 import { OrdersRepository } from '../repositories/orders-repository'
@@ -13,12 +11,10 @@ import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exi
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
-  administratorId: string
   deliveryManId: string
   orderId: string
 }
 type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
-  | AdministratorDoesNotExistError
   | DeliveryManDoesNotExistError
   | OrderDoesNotExistError
   | RecipientDoesNotExistError
@@ -29,23 +25,15 @@ type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
 export class SendingOrderToRecipientByDeliveryManUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,
-    private readonly administratorsRepository: AdministratorsRepository,
     private readonly deliveryMansRepository: DeliveryMansRepository,
     private readonly deliveryAddressRepository: DeliveryAddressRepository,
     private readonly recipientsRepository: RecipientsRepository,
   ) {}
 
   async execute({
-    administratorId,
     deliveryManId,
     orderId,
   }: SendingOrderToRecipientByDeliveryManUseCaseRequest): Promise<SendingOrderToRecipientByDeliveryManUseCaseResponse> {
-    const administrator =
-      await this.administratorsRepository.findById(administratorId)
-    if (!administrator) {
-      return left(new AdministratorDoesNotExistError())
-    }
-
     const deliveryMan =
       await this.deliveryMansRepository.findById(deliveryManId)
     if (!deliveryMan) {
