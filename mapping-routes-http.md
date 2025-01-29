@@ -88,13 +88,13 @@
 - **[ x ] GET /orders/{id}**: Visualizar uma encomenda específica (somente admin).
 
 ### Atualizar Encomenda
-- **[ ] PUT /orders/{id}**: Atualizar os dados de uma encomenda (somente admin).
+- **[ x ] PUT /orders/{id}**: Atualizar os dados de uma encomenda (somente admin).
 
 ### Excluir Encomenda
 - **[ x ] DELETE /orders/{id}**: Excluir uma encomenda (somente admin).
 
 ### Marcar Encomenda como Aguardando Retirada
-- **[ ] PATCH /orders/{id}/pending**: Marcar uma encomenda como disponível para retirada (somente admin).
+- **[ x ] PATCH /orders/{id}/pending**: Marcar uma encomenda como disponível para retirada (somente admin).
 
 ### Retirar Encomenda
 - **[ ] PATCH /orders/{id}/pickup**: Retirar uma encomenda (somente o entregador que foi designado para a entrega pode realizar essa ação).
