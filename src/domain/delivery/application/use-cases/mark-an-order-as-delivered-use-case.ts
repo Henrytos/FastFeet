@@ -44,10 +44,6 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new DeliveryManDoesNotExistError())
     }
 
-    if (!order.deliveryManId.equals(deliveryMan.id)) {
-      return left(new WrongCredentialsError())
-    }
-
     if (!order.isValidForDelivered()) {
       return left(new WrongCredentialsError())
     }
