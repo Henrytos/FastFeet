@@ -71,7 +71,6 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async fetchManyNearby(coordinate: Coordinate): Promise<Order[]> {
-    console.log('fetchManyNearby', coordinate)
     throw new Error('Method not implemented.')
   }
 

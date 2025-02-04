@@ -42,6 +42,8 @@ import { GetORderByIdController } from './controllers/get-order-by-id.controller
 import { GetOrderByIdUseCase } from '@/domain/delivery/application/use-cases/get-order-by-id-use-case'
 import { FetchRecentOrderController } from './controllers/fetch-recent-order.controller'
 import { FetchRecentOrderUseCase } from '@/domain/delivery/application/use-cases/fetch-recent-order-use-case'
+import { SendingOrderToRecipientByDeliveryManController } from './controllers/sending-order-to-recipient-by-delivery-man.controller'
+import { SendingOrderToRecipientByDeliveryManUseCase } from '@/domain/delivery/application/use-cases/sending-order-to-recipient-by-delivery-person-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -65,6 +67,7 @@ import { FetchRecentOrderUseCase } from '@/domain/delivery/application/use-cases
     DeleteAnOrderController,
     GetORderByIdController,
     FetchRecentOrderController,
+    SendingOrderToRecipientByDeliveryManController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -88,6 +91,7 @@ import { FetchRecentOrderUseCase } from '@/domain/delivery/application/use-cases
     DeleteAnOrderUseCase,
     GetOrderByIdUseCase,
     FetchRecentOrderUseCase,
+    SendingOrderToRecipientByDeliveryManUseCase,
   ],
 })
 export class HttpModule {}
