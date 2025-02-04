@@ -1,13 +1,13 @@
 
 services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres?schema=sample"
-    depends_on:
-      - postgres
+##  app:
+##    build: .
+##    ports:
+##      - "3000:3000"
+##    environment:
+##      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres?schema=sample"
+##    depends_on:
+##      - postgres
   postgres:
     image: postgres:13
     ports:
