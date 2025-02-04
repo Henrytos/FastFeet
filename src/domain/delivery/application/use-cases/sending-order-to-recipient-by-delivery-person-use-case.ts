@@ -9,6 +9,7 @@ import { DeliveryMansRepository } from '../repositories/delivery-mans-repository
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { Injectable } from '@nestjs/common'
 
 interface SendingOrderToRecipientByDeliveryManUseCaseRequest {
   deliveryManId: string
@@ -21,7 +22,7 @@ type SendingOrderToRecipientByDeliveryManUseCaseResponse = Either<
   | DeliveryAddressDoesNotExistError,
   object
 >
-
+@Injectable()
 export class SendingOrderToRecipientByDeliveryManUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,

@@ -4,6 +4,8 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import {
   BadRequestException,
   Controller,
+  HttpCode,
+  HttpStatus,
   InternalServerErrorException,
   Param,
   Patch,
@@ -15,6 +17,15 @@ import { DeliveryAddressDoesNotExistError } from '@/domain/delivery/application/
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
 import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const routeParamsSendingOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -22,6 +33,8 @@ const routeParamsSendingOrderSchema = z.object({
 
 type RouteParamsSendingOrder = z.infer<typeof routeParamsSendingOrderSchema>
 
+@ApiBearerAuth()
+@ApiTags('order')
 @Controller('/orders/:orderId/pickup')
 export class SendingOrderToRecipientByDeliveryManController {
   constructor(
@@ -30,8 +43,14 @@ export class SendingOrderToRecipientByDeliveryManController {
 
   @Patch()
   @UseRolesGuards('DELIVERY_MAN')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse()
+  @ApiUnauthorizedResponse()
+  @ApiBadRequestResponse()
+  @ApiInternalServerErrorResponse()
   async handler(
-    @Param() { orderId }: RouteParamsSendingOrder,
+    @Param(new ZodValidationPipe(routeParamsSendingOrderSchema))
+    { orderId }: RouteParamsSendingOrder,
     @CurrentUser() deliveryMan: UserPayload,
   ) {
     const result =
