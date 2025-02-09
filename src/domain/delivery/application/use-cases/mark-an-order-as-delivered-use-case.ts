@@ -44,6 +44,11 @@ export class MarkAnOrderAsDeliveredUseCase {
       return left(new DeliveryManDoesNotExistError())
     }
 
+    const isDeliveryManAllowed = !order.deliveryManId.equals(deliveryMan.id)
+    if (isDeliveryManAllowed) {
+      return left(new WrongCredentialsError())
+    }
+
     if (!order.isValidForDelivered()) {
       return left(new WrongCredentialsError())
     }
