@@ -1,35 +1,37 @@
 import { Either, left, right } from '@/core/either'
-import { AdministratorsRepository } from '../repositories/administrators-repository'
-import { AdministratorDoesNotExistError } from './errors/administrator-does-not-exist-error'
 import { OrdersRepository } from '../repositories/orders-repository'
 import { OrderDoesNotExistError } from './errors/order-does-not-exist-error'
 import { NotAllowedError } from '@/core/errors/not-allowed-error'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
+import { Injectable } from '@nestjs/common'
 
 interface CancelingRecipientOrderUseCaseRequest {
-  administratorId: string
+  deliveryManId: string
   orderId: string
 }
 type CancelingRecipientOrderUseCaseResponse = Either<
-  OrderDoesNotExistError | AdministratorDoesNotExistError | NotAllowedError,
+  DeliveryManDoesNotExistError | OrderDoesNotExistError | NotAllowedError,
   object
 >
 
+@Injectable()
 export class CancelingRecipientOrderUseCase {
   constructor(
-    private readonly administratorsRepository: AdministratorsRepository,
+    private readonly deliveryMansRepository: DeliveryMansRepository,
     private readonly ordersRepository: OrdersRepository,
   ) {}
 
   async execute({
-    administratorId,
+    deliveryManId,
     orderId,
   }: CancelingRecipientOrderUseCaseRequest): Promise<CancelingRecipientOrderUseCaseResponse> {
-    const administrator =
-      await this.administratorsRepository.findById(administratorId)
+    const deliveryMan =
+      await this.deliveryMansRepository.findById(deliveryManId)
 
-    if (!administrator) {
-      return left(new AdministratorDoesNotExistError())
+    if (!deliveryMan) {
+      return left(new DeliveryManDoesNotExistError())
     }
 
     const order = await this.ordersRepository.findById(orderId)
