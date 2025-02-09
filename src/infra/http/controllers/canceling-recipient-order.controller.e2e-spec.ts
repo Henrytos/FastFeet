@@ -21,7 +21,12 @@ describe('CancelingRecipientOrderController(e2e)', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
-      providers: [OrderFactory, DeliveryManFactory, DeliveryAddressFactory],
+      providers: [
+        OrderFactory,
+        DeliveryManFactory,
+        DeliveryAddressFactory,
+        RecipientFactory,
+      ],
     }).compile()
 
     app = moduleRef.createNestApplication()
