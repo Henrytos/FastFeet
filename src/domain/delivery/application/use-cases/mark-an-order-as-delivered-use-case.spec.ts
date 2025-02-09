@@ -11,6 +11,7 @@ import { makePhoto } from '@/test/factories/make-photo'
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository'
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { GetPreviousDateByTime } from '@/test/utils/get-previous-date-by-time'
 
 describe('mark an order as delivered use case', () => {
   let sut: MarkAnOrderAsDeliveredUseCase
@@ -18,6 +19,7 @@ describe('mark an order as delivered use case', () => {
   let inMemoryOrdersRepository: InMemoryOrdersRepository
   let inMemoryDeliveryMansRepository: InMemoryDeliveryMansRepository
   let inMemoryPhotosRepository: InMemoryPhotosRepository
+  let getPreviousDateByTime: GetPreviousDateByTime
 
   beforeEach(() => {
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository()
@@ -31,6 +33,8 @@ describe('mark an order as delivered use case', () => {
       inMemoryDeliveryMansRepository,
       inMemoryPhotosRepository,
     )
+
+    getPreviousDateByTime = new GetPreviousDateByTime()
   })
 
   it('should be possible mark order with delivered', async () => {
@@ -40,7 +44,7 @@ describe('mark an order as delivered use case', () => {
     const order = makeOrder({
       status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
-      withdrawnAt: new Date(new Date().getDay() - 1),
+      withdrawnAt: getPreviousDateByTime.differenceInHours(1),
     })
     inMemoryOrdersRepository.items.push(order)
 
@@ -129,6 +133,8 @@ describe('mark an order as delivered use case', () => {
 
     const order = makeOrder({
       status: ORDER_STATUS.WITHDRAWN,
+      createdAt: getPreviousDateByTime.differenceInHours(2),
+      withdrawnAt: getPreviousDateByTime.date,
       deliveryManId: deliveryMan.id,
     })
     inMemoryOrdersRepository.items.push(order)
@@ -253,7 +259,7 @@ describe('mark an order as delivered use case', () => {
     const order = makeOrder({
       status: ORDER_STATUS.WITHDRAWN,
       deliveryManId: deliveryMan.id,
-      withdrawnAt: new Date(new Date().getDay() - 1),
+      withdrawnAt: getPreviousDateByTime.differenceInHours(1),
     })
     inMemoryOrdersRepository.items.push(order)
 
