@@ -4,6 +4,10 @@ export class GetPreviousDateByTime {
     this.currentDate = new Date()
   }
 
+  get date(): Date {
+    return this.currentDate
+  }
+
   differenceInHours(timeInHours: number): Date {
     return new Date(
       this.currentDate.getFullYear(),
