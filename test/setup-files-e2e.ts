@@ -25,6 +25,7 @@ beforeAll(async () => {
   const databaseUrl = generateUniqueDatabaseURL()
 
   process.env.DATABASE_URL = databaseUrl
+
   execSync('npx prisma migrate deploy')
 })
 
