@@ -7,6 +7,7 @@ import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { PhotosRepository } from '../repositories/photos-repository'
 import { PhotoDoesNotExistError } from './errors/photo-does-not-exist-error'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { Injectable } from '@nestjs/common'
 
 export interface MarkAnOrderAsDeliveredUseCaseRequest {
   orderId: string
@@ -21,6 +22,7 @@ export type MarkAnOrderAsDeliveredUseCaseResponse = Either<
   object
 >
 
+@Injectable()
 export class MarkAnOrderAsDeliveredUseCase {
   constructor(
     private readonly ordersRepository: OrdersRepository,

@@ -12,6 +12,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiTags,
@@ -26,6 +27,7 @@ import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { DeliveryManDoesNotExistMessageDTO } from '../dtos/delivery-man-does-not-exist-message.dto'
 import { OrderDoesNotExistMessageDTO } from '../dtos/order-does-not-exists-message.dto'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamCancelingOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -35,7 +37,7 @@ type RouteParamCancelingOrder = z.infer<typeof routeParamCancelingOrderSchema>
 
 @Controller('/orders/:orderId/canceling')
 @ApiBearerAuth()
-@ApiTags('orders')
+@ApiTags('order')
 export class CancelingRecipientOrderController {
   constructor(
     private readonly cancelingRecipientOrderUseCase: CancelingRecipientOrderUseCase,
@@ -44,6 +46,7 @@ export class CancelingRecipientOrderController {
   @Patch()
   @UseRolesGuards('DELIVERY_MAN')
   @HttpCode(HttpStatus.OK)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiOkResponse({
     schema: {
       type: 'object',

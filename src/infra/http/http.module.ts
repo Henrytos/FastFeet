@@ -46,6 +46,8 @@ import { SendingOrderToRecipientByDeliveryManController } from './controllers/se
 import { SendingOrderToRecipientByDeliveryManUseCase } from '@/domain/delivery/application/use-cases/sending-order-to-recipient-by-delivery-person-use-case'
 import { CancelingRecipientOrderController } from './controllers/canceling-recipient-order.controller'
 import { CancelingRecipientOrderUseCase } from '@/domain/delivery/application/use-cases/canceling-recipient-order-use-case'
+import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as-delivered.controller'
+import { MarkAnOrderAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -71,6 +73,7 @@ import { CancelingRecipientOrderUseCase } from '@/domain/delivery/application/us
     FetchRecentOrderController,
     SendingOrderToRecipientByDeliveryManController,
     CancelingRecipientOrderController,
+    MarkAnOrderAsDeliveredController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -96,6 +99,7 @@ import { CancelingRecipientOrderUseCase } from '@/domain/delivery/application/us
     FetchRecentOrderUseCase,
     SendingOrderToRecipientByDeliveryManUseCase,
     CancelingRecipientOrderUseCase,
+    MarkAnOrderAsDeliveredUseCase,
   ],
 })
 export class HttpModule {}

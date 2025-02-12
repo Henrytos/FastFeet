@@ -100,10 +100,10 @@
 - **[ ] PATCH /orders/{id}/pickup**: Retirar uma encomenda (somente o entregador que foi designado para a entrega pode realizar essa ação).
 
 ### Marcar Encomenda como Entregue
-- **[ ] PATCH /orders/{id}/delivered**: Marcar uma encomenda como entregue (somente o entregador que retirou a encomenda pode realizar essa ação, e é obrigatório enviar uma foto).
+- **[ x ] PATCH /orders/{id}/delivered**: Marcar uma encomenda como entregue (somente o entregador que retirou a encomenda pode realizar essa ação, e é obrigatório enviar uma foto).
 
 ### Marcar Encomenda como Devolvida
-- **[ ] PATCH /orders/{id}/returned**: Marcar uma encomenda como devolvida.
+- **[ x ] PATCH /orders/{id}/returned**: Marcar uma encomenda como devolvida.
 
 ### Listar Encomendas Próximas ao Entregador
 - **[ ] GET /orders/nearby**: Listar encomendas com endereços próximos ao local do entregador (baseado na localização do entregador).
