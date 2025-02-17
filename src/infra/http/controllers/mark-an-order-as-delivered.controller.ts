@@ -1,47 +1,32 @@
 import { MarkAnOrderAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case'
 import {
-  BadRequestException,
   Body,
   Controller,
-  HttpCode,
-  HttpStatus,
   InternalServerErrorException,
+  NotFoundException,
   Param,
   Patch,
   UnauthorizedException,
 } from '@nestjs/common'
 import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 import { z } from 'zod'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { CurrentUser } from '@/infra/auth/current-user'
 import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
-import { PhotoDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/photo-does-not-exist-error'
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
-import {
-  ApiBadRequestResponse,
-  ApiBearerAuth,
-  ApiInternalServerErrorResponse,
-  ApiOkResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger'
+import { PhotoDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/photo-does-not-exist-error'
+import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
-const RouteParamMarkAnOrderAsDeliveredSchema = z.object({
+const routeParamsMarkAnOrderSchema = z.object({
   orderId: z.string().uuid(),
 })
+type RouteParamsMarkAnOrder = z.infer<typeof routeParamsMarkAnOrderSchema>
 
-type RouteParamMarkAnOrderAsDelivered = z.infer<
-  typeof RouteParamMarkAnOrderAsDeliveredSchema
->
-
-const bodyMarkAnOrderAsDeliveredSchema = z.object({
+const bodyMarkAnOrderSchema = z.object({
   photoId: z.string().uuid(),
 })
-
-type BodyMarkAnOrderAsDelivered = z.infer<
-  typeof bodyMarkAnOrderAsDeliveredSchema
->
+type BodyMarkAnOrder = z.infer<typeof bodyMarkAnOrderSchema>
 
 @Controller('/orders/:orderId/delivered')
 @ApiTags('order')
@@ -53,37 +38,34 @@ export class MarkAnOrderAsDeliveredController {
 
   @Patch()
   @UseRolesGuards('DELIVERY_MAN')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse()
-  @ApiUnauthorizedResponse()
-  @ApiBadRequestResponse()
-  @ApiInternalServerErrorResponse()
   async handler(
-    @Param(new ZodValidationPipe(RouteParamMarkAnOrderAsDeliveredSchema))
-    { orderId }: RouteParamMarkAnOrderAsDelivered,
+    @Param(new ZodValidationPipe(routeParamsMarkAnOrderSchema))
+    { orderId }: RouteParamsMarkAnOrder,
+    @Body(new ZodValidationPipe(bodyMarkAnOrderSchema))
+    { photoId }: BodyMarkAnOrder,
     @CurrentUser() { sub: deliveryManId }: UserPayload,
-    @Body(new ZodValidationPipe(bodyMarkAnOrderAsDeliveredSchema))
-    { photoId }: BodyMarkAnOrderAsDelivered,
   ) {
     const result = await this.markAnOrderAsDeliveredUseCase.execute({
-      deliveryManId,
       orderId,
+      deliveryManId,
       photoId,
     })
 
     if (result.isLeft()) {
       switch (result.value.constructor) {
+        case OrderDoesNotExistError:
+          throw new NotFoundException(result.value.message)
+        case PhotoDoesNotExistError:
+          throw new NotFoundException(result.value.message)
         case DeliveryManDoesNotExistError:
           throw new UnauthorizedException(result.value.message)
-        case OrderDoesNotExistError:
-          throw new BadRequestException(result.value.message)
-        case PhotoDoesNotExistError:
-          throw new BadRequestException(result.value.message)
         default:
           throw new InternalServerErrorException()
       }
     }
 
-    return { message: 'Order marked as delivered successfully' }
+    return {
+      message: 'Order marked as delivered successfully',
+    }
   }
 }

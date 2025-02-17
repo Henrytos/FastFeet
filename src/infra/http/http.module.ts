@@ -46,12 +46,8 @@ import { SendingOrderToRecipientByDeliveryManController } from './controllers/se
 import { SendingOrderToRecipientByDeliveryManUseCase } from '@/domain/delivery/application/use-cases/sending-order-to-recipient-by-delivery-person-use-case'
 import { CancelingRecipientOrderController } from './controllers/canceling-recipient-order.controller'
 import { CancelingRecipientOrderUseCase } from '@/domain/delivery/application/use-cases/canceling-recipient-order-use-case'
-<<<<<<< HEAD
-import { MarkAnOrderAsDeliveredController } from './controllers/makr-an-order-as-delivered.controller'
-=======
-import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as-delivered.controller'
->>>>>>> fb20f51c68cf9dda37ae59f621ee1b420f94ae03
 import { MarkAnOrderAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case'
+import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as-delivered.controller'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
