@@ -2,14 +2,12 @@ FROM node
 
 RUN mkdir -p /home/app
 
-COPY . /home/app
-
 WORKDIR /home/app
+
+COPY . .
 
 RUN npm install
 
-RUN npm run build
+EXPOSE 8080
 
-EXPOSE 3000
-
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:dev"]

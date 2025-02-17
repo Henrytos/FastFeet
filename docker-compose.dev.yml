@@ -1,29 +1,11 @@
-version: '3.7'
+
 
 services:
-  app:
-    build: 
-      context: .
-      dockerfile: Dockerfile.dev
-    ports:
-      - "8080:8080"
-    volumes:
-      - .:/home/app
-    environment:
-      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres?schema=sample"
-    depends_on:
-      - postgres
   postgres:
     image: postgres:13
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
-    volumes:
-    - postgres_data:/var/lib/postgresql/data  
-
-
-volumes:
-  postgres_data:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
