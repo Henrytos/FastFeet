@@ -21,7 +21,11 @@ beforeAll(async () => {
 
   process.env.DATABASE_URL = databaseUrl
 
+<<<<<<< HEAD
   execSync('npx prisma migrate deploy', { stdio: 'inherit' })
+=======
+  execSync('npx prisma migrate deploy')
+>>>>>>> fb20f51c68cf9dda37ae59f621ee1b420f94ae03
 })
 
 afterAll(async () => {

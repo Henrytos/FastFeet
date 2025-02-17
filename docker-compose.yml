@@ -1,5 +1,7 @@
+version: '3.7'
 
 services:
+<<<<<<< HEAD
   app:
     build: .
     ports:
@@ -10,6 +12,16 @@ services:
       - .:/home/app
     depends_on:
       - postgres
+=======
+##  app:
+##    build: .
+##    ports:
+##      - "8080:8080"
+##    environment:
+##      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/postgres?schema=sample"
+##    depends_on:
+##      - postgres
+>>>>>>> fb20f51c68cf9dda37ae59f621ee1b420f94ae03
   postgres:
     image: postgres:13
     ports:
