@@ -35,7 +35,7 @@ type RouteParamCancelingOrder = z.infer<typeof routeParamCancelingOrderSchema>
 
 @Controller('/orders/:orderId/canceling')
 @ApiBearerAuth()
-@ApiTags('orders')
+@ApiTags('order')
 export class CancelingRecipientOrderController {
   constructor(
     private readonly cancelingRecipientOrderUseCase: CancelingRecipientOrderUseCase,

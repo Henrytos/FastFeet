@@ -54,6 +54,7 @@ export class AuthenticateUserUseCase {
 
       return right({ accessToken })
     }
+    
     const administrator = await this.administratorsRepository.findByCpf(
       Cpf.create(cpf),
     )

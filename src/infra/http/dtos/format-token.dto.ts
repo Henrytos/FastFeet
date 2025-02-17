@@ -5,7 +5,6 @@ export const FORMAT_TOKEN_DTO: ApiHeaderOptions = {
   description: 'Bearer token',
   schema: {
     type: 'string',
-    format: 'bearer',
   },
   required: true,
   example:

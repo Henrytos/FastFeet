@@ -28,13 +28,16 @@ export function makeAdministrator(
 
 @Injectable()
 export class AdministratorFactory {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async makePrismaAdministrator(overwide: Partial<AdministratorProps> = {}) {
     const administrator = makeAdministrator(overwide)
 
     const prismaAdministrator = await this.prisma.user.create({
-      data: PrismaAdministratorMapper.toPrisma(administrator),
+      data: {
+        ...PrismaAdministratorMapper.toPrisma(administrator),
+        role: 'ADMINISTRATOR',
+      },
     })
 
     return prismaAdministrator
