@@ -48,6 +48,9 @@ import { CancelingRecipientOrderController } from './controllers/canceling-recip
 import { CancelingRecipientOrderUseCase } from '@/domain/delivery/application/use-cases/canceling-recipient-order-use-case'
 import { MarkAnOrderAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case'
 import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as-delivered.controller'
+import { UpdateOrderCOntroller } from './controllers/update-order.controller'
+import { UpdateOrderUseCase } from '@/domain/delivery/application/use-cases/update-order-use-case'
+import { UpdateDeliveryAddressUseCase } from '@/domain/delivery/application/use-cases/update-delivery-address-use-case'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule, GuardsModule],
@@ -74,6 +77,7 @@ import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as
     SendingOrderToRecipientByDeliveryManController,
     CancelingRecipientOrderController,
     MarkAnOrderAsDeliveredController,
+    UpdateOrderCOntroller,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -100,6 +104,8 @@ import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as
     SendingOrderToRecipientByDeliveryManUseCase,
     CancelingRecipientOrderUseCase,
     MarkAnOrderAsDeliveredUseCase,
+    UpdateOrderUseCase,
+    UpdateDeliveryAddressUseCase,
   ],
 })
 export class HttpModule {}

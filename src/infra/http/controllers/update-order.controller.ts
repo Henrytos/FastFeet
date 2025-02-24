@@ -58,7 +58,7 @@ type BodyUpdateOrder = z.infer<typeof bodyUpdateOrderSchema>
 
 @ApiTags('order')
 @ApiBearerAuth()
-@Controller('orders/:orderId')
+@Controller('/orders/:orderId')
 export class UpdateOrderCOntroller {
   constructor(
     private readonly updateOrderUseCase: UpdateOrderUseCase,
