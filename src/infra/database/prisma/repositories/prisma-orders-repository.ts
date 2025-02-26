@@ -1,9 +1,14 @@
 import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
-import { Coordinate } from '@/test/utils/get-distance-between-coordinate'
+import {
+  Coordinate,
+  getDistanceBetweenCoordinates,
+} from '@/test/utils/get-distance-between-coordinate'
 import { PrismaOrderMapper } from '../mappers/prisma-order-mapper'
 import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
+import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-object/order-with-details'
+import { PrismaOrderWithDetailsMapper } from '../mappers/prisma-order-with-details'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
@@ -12,6 +17,23 @@ export class PrismaOrdersRepository implements OrdersRepository {
   async create(order: Order): Promise<void> {
     const data = PrismaOrderMapper.toPrisma(order)
     await this.prisma.order.create({ data })
+  }
+
+  async findByIdWithDetails(id: string): Promise<OrderWithDetails | null> {
+    const order = await this.prisma.order.findUnique({
+      where: { id },
+      include: {
+        address: true,
+        recipient: true,
+        deliveryMan: true,
+      },
+    })
+
+    if (!order) {
+      return null
+    }
+
+    return PrismaOrderWithDetailsMapper.toDomain(order)
   }
 
   async findById(id: string): Promise<Order | null> {
@@ -71,7 +93,38 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async fetchManyNearby(coordinate: Coordinate): Promise<Order[]> {
-    throw new Error('Method not implemented.')
+    const orders = await this.prisma.order.findMany({
+      include: {
+        address: true,
+      },
+    })
+
+    const orderWithDistances = await Promise.all(
+      orders.map(async (order) => {
+        const distance = getDistanceBetweenCoordinates(
+          {
+            latitude: Number(coordinate.latitude),
+            longitude: Number(coordinate.longitude),
+          },
+          {
+            latitude: Number(order.address.latitude),
+            longitude: Number(order.address.longitude),
+          },
+        )
+        return {
+          order,
+          distance,
+        }
+      }),
+    )
+
+    const nearbyOrders = orderWithDistances.sort((orderA, orderB) => {
+      return orderA.distance - orderB.distance
+    })
+
+    return nearbyOrders.map((orderWithDistance) =>
+      PrismaOrderMapper.toDomain(orderWithDistance.order),
+    )
   }
 
   async deleteManyByRecipientId(recipientId: string): Promise<void> {

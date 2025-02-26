@@ -1,9 +1,12 @@
 import { Coordinate } from '@/test/utils/get-distance-between-coordinate'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
+import { OrderWithDetails } from '../../enterprise/entities/value-object/order-with-details'
 
 export abstract class OrdersRepository {
   abstract create(order: Order): Promise<void>
   abstract findById(id: string): Promise<Order | null>
+  abstract findByIdWithDetails(id: string): Promise<OrderWithDetails | null>
+
   abstract findByRecipientId(id: string): Promise<Order | null>
   abstract fetchOrdersByRecipientId(
     recipientId: string,

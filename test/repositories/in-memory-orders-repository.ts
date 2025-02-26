@@ -5,13 +5,16 @@ import {
   Coordinate,
   getDistanceBetweenCoordinates,
 } from '../utils/get-distance-between-coordinate'
-import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-object/order-with-details'
+import { InMemoryDeliveryAddressRepository } from './in-memory-delivery-address-repository'
+import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = []
 
   constructor(
-    private readonly deliveryAddressRepository: DeliveryAddressRepository,
+    private readonly deliveryAddressRepository: InMemoryDeliveryAddressRepository,
+    private recipientsRepository: InMemoryRecipientsRepository,
   ) {}
 
   async create(order: Order): Promise<void> {
@@ -22,6 +25,52 @@ export class InMemoryOrdersRepository implements OrdersRepository {
         DomainEvents.dispatchEventsForAggregate(order.id)
         break
     }
+  }
+
+  async findByIdWithDetails(id: string): Promise<OrderWithDetails | null> {
+    const order = await this.items.find((item) => item.id.toString() === id)
+    if (!order) {
+      return null
+    }
+
+    const deliveryAddress = await this.deliveryAddressRepository.findById(
+      order.deliveryAddressId.toString(),
+    )
+    if (!deliveryAddress) {
+      return null
+    }
+
+    const recipient = await this.recipientsRepository.findById(
+      order.recipientId.toString(),
+    )
+    if (!recipient) {
+      return null
+    }
+
+    const orderWithDetails = OrderWithDetails.create({
+      address: {
+        addressId: order.deliveryAddressId,
+        city: deliveryAddress.city,
+        neighborhood: deliveryAddress.neighborhood,
+        number: deliveryAddress.number,
+        state: deliveryAddress.state,
+        street: deliveryAddress.street,
+        zip: deliveryAddress.zip,
+      },
+      order: {
+        orderId: order.id,
+        createdAt: order.createdAt,
+        status: order.status,
+        deliveryAt: order.deliveryAt,
+        withdrawnAt: order.withdrawnAt,
+      },
+      recipient: {
+        recipientId: order.recipientId,
+        name: recipient.name,
+      },
+    })
+
+    return orderWithDetails
   }
 
   async findById(id: string): Promise<Order | null> {
@@ -110,20 +159,25 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     { latitude, longitude }: Coordinate,
     page: number,
   ): Promise<Order[]> {
-    const orders = this.items.filter(async (order) => {
-      const deliveryAddress = await this.deliveryAddressRepository.findById(
-        order.deliveryAddressId.toValue(),
-      )
-      const distance = getDistanceBetweenCoordinates(
-        { latitude, longitude },
-        {
-          latitude: deliveryAddress.latitude,
-          longitude: deliveryAddress.longitude,
-        },
-      )
+    const distances = await Promise.all(
+      this.items.map(async (order) => {
+        const deliveryAddress = await this.deliveryAddressRepository.findById(
+          order.deliveryAddressId.toString(),
+        )
+        const distance = getDistanceBetweenCoordinates(
+          { latitude, longitude },
+          {
+            latitude: deliveryAddress.latitude,
+            longitude: deliveryAddress.longitude,
+          },
+        )
+        return { order, distance }
+      }),
+    )
 
-      return distance <= 10 // 10;
-    })
+    const orders = distances
+      .sort((a, b) => a.distance - b.distance)
+      .map((item) => item.order)
 
     const ordersPaginated = orders.slice((page - 1) * 20, (page - 1) * 20 + 20)
     return ordersPaginated

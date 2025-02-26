@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common'
 import { z } from 'zod'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
-import { OrderPresenter } from '../presenters/order-presenter'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import {
   ApiBadRequestResponse,
@@ -25,6 +24,7 @@ import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { OrderBodyDTO } from '../dtos/order-body.dto'
 import { OrderDoesNotExistMessageDTO } from '../dtos/order-does-not-exists-message.dto'
 import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
+import { OrderWithDetailsPresenter } from '../presenters/order-with-details-presenter'
 
 const routeParamsGetOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -72,7 +72,9 @@ export class GetORderByIdController {
     }
 
     return {
-      order: OrderPresenter.toHTTP(result.value.order),
+      orderWithDetails: OrderWithDetailsPresenter.toHTTP(
+        result.value.orderWithDetails,
+      ),
     }
   }
 }

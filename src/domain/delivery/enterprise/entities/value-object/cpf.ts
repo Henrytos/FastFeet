@@ -15,7 +15,7 @@ export class Cpf {
     this._value = value
   }
 
-  static create(value: string) {
+  public static create(value: string) {
     return new Cpf(value)
   }
 
