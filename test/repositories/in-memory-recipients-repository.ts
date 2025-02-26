@@ -8,7 +8,7 @@ export class InMemoryRecipientsRepository implements RecipientsRepository {
 
   constructor(
     private readonly ordersRepository: OrdersRepository,
-    private deliveryAddress: DeliveryAddressRepository,
+    private readonly deliveryAddress: DeliveryAddressRepository,
   ) {}
 
   async findById(id: string): Promise<Recipient | null> {
