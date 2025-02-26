@@ -48,7 +48,6 @@ describe('get order by id use case', () => {
     })
 
     expect(result.isRight()).toEqual(true)
-    console.log(result.value.orderWithDetails)
     expect(result.value).toMatchObject({
       orderWithDetails: expect.objectContaining({
         props: expect.objectContaining({
