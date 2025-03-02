@@ -1,39 +1,54 @@
-import { Either, right } from '@/core/either'
-import { Order } from '../../enterprise/entities/order'
+import { Either, left, right } from '@/core/either'
 import { OrdersRepository } from '../repositories/orders-repository'
+import { OrderWithDistance } from '../../enterprise/entities/value-object/order-with-distance'
+import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 
-interface FetchNearbyOrdersUseCaseRequest {
+interface FetchNearbyOrdersWithDistanceUseCaseRequest {
   from: {
     deliveryManLongitude: number
     deliveryManLatitude: number
   }
   page: number
+  deliveryManId: string
 }
 
-type FetchNearbyOrdersUseCaseResponse = Either<
-  null,
+type FetchNearbyOrdersWithDistanceUseCaseResponse = Either<
+  DeliveryManDoesNotExistError,
   {
-    orders: Order[]
+    ordersWithDistance: OrderWithDistance[]
   }
 >
 
-export class FetchNearbyOrdersUseCase {
-  constructor(private readonly ordersRepository: OrdersRepository) {}
+export class FetchNearbyOrdersWithDistanceUseCase {
+  constructor(
+    private readonly deliveryMansRepository: DeliveryMansRepository,
+    private readonly ordersRepository: OrdersRepository,
+  ) {}
 
   async execute({
     from,
     page,
-  }: FetchNearbyOrdersUseCaseRequest): Promise<FetchNearbyOrdersUseCaseResponse> {
-    const ordersNearby = await this.ordersRepository.fetchManyNearby(
-      {
-        longitude: from.deliveryManLongitude,
-        latitude: from.deliveryManLatitude,
-      },
-      page,
-    )
+    deliveryManId,
+  }: FetchNearbyOrdersWithDistanceUseCaseRequest): Promise<FetchNearbyOrdersWithDistanceUseCaseResponse> {
+    const deliveryMan =
+      await this.deliveryMansRepository.findById(deliveryManId)
+
+    if (!deliveryMan) {
+      return left(new DeliveryManDoesNotExistError())
+    }
+
+    const ordersNearbyWithDistance =
+      await this.ordersRepository.fetchManyNearbyWithDistance(
+        {
+          longitude: from.deliveryManLongitude,
+          latitude: from.deliveryManLatitude,
+        },
+        page,
+      )
 
     return right({
-      orders: ordersNearby,
+      ordersWithDistance: ordersNearbyWithDistance,
     })
   }
 }
