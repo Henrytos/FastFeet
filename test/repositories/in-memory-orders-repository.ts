@@ -9,6 +9,7 @@ import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-object/order-with-details'
 import { InMemoryDeliveryAddressRepository } from './in-memory-delivery-address-repository'
 import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
+import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-object/order-with-distance'
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = []
 
@@ -181,6 +182,47 @@ export class InMemoryOrdersRepository implements OrdersRepository {
 
     const ordersPaginated = orders.slice((page - 1) * 20, (page - 1) * 20 + 20)
     return ordersPaginated
+  }
+
+  async fetchManyNearbyWithDistance(
+    { latitude, longitude }: Coordinate,
+    page: number,
+  ): Promise<OrderWithDistance[]> {
+    const distances = await Promise.all(
+      this.items.map(async (order) => {
+        const deliveryAddress = await this.deliveryAddressRepository.findById(
+          order.deliveryAddressId.toString(),
+        )
+        const distance = getDistanceBetweenCoordinates(
+          { latitude, longitude },
+          {
+            latitude: deliveryAddress.latitude,
+            longitude: deliveryAddress.longitude,
+          },
+        )
+        return { order, distance }
+      }),
+    )
+
+    const orders = distances
+      .sort((a, b) => a.distance - b.distance)
+      .map((item) => {
+        return {
+          order: item.order,
+          distance: item.distance,
+        }
+      })
+
+    const ordersPaginated = orders.slice((page - 1) * 20, (page - 1) * 20 + 20)
+
+    const ordersWithDistances = ordersPaginated.map((item) => {
+      return OrderWithDistance.create({
+        distanceInKms: item.distance,
+        order: item.order,
+      })
+    })
+
+    return ordersWithDistances
   }
 
   async fetchOrderByDeliveryManId({

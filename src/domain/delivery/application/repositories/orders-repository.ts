@@ -1,6 +1,7 @@
 import { Coordinate } from '@/test/utils/get-distance-between-coordinate'
 import { Order } from '@/domain/delivery/enterprise/entities/order'
 import { OrderWithDetails } from '../../enterprise/entities/value-object/order-with-details'
+import { OrderWithDistance } from '../../enterprise/entities/value-object/order-with-distance'
 
 export abstract class OrdersRepository {
   abstract create(order: Order): Promise<void>
@@ -17,6 +18,11 @@ export abstract class OrdersRepository {
     coordinate: Coordinate,
     page: number,
   ): Promise<Order[]>
+
+  abstract fetchManyNearbyWithDistance(
+    coordinate: Coordinate,
+    page: number,
+  ): Promise<OrderWithDistance[]>
 
   abstract deleteManyByRecipientId(recipientId: string): Promise<void>
   abstract save(order: Order): Promise<void>

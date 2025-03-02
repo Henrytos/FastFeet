@@ -51,9 +51,12 @@ import { MarkAnOrderAsDeliveredController } from './controllers/mark-an-order-as
 import { UpdateOrderCOntroller } from './controllers/update-order.controller'
 import { UpdateOrderUseCase } from '@/domain/delivery/application/use-cases/update-order-use-case'
 import { UpdateDeliveryAddressUseCase } from '@/domain/delivery/application/use-cases/update-delivery-address-use-case'
+import { UploadPhotoForStorageController } from './controllers/upload-photo-for-storage.controller'
+import { UploadPhotoForStorageUseCase } from '@/domain/delivery/application/use-cases/upload-and-create-photo-use-case'
+import { StorageModule } from './storage/storage.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule, GuardsModule],
+  imports: [DatabaseModule, CryptographyModule, GuardsModule, StorageModule],
   controllers: [
     AuthenticateController,
     CreateAccountController,
@@ -78,6 +81,7 @@ import { UpdateDeliveryAddressUseCase } from '@/domain/delivery/application/use-
     CancelingRecipientOrderController,
     MarkAnOrderAsDeliveredController,
     UpdateOrderCOntroller,
+    UploadPhotoForStorageController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -106,6 +110,7 @@ import { UpdateDeliveryAddressUseCase } from '@/domain/delivery/application/use-
     MarkAnOrderAsDeliveredUseCase,
     UpdateOrderUseCase,
     UpdateDeliveryAddressUseCase,
+    UploadPhotoForStorageUseCase,
   ],
 })
 export class HttpModule {}

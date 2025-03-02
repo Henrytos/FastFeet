@@ -9,6 +9,7 @@ import { PrismaService } from '../prisma.service'
 import { Injectable } from '@nestjs/common'
 import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-object/order-with-details'
 import { PrismaOrderWithDetailsMapper } from '../mappers/prisma-order-with-details'
+import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-object/order-with-distance'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
@@ -125,6 +126,48 @@ export class PrismaOrdersRepository implements OrdersRepository {
     return nearbyOrders.map((orderWithDistance) =>
       PrismaOrderMapper.toDomain(orderWithDistance.order),
     )
+  }
+
+  async fetchManyNearbyWithDistance(
+    coordinate: Coordinate,
+  ): Promise<OrderWithDistance[]> {
+    const orders = await this.prisma.order.findMany({
+      include: {
+        address: true,
+      },
+    })
+
+    const orderWithDistances = await Promise.all(
+      orders.map(async (order) => {
+        const distance = getDistanceBetweenCoordinates(
+          {
+            latitude: Number(coordinate.latitude),
+            longitude: Number(coordinate.longitude),
+          },
+          {
+            latitude: Number(order.address.latitude),
+            longitude: Number(order.address.longitude),
+          },
+        )
+        return {
+          order,
+          distance,
+        }
+      }),
+    )
+
+    const nearbyOrders = orderWithDistances.sort((orderA, orderB) => {
+      return orderA.distance - orderB.distance
+    })
+
+    return nearbyOrders.map((orderWithDistance) => {
+      const order = PrismaOrderMapper.toDomain(orderWithDistance.order)
+
+      return OrderWithDistance.create({
+        order,
+        distanceInKms: orderWithDistance.distance,
+      })
+    })
   }
 
   async deleteManyByRecipientId(recipientId: string): Promise<void> {

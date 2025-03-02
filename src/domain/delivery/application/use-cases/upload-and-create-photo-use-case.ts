@@ -3,6 +3,7 @@ import { Uploader } from '../storage/uploader'
 import { Photo } from '../../enterprise/entities/photo'
 import { PhotosRepository } from '../repositories/photos-repository'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
+import { Injectable } from '@nestjs/common'
 
 interface UploadPhotoForStorageUseCaseRequest {
   photo: Buffer
@@ -17,6 +18,7 @@ type UploadPhotoForStorageUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class UploadPhotoForStorageUseCase {
   constructor(
     private readonly uploader: Uploader,

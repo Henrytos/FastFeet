@@ -62,8 +62,6 @@ describe('GetORderByIdController (e2e)', () => {
       .set('Authorization', `Bearer ${token}`)
       .send()
 
-    console.log(response.body)
-
     expect(response.status).toBe(HttpStatus.OK)
   })
 })
