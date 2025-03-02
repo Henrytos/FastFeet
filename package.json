@@ -70,6 +70,7 @@
     "@nestjs/swagger": "^8.1.0",
     "@prisma/client": "^6.3.1",
     "bcryptjs": "^2.4.3",
+    "nodemailer": "^6.10.0",
     "ntl": "^5.1.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

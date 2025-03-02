@@ -3,6 +3,7 @@ import { Notification } from '../../enterprise/entities/notification'
 import { NotificationsRepository } from '../repositories/notifications-repository'
 import { NotificationDoesNotExistsError } from './errors/notification-does-not-exists-error'
 import { WrongCredentialsError } from '@/domain/delivery/application/use-cases/errors/wrong-credentials-error'
+import { Injectable } from '@nestjs/common'
 
 export interface ReadNotificationUseCaseRequest {
   notificationId: string
@@ -15,7 +16,7 @@ export type ReadNotificationUseCaseResponse = Either<
     notification: Notification
   }
 >
-
+@Injectable()
 export class ReadNotificationUseCase {
   constructor(
     private readonly notificationsRepository: NotificationsRepository,
@@ -37,6 +38,7 @@ export class ReadNotificationUseCase {
     }
 
     notification.read()
+    this.notificationsRepository.save(notification)
 
     return right({ notification })
   }

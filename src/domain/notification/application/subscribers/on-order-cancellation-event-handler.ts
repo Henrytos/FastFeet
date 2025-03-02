@@ -2,7 +2,9 @@ import { EventHandler } from '@/core/events/event-handler'
 import { SendNotificationUseCase } from '../use-cases/send-notification-use-case'
 import { DomainEvents } from '@/core/events/domain-events'
 import { OrderCanceledEvent } from '@/domain/delivery/enterprise/events/order-canceled-event'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnOrderCancellationEventHandler implements EventHandler {
   constructor(
     private readonly sendNotificationUseCase: SendNotificationUseCase,

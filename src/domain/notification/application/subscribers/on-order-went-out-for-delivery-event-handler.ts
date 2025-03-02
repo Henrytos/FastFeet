@@ -2,7 +2,9 @@ import { EventHandler } from '@/core/events/event-handler'
 import { SendNotificationUseCase } from '../use-cases/send-notification-use-case'
 import { DomainEvents } from '@/core/events/domain-events'
 import { OrderWithdrawnEvent } from '@/domain/delivery/enterprise/events/order-withdrawn-event'
+import { Injectable } from '@nestjs/common'
 
+@Injectable()
 export class OnOrderWentOutForDeliveryEventHandler implements EventHandler {
   constructor(
     private readonly sendNotificationUseCase: SendNotificationUseCase,

@@ -39,8 +39,6 @@ export class DeleteAnOrderUseCase {
 
     await this.ordersRepository.delete(order)
 
-    // TODO: send email to the user
-
     return right({})
   }
 }
