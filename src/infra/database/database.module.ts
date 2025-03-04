@@ -14,6 +14,7 @@ import { RecipientsRepository } from '@/domain/delivery/application/repositories
 import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipients-repository'
 import { PrismaDeliveryAddressRepository } from './prisma/repositories/prisma-delivery-address-repository'
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository'
+import { PrismaNotificationsRepository } from './prisma/repositories/prisma-notifications-repository'
 
 @Module({
   providers: [
@@ -32,7 +33,7 @@ import { DeliveryAddressRepository } from '@/domain/delivery/application/reposit
     },
     {
       provide: NotificationsRepository,
-      useClass: PrismaNotificationMapper,
+      useClass: PrismaNotificationsRepository,
     },
     {
       provide: OrdersRepository,
