@@ -30,7 +30,7 @@ export class UploadPhotoForStorageUseCase {
     fileName,
     fileType,
   }: UploadPhotoForStorageUseCaseRequest): Promise<UploadPhotoForStorageUseCaseResponse> {
-    if (!/^image\/(jpg|jpeg|png)$/.test(fileType)) {
+    if (this.isInValidFiletypeOfPhoto(fileType)) {
       return left(new WrongCredentialsError())
     }
 
@@ -45,5 +45,9 @@ export class UploadPhotoForStorageUseCase {
     await this.photosRepository.create(newPhoto)
 
     return right({ url })
+  }
+
+  private isInValidFiletypeOfPhoto(fileType: string): boolean {
+    return !/^image\/(jpg|jpeg|png)$/.test(fileType)
   }
 }

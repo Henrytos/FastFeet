@@ -10,6 +10,8 @@ import { Injectable } from '@nestjs/common'
 import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-object/order-with-details'
 import { PrismaOrderWithDetailsMapper } from '../mappers/prisma-order-with-details'
 import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-object/order-with-distance'
+import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { DomainEvents } from '@/core/events/domain-events'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
@@ -17,6 +19,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async create(order: Order): Promise<void> {
     const data = PrismaOrderMapper.toPrisma(order)
+    DomainEvents.dispatchEventsForAggregate(order.id)
     await this.prisma.order.create({ data })
   }
 
@@ -176,6 +179,21 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async save(order: Order): Promise<void> {
     const data = PrismaOrderMapper.toPrisma(order)
+
+    switch (data.orderStatus) {
+      case ORDER_STATUS.PENDING:
+        DomainEvents.dispatchEventsForAggregate(order.id)
+        break
+      case 'withdrawn':
+        DomainEvents.dispatchEventsForAggregate(order.id)
+        break
+      case ORDER_STATUS.DELIVERED:
+        DomainEvents.dispatchEventsForAggregate(order.id)
+        break
+      case 'canceled':
+        DomainEvents.dispatchEventsForAggregate(order.id)
+        break
+    }
 
     await this.prisma.order.update({
       where: { id: data.id },

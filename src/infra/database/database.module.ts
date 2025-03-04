@@ -5,7 +5,6 @@ import { PrismaAdministratorsRepository } from './prisma/repositories/prisma-adm
 import { DeliveryMansRepository } from '@/domain/delivery/application/repositories/delivery-mans-repository'
 import { PrismaDeliveryMansRepository } from './prisma/repositories/prisma-delivery-mans-repository'
 import { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
-import { PrismaNotificationMapper } from './prisma/mappers/prisma-notification-mapper'
 import { OrdersRepository } from '@/domain/delivery/application/repositories/orders-repository'
 import { PrismaOrdersRepository } from './prisma/repositories/prisma-orders-repository'
 import { PhotosRepository } from '@/domain/delivery/application/repositories/photos-repository'
