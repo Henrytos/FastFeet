@@ -19,7 +19,6 @@ export class OnOrderCreatedEventHandler implements EventHandler {
 
   private async sendNotificationToRecipient({ order }: OrderCreatedEvent) {
     if (order) {
-      console.log('Order created event received')
       await this.sendNotification.execute({
         recipientId: order.recipientId.toString(),
         title: 'Order created',

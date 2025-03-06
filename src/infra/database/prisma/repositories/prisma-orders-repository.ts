@@ -19,7 +19,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async create(order: Order): Promise<void> {
     const data = PrismaOrderMapper.toPrisma(order)
-    DomainEvents.dispatchEventsForAggregate(order.id)
+    await DomainEvents.dispatchEventsForAggregate(order.id)
     await this.prisma.order.create({ data })
   }
 
@@ -182,16 +182,16 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
     switch (data.orderStatus) {
       case ORDER_STATUS.PENDING:
-        DomainEvents.dispatchEventsForAggregate(order.id)
+        await DomainEvents.dispatchEventsForAggregate(order.id)
         break
       case 'withdrawn':
-        DomainEvents.dispatchEventsForAggregate(order.id)
+        await DomainEvents.dispatchEventsForAggregate(order.id)
         break
       case ORDER_STATUS.DELIVERED:
-        DomainEvents.dispatchEventsForAggregate(order.id)
+        await DomainEvents.dispatchEventsForAggregate(order.id)
         break
       case 'canceled':
-        DomainEvents.dispatchEventsForAggregate(order.id)
+        await DomainEvents.dispatchEventsForAggregate(order.id)
         break
     }
 

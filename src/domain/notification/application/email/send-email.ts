@@ -7,5 +7,5 @@ export interface FormatSendEmailUser {
 }
 
 export abstract class SendEmailToUser {
-  abstract send(data: FormatSendEmailUser)
+  abstract send(data: FormatSendEmailUser): Promise<void>
 }

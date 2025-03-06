@@ -1,43 +1,41 @@
-import * as nodemailer from 'nodemailer'
+import * as dotenv from 'dotenv'
 
-interface SendNotificationParams {
-  from: string
-  to: string
-  subject: string
-  text: string
-  html: string
-}
+dotenv.config()
 
-export async function sendNotification({
-  from,
-  to,
-  subject,
-  text,
-  html,
-}: SendNotificationParams) {
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // true for port 465, false for other ports
-    auth: {
-      user: 'franzhenry46@gmail.com', // E-mail remetente
-      pass: 'cyuk xvrw ziva dqdp', // Senha do aplicativo ou senha do Gmail
-    },
-  })
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const nodemailer = require('nodemailer')
 
-  try {
-    // Enviar e-mail com o transportador configurado
-    const info = await transporter.sendMail({
-      from, // Agora usa o valor de 'from' passado para a função
-      to, // Agora usa o valor de 'to' passado para a função
-      subject, // Agora usa o valor de 'subject' passado para a função
-      text, // Agora usa o valor de 'text' passado para a função
-      html, // Agora usa o valor de 'html' passado para a função
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+})
+
+/**
+ * Envia um e-mail para um destinatário específico.
+ * @param {string} to - Endereço de e-mail do destinatário.
+ * @param {string} subject - Assunto do e-mail.
+ * @param {string} text - Corpo do e-mail em texto simples.
+ * @returns {Promise<boolean>} - Retorna `true` se o e-mail foi enviado com sucesso.
+ */
+export async function sendEmail(to, subject, text) {
+  await transporter
+    .sendMail({
+      from: process.env.SMTP_USER,
+      to,
+      subject,
+      text,
+    })
+    .then((result) => {
+      console.log('E-mail enviado com sucesso:', result)
+    })
+    .catch((err) => {
+      console.error('Erro ao enviar e-mail:', err)
     })
 
-    console.log('Message sent: %s', info.messageId) // Exibe o ID da mensagem enviada
-    transporter.close() // Fecha a conexão com o servidor SMTP
-  } catch (error) {
-    console.error('Error sending email:', error)
-  }
+  return true
 }

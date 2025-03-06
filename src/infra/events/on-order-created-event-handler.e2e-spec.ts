@@ -8,6 +8,11 @@ import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
 import request from 'supertest'
 
+import * as nodemailer from 'nodemailer'
+import { vi } from 'vitest'
+import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
+import { waitFor } from '@/test/utils/wait-for'
+
 describe('RegisterOrderForRecipientController (e2e)', () => {
   let app: INestApplication
   let jwt: JwtService
@@ -38,7 +43,9 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
       sub: administrator.id,
     })
 
-    const recipient = await recipientFactory.makePrismaRecipient()
+    const recipient = await recipientFactory.makePrismaRecipient({
+      email: 'franzhenry46@gmail.com',
+    })
 
     const response = await request(app.getHttpServer())
       .post(`/orders/${recipient.id}`)
@@ -56,8 +63,13 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
 
     expect(response.status).toBe(HttpStatus.CREATED)
 
-    const notificationOnDatabase = await prisma.notification.findMany({})
-    console.log(notificationOnDatabase)
+    const notificationOnDatabase = await prisma.notification.findFirst({
+      where: {
+        recipientId: recipient.id.toString(),
+      },
+    })
+
     expect(notificationOnDatabase).toBeTruthy()
+    await new Promise((resolve) => setTimeout(resolve, 3000))
   })
 })

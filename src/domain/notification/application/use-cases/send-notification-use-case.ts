@@ -31,7 +31,6 @@ export class SendNotificationUseCase {
     title,
     content,
   }: SendNotificationUseCaseRequest): Promise<SendNotificationUseCaseResponse> {
-    console.log('Sending notification')
     const notification = Notification.create({
       recipientId: new UniqueEntityID(recipientId),
       title,
@@ -41,6 +40,7 @@ export class SendNotificationUseCase {
     await this.notificationsRepository.create(notification)
 
     const recipient = await this.recipientsRepository.findById(recipientId)
+
     await this.sendEmailToUser.send({
       to: {
         email: recipient.email,

@@ -20,12 +20,10 @@ export class OnOrderWentOutForDeliveryEventHandler implements EventHandler {
   }
 
   async sendNotificationToRecipient({ order }: OrderWithdrawnEvent) {
-    if (order) {
-      await this.sendNotificationUseCase.execute({
-        recipientId: order.recipientId.toString(),
-        title: 'Order went out for delivery',
-        content: `Your order with id ${order.id.toString()} went out for delivery`,
-      })
-    }
+    await this.sendNotificationUseCase.execute({
+      recipientId: order.recipientId.toString(),
+      title: 'Order went out for delivery',
+      content: `Your order with id ${order.id.toString()} went out for delivery`,
+    })
   }
 }
