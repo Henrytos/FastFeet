@@ -6,13 +6,10 @@ import { RecipientFactory } from '@/test/factories/make-recipient'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { Test } from '@nestjs/testing'
+import { $Enums } from '@prisma/client'
 import request from 'supertest'
-
 import * as nodemailer from 'nodemailer'
 import { vi } from 'vitest'
-import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
-import { waitFor } from '@/test/utils/wait-for'
-import { EnvModule } from '../env/env.module'
 
 describe('RegisterOrderForRecipientController (e2e)', () => {
   let app: INestApplication
@@ -21,7 +18,16 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
   let recipientFactory: RecipientFactory
   let prisma: PrismaService
 
+  let sendMailMock: vi.Mock
+
   beforeAll(async () => {
+    // Mock de nodemailer
+    vi.mock('nodemailer', () => ({
+      createTransport: vi.fn(() => ({
+        sendMail: vi.fn().mockResolvedValue({ messageId: '12345' }), // Mock do envio de e-mail
+      })),
+    }))
+
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule, DatabaseModule],
       providers: [AdministratorFactory, RecipientFactory],
@@ -32,6 +38,9 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
     recipientFactory = moduleRef.get(RecipientFactory)
     administratorFactory = moduleRef.get(AdministratorFactory)
     prisma = moduleRef.get(PrismaService)
+
+    sendMailMock = (nodemailer.createTransport as vi.Mock).mock.results[0].value
+      .sendMail
 
     await app.init()
   })
@@ -44,10 +53,9 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
       sub: administrator.id,
     })
 
-    const recipient = await recipientFactory.makePrismaRecipient({
-      email: 'franzhenry46@gmail.com',
-    })
+    const recipient = await recipientFactory.makePrismaRecipient()
 
+    // Fazer o pedido via API
     const response = await request(app.getHttpServer())
       .post(`/orders/${recipient.id}`)
       .set('Authorization', `Bearer ${accessToken}`)
@@ -62,66 +70,56 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
         longitude: '12312312312312',
       })
 
+    // Verificação da criação do pedido
     expect(response.status).toBe(HttpStatus.CREATED)
 
-    const notificationOnDatabase = await prisma.notification.findFirst({
+    const order = await prisma.order.findFirstOrThrow({
       where: {
-        recipientId: recipient.id.toString(),
+        recipientId: recipient.id,
+      },
+    })
+    expect(order).toBeTruthy()
+
+    const deliveryAddressInDatabase = await prisma.address.findFirstOrThrow({
+      where: {
+        orders: {
+          some: {
+            id: order.id,
+          },
+        },
       },
     })
 
-    expect(notificationOnDatabase).toBeTruthy()
-    await new Promise((resolve) => setTimeout(resolve, 4000))
+    expect(deliveryAddressInDatabase).toBeTruthy()
+
+    const recipientInDatabase = await prisma.recipient.findFirstOrThrow({
+      where: {
+        id: recipient.id,
+      },
+    })
+    expect(recipientInDatabase).toBeTruthy()
+
+    const administratorInDatabase = await prisma.user.findMany()
+    expect(administratorInDatabase).toBeTruthy()
+
+    expect(order).toMatchObject(
+      expect.objectContaining({
+        id: expect.any(String),
+        orderStatus: $Enums.OrderStatus.pending,
+        recipientId: recipientInDatabase.id,
+        deliveryAddressId: deliveryAddressInDatabase.id,
+      }),
+    )
+
+    // Verificação de que o e-mail foi enviado
+    expect(sendMailMock).toHaveBeenCalledTimes(1)
+    expect(sendMailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: process.env.SMTP_USER,
+        to: expect.any(String), // Aqui você pode colocar o destinatário esperado
+        subject: expect.any(String),
+        text: expect.any(String),
+      }),
+    )
   })
 })
-
-// só posso enviar um emaill por vez a uma pessoa
-
-// vi.mock('nodemailer', () => ({
-//   createTransport: vi.fn(() => ({
-//     sendMail: vi.fn().mockResolvedValue({ messageId: '12345' }), // Mock do envio de e-mail
-//   })),
-// }))
-
-// describe('NodemailerSendEmailToUser (e2e)', () => {
-//   let sendEmailService: NodemailerSendEmailToUser
-//   let sendMailMock: unknown
-
-//   beforeEach(async () => {
-//     const moduleRef = await Test.createTestingModule({
-//       imports: [EnvModule],
-//       providers: [NodemailerSendEmailToUser],
-//     }).compile()
-
-//     sendEmailService = moduleRef.get(NodemailerSendEmailToUser)
-
-//     // Pegando o mock da função sendMail
-//     sendMailMock = (nodemailer.createTransport as any).mock.results[0].value
-//       .sendMail
-//   })
-
-//   afterEach(() => {
-//     vi.restoreAllMocks() // Restaura os mocks após os testes
-//   })
-
-//   it('deve enviar um e-mail com sucesso', async () => {
-//     await sendEmailService.send({
-//       to: {
-//         email: 'franzhenry46@gmail.com',
-//         subject: 'Teste',
-//         body: 'Este é um e-mail de teste',
-//       },
-//     })
-
-//     waitFor(() => {
-//       expect(sendMailMock).toHaveBeenCalledTimes(1)
-
-//       expect(sendMailMock).toHaveBeenCalledWith({
-//         from: process.env.SMTP_USER,
-//         to: 'franzhenry46@gmail.com',
-//         subject: 'Teste',
-//         text: 'Este é um e-mail de teste',
-//       })
-//     })
-//   })
-// })

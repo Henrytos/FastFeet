@@ -19,7 +19,7 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
   async create(order: Order): Promise<void> {
     const data = PrismaOrderMapper.toPrisma(order)
-    await DomainEvents.dispatchEventsForAggregate(order.id)
+    DomainEvents.dispatchEventsForAggregate(order.id)
     await this.prisma.order.create({ data })
   }
 
