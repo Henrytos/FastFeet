@@ -12,6 +12,7 @@ import * as nodemailer from 'nodemailer'
 import { vi } from 'vitest'
 import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
 import { waitFor } from '@/test/utils/wait-for'
+import { EnvModule } from '../env/env.module'
 
 describe('RegisterOrderForRecipientController (e2e)', () => {
   let app: INestApplication
@@ -70,6 +71,57 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
     })
 
     expect(notificationOnDatabase).toBeTruthy()
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 4000))
   })
 })
+
+// só posso enviar um emaill por vez a uma pessoa
+
+// vi.mock('nodemailer', () => ({
+//   createTransport: vi.fn(() => ({
+//     sendMail: vi.fn().mockResolvedValue({ messageId: '12345' }), // Mock do envio de e-mail
+//   })),
+// }))
+
+// describe('NodemailerSendEmailToUser (e2e)', () => {
+//   let sendEmailService: NodemailerSendEmailToUser
+//   let sendMailMock: unknown
+
+//   beforeEach(async () => {
+//     const moduleRef = await Test.createTestingModule({
+//       imports: [EnvModule],
+//       providers: [NodemailerSendEmailToUser],
+//     }).compile()
+
+//     sendEmailService = moduleRef.get(NodemailerSendEmailToUser)
+
+//     // Pegando o mock da função sendMail
+//     sendMailMock = (nodemailer.createTransport as any).mock.results[0].value
+//       .sendMail
+//   })
+
+//   afterEach(() => {
+//     vi.restoreAllMocks() // Restaura os mocks após os testes
+//   })
+
+//   it('deve enviar um e-mail com sucesso', async () => {
+//     await sendEmailService.send({
+//       to: {
+//         email: 'franzhenry46@gmail.com',
+//         subject: 'Teste',
+//         body: 'Este é um e-mail de teste',
+//       },
+//     })
+
+//     waitFor(() => {
+//       expect(sendMailMock).toHaveBeenCalledTimes(1)
+
+//       expect(sendMailMock).toHaveBeenCalledWith({
+//         from: process.env.SMTP_USER,
+//         to: 'franzhenry46@gmail.com',
+//         subject: 'Teste',
+//         text: 'Este é um e-mail de teste',
+//       })
+//     })
+//   })
+// })
