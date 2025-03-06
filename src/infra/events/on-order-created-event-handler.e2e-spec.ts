@@ -9,7 +9,7 @@ import { Test } from '@nestjs/testing'
 import { $Enums } from '@prisma/client'
 import request from 'supertest'
 import * as nodemailer from 'nodemailer'
-import { vi } from 'vitest'
+import { waitFor } from '@/test/utils/wait-for'
 
 describe('RegisterOrderForRecipientController (e2e)', () => {
   let app: INestApplication
@@ -111,15 +111,17 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
       }),
     )
 
-    // Verificação de que o e-mail foi enviado
-    expect(sendMailMock).toHaveBeenCalledTimes(1)
-    expect(sendMailMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        from: process.env.SMTP_USER,
-        to: expect.any(String), // Aqui você pode colocar o destinatário esperado
-        subject: expect.any(String),
-        text: expect.any(String),
-      }),
-    )
+    waitFor(() => {
+      // Verificação de que o e-mail foi enviado
+      expect(sendMailMock).toHaveBeenCalledTimes(1)
+      expect(sendMailMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          from: process.env.SMTP_USER,
+          to: expect.any(String), // Aqui você pode colocar o destinatário esperado
+          subject: expect.any(String),
+          text: expect.any(String),
+        }),
+      )
+    })
   })
 })

@@ -51,6 +51,7 @@ export class MarkAnOrderAsDeliveredController {
       photoId,
     })
 
+    console.log(result.value)
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case OrderDoesNotExistError:

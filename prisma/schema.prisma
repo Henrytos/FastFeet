@@ -41,7 +41,7 @@ model Order {
     deliveryMan       User?       @relation(fields: [deliveryManId], references: [id])
     recipientId       String?     @map("recipient_id")
     recipient         Recipient?  @relation(fields: [recipientId], references: [id])
-    photoId           String?
+    photoId           String?     @map("photo_id")
     photo             Photo?      @relation(fields: [photoId], references: [id])
     deliveryAddressId String?
     address           Address?    @relation(fields: [deliveryAddressId], references: [id])
