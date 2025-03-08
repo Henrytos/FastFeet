@@ -17,6 +17,7 @@ import { waitFor } from '@/test/utils/wait-for'
 import { SpyInstance } from 'vitest'
 import { OnOrderCancellationEventHandler } from './on-order-cancellation-event-handler'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
+import { FakerSendEmailToUser } from '@/test/email/faker-send-email-to-user'
 
 let sendNotificationUseCase: SendNotificationUseCase
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository
@@ -24,6 +25,7 @@ let inMemoryNotificationsRepository: InMemoryNotificationsRepository
 let inMemoryRecipientsRepository: InMemoryRecipientsRepository
 let inMemoryOrdersRepository: InMemoryOrdersRepository
 let inMemoryDeliveryAddressRepository: InMemoryDeliveryAddressRepository
+let fakerSendEmailToUser: FakerSendEmailToUser
 
 let sendNotificationExecuteSpy: SpyInstance<
   [SendNotificationUseCaseRequest],
@@ -32,18 +34,24 @@ let sendNotificationExecuteSpy: SpyInstance<
 
 describe('On Answer Created', () => {
   beforeEach(() => {
-    inMemoryOrdersRepository = new InMemoryOrdersRepository(
-      inMemoryDeliveryAddressRepository,
-    )
     inMemoryDeliveryAddressRepository = new InMemoryDeliveryAddressRepository()
     inMemoryRecipientsRepository = new InMemoryRecipientsRepository(
       inMemoryOrdersRepository,
       inMemoryDeliveryAddressRepository,
     )
 
+    inMemoryOrdersRepository = new InMemoryOrdersRepository(
+      inMemoryDeliveryAddressRepository,
+      inMemoryRecipientsRepository,
+    )
+
     inMemoryNotificationsRepository = new InMemoryNotificationsRepository()
+
+    fakerSendEmailToUser = new FakerSendEmailToUser()
     sendNotificationUseCase = new SendNotificationUseCase(
       inMemoryNotificationsRepository,
+      inMemoryRecipientsRepository,
+      fakerSendEmailToUser,
     )
     new OnOrderCancellationEventHandler(sendNotificationUseCase)
     sendNotificationExecuteSpy = vi.spyOn(sendNotificationUseCase, 'execute')
