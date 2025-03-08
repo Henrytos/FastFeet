@@ -23,8 +23,8 @@ export class OnOrderDeliveredEventHandler implements EventHandler {
     if (order) {
       await this.sendNotification.execute({
         recipientId: order.recipientId.toString(),
-        title: 'order delivered',
-        content: 'your order has been delivered',
+        title: 'Order delivered',
+        content: 'Your Order has been Delivered',
       })
     }
   }
