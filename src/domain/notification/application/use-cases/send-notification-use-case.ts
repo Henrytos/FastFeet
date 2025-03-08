@@ -1,10 +1,11 @@
-import { Either, right } from '@/core/either'
+import { Either, left, right } from '@/core/either'
 import { Notification } from '../../enterprise/entities/notification'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { NotificationsRepository } from '../repositories/notifications-repository'
 import { Injectable } from '@nestjs/common'
 import { SendEmailToUser } from '../email/send-email'
 import { RecipientsRepository } from '@/domain/delivery/application/repositories/recipients-repository'
+import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 
 export interface SendNotificationUseCaseRequest {
   recipientId: string
@@ -13,7 +14,7 @@ export interface SendNotificationUseCaseRequest {
 }
 
 export type SendNotificationUseCaseResponse = Either<
-  null,
+  RecipientDoesNotExistError,
   {
     notification: Notification
   }
@@ -40,6 +41,10 @@ export class SendNotificationUseCase {
     await this.notificationsRepository.create(notification)
 
     const recipient = await this.recipientsRepository.findById(recipientId)
+
+    if (!recipient) {
+      return left(new RecipientDoesNotExistError())
+    }
 
     await this.sendEmailToUser.send({
       to: {

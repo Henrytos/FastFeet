@@ -2,6 +2,7 @@ import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AppModule } from '@/infra/app.module'
 import { DatabaseModule } from '@/infra/database/database.module'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { DeliveryAddressFactory } from '@/test/factories/make-delivery-address'
 import { DeliveryManFactory } from '@/test/factories/make-delivery-man'
 import { OrderFactory } from '@/test/factories/make-order'
@@ -20,6 +21,7 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
   let deliveryAddressFactory: DeliveryAddressFactory
   let recipientFactory: RecipientFactory
   let photoFactory: PhotoFactory
+  let prisma: PrismaService
   let jwt: JwtService
 
   beforeEach(async () => {
@@ -40,6 +42,7 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
     deliveryAddressFactory = moduleRef.get(DeliveryAddressFactory)
     recipientFactory = moduleRef.get(RecipientFactory)
     photoFactory = moduleRef.get(PhotoFactory)
+    prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
 
     await app.init()
@@ -55,7 +58,6 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
 
     const recipient = await recipientFactory.makePrismaRecipient()
     const deliveryAddress = await deliveryAddressFactory.makeDeliveryAddress()
-    const photo = await photoFactory.makePrismaPhoto()
     const getPreviousDateByTime = new GetPreviousDateByTime()
     const order = await orderFactory.makePrismaOrder({
       deliveryManId: new UniqueEntityID(deliveryMan.id),
@@ -66,11 +68,18 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
       createdAt: getPreviousDateByTime.differenceInDays(2),
     })
 
+    const photo = await prisma.photo.create({
+      data: {
+        filename: 'photo.jpg',
+        url: 'http://localhost:3000/photo.jpg',
+      },
+    })
+
     const response = await request(app.getHttpServer())
       .patch(`/orders/${order.id}/delivered`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        photoId: photo.id.toString(),
+        photoId: photo.id,
       })
 
     expect(response.status).toBe(200)

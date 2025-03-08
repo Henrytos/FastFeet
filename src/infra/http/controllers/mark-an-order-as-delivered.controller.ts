@@ -45,13 +45,18 @@ export class MarkAnOrderAsDeliveredController {
     { photoId }: BodyMarkAnOrder,
     @CurrentUser() { sub: deliveryManId }: UserPayload,
   ) {
+    console.log({
+      orderId,
+      deliveryManId,
+      photoId,
+    })
     const result = await this.markAnOrderAsDeliveredUseCase.execute({
       orderId,
       deliveryManId,
       photoId,
     })
 
-    console.log(result.value)
+    console.log(result)
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case OrderDoesNotExistError:
