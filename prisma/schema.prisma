@@ -43,7 +43,7 @@ model Order {
     recipient         Recipient?  @relation(fields: [recipientId], references: [id])
     photoId           String?     @map("photo_id")
     photo             Photo?      @relation(fields: [photoId], references: [id])
-    deliveryAddressId String?
+    deliveryAddressId String?     @map("delivery_address_id")
     address           Address?    @relation(fields: [deliveryAddressId], references: [id])
     createdAt         DateTime    @default(now()) @map("created_at")
     deliveryAt        DateTime?   @map("delivery_at")
@@ -57,10 +57,9 @@ model Photo {
     id        String   @id @default(uuid())
     filename  String
     url       String
-    orderId   String?  @map("order_id")
     createdAt DateTime @default(now()) @map("created_at")
     updatedAt DateTime @updatedAt() @map("updated_at")
-    orders    Order[]
+    order     Order[]
 
     @@map("photos")
 }

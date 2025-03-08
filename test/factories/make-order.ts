@@ -42,13 +42,13 @@ export class OrderFactory {
         deliveryManId: overwide.deliveryManId
           ? overwide.deliveryManId.toString()
           : null,
-        photoId: overwide.photoId ? overwide.photoId.toString() : null,
         deliveryAddressId: overwide.deliveryAddressId
           ? overwide.deliveryAddressId.toString()
           : null,
         recipientId: overwide.recipientId
           ? overwide.recipientId.toString()
           : null,
+        photoId: overwide.photoId ? overwide.photoId.toString() : null,
         orderStatus: overwide.status ? overwide.status : ORDER_STATUS.PENDING,
         createdAt: overwide.createdAt || new Date(),
         updatedAt: overwide.updatedAt,

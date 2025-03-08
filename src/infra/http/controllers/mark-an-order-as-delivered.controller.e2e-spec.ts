@@ -6,7 +6,6 @@ import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { DeliveryAddressFactory } from '@/test/factories/make-delivery-address'
 import { DeliveryManFactory } from '@/test/factories/make-delivery-man'
 import { OrderFactory } from '@/test/factories/make-order'
-import { PhotoFactory } from '@/test/factories/make-photo'
 import { RecipientFactory } from '@/test/factories/make-recipient'
 import { GetPreviousDateByTime } from '@/test/utils/get-previous-date-by-time'
 import { INestApplication } from '@nestjs/common'
@@ -20,7 +19,6 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
   let orderFactory: OrderFactory
   let deliveryAddressFactory: DeliveryAddressFactory
   let recipientFactory: RecipientFactory
-  let photoFactory: PhotoFactory
   let prisma: PrismaService
   let jwt: JwtService
 
@@ -32,7 +30,6 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
         OrderFactory,
         DeliveryAddressFactory,
         RecipientFactory,
-        PhotoFactory,
       ],
     }).compile()
 
@@ -41,7 +38,6 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
     orderFactory = moduleRef.get(OrderFactory)
     deliveryAddressFactory = moduleRef.get(DeliveryAddressFactory)
     recipientFactory = moduleRef.get(RecipientFactory)
-    photoFactory = moduleRef.get(PhotoFactory)
     prisma = moduleRef.get(PrismaService)
     jwt = moduleRef.get(JwtService)
 
@@ -66,6 +62,7 @@ describe('MarkAnOrderAsDeliveredController (E2E)', () => {
       deliveryAddressId: new UniqueEntityID(deliveryAddress.id),
       withdrawnAt: getPreviousDateByTime.differenceInDays(1),
       createdAt: getPreviousDateByTime.differenceInDays(2),
+      photoId: null,
     })
 
     const photo = await prisma.photo.create({

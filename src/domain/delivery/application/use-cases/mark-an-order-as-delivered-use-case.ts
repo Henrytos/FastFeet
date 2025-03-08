@@ -59,9 +59,6 @@ export class MarkAnOrderAsDeliveredUseCase {
     if (!photo) {
       return left(new PhotoDoesNotExistError())
     }
-    console.log({
-      phoroId: photo.id,
-    })
 
     order.status = ORDER_STATUS.DELIVERED
     order.photoId = photo.id

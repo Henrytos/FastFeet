@@ -33,8 +33,6 @@ export class R2StorageUploader implements Uploader {
     const uploadId = randomUUID()
     const uniqueFileName = `${uploadId}-${fileName}`
 
-    console.log({ uniqueFileName })
-
     await this.client.send(
       new PutObjectCommand({
         Bucket: this.envService.get('AWS_BUCKET_NAME'),

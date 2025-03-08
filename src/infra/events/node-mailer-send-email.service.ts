@@ -31,13 +31,12 @@ export class NodemailerSendEmailToUser implements SendEmailToUser {
   async send(data: FormatSendEmailUser): Promise<void> {
     try {
       console.log('Enviando e-mail para:', data.to.email)
-      const info = await this.transporter.sendMail({
+      await this.transporter.sendMail({
         from: process.env.SMTP_USER,
         to: data.to.email,
         subject: data.to.subject,
         text: data.to.body,
       })
-      console.log(info)
 
       console.log('E-mail enviado com sucesso:')
     } catch (error) {
