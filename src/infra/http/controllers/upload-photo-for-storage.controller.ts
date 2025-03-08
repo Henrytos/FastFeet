@@ -11,6 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
 
 @Controller('/upload')
 export class UploadPhotoForStorageController {
@@ -19,6 +20,7 @@ export class UploadPhotoForStorageController {
   ) {}
 
   @Post('/photo')
+  @UseRolesGuards('DELIVERY_MAN')
   @HttpCode(HttpStatus.CREATED)
   @UseInterceptors(FileInterceptor('file'))
   async handler(@UploadedFile() file: Express.Multer.File) {

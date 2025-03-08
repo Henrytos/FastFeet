@@ -23,7 +23,7 @@ describe('UploadPhotoForStorageController (e2e)', () => {
     await app.init()
   })
 
-  test.skip('[POST] /upload/file', async () => {
+  test('[POST] /upload/file', async () => {
     const deliveryMan = await deliveryManFactory.makePrismaDeliveryMan()
     const token = await jwt.sign({
       role: deliveryMan.role,

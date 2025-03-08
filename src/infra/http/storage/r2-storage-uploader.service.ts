@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common'
 import { randomUUID } from 'crypto'
 
 @Injectable()
-export class R2Storage implements Uploader {
+export class R2StorageUploader implements Uploader {
   private client: S3Client
 
   constructor(private readonly envService: EnvService) {
@@ -33,6 +33,8 @@ export class R2Storage implements Uploader {
     const uploadId = randomUUID()
     const uniqueFileName = `${uploadId}-${fileName}`
 
+    console.log({ uniqueFileName })
+
     await this.client.send(
       new PutObjectCommand({
         Bucket: this.envService.get('AWS_BUCKET_NAME'),
@@ -41,6 +43,6 @@ export class R2Storage implements Uploader {
         Body: body,
       }),
     )
-    return { url: 'example url' }
+    return { url: uniqueFileName }
   }
 }
