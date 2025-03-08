@@ -7,7 +7,6 @@ import { HttpStatus, INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 import { waitFor } from '@/test/utils/wait-for'
-import { randomUUID } from 'crypto'
 import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
 
 describe.skip('CancelingRecipientOrderController(e2e)', () => {
@@ -53,7 +52,6 @@ describe.skip('CancelingRecipientOrderController(e2e)', () => {
     const recipient = await recipientFactory.makePrismaRecipient({
       email: 'franzhenry46@gmail.com',
     })
-
     const order = await orderFactory.makePrismaOrder({
       deliveryManId: new UniqueEntityID(deliveryMan.id),
       deliveryAddressId: new UniqueEntityID(deliveryAddress.id),
@@ -69,8 +67,6 @@ describe.skip('CancelingRecipientOrderController(e2e)', () => {
       .patch(`/orders/${order.id}/canceling`)
       .set('Authorization', `Bearer ${token}`)
       .send()
-
-    expect(response.status).toBe(HttpStatus.OK)
 
     expect(response.status).toBe(HttpStatus.OK)
     waitFor(() => {
@@ -91,16 +87,13 @@ describe('RegisterOrderForRecipientController (INTEGRATION)', () => {
   test('should email in service', async () => {
     const nodemailerSendEmailToUser = new NodemailerSendEmailToUser()
 
-    const uuid = randomUUID()
-
     const data = await nodemailerSendEmailToUser.send({
       to: {
         email: 'jhon-doe@example.com',
-        subject: 'Order cancelled',
-        body: `Your order with id ${uuid} has been cancelled`,
+        subject: 'Order delivered',
+        body: 'Your Order has been Delivered',
       },
     })
-
     expect(data).toBeUndefined()
   })
 })

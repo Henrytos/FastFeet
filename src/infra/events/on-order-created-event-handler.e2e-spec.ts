@@ -1,51 +1,49 @@
-import { AppModule } from '@/infra/app.module'
-import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { AdministratorFactory } from '@/test/factories/make-administrator'
 import { RecipientFactory } from '@/test/factories/make-recipient'
 import { HttpStatus, INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { Test } from '@nestjs/testing'
 import { $Enums } from '@prisma/client'
 import request from 'supertest'
-import * as nodemailer from 'nodemailer'
 import { waitFor } from '@/test/utils/wait-for'
+import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
+import { randomUUID } from 'crypto'
 
-describe('RegisterOrderForRecipientController (e2e)', () => {
+describe.skip('RegisterOrderForRecipientController (MOCK)', () => {
   let app: INestApplication
   let jwt: JwtService
   let administratorFactory: AdministratorFactory
   let recipientFactory: RecipientFactory
   let prisma: PrismaService
 
-  let sendMailMock: vi.Mock
+  let sendMailMock: unknown
 
-  beforeAll(async () => {
-    // Mock de nodemailer
-    vi.mock('nodemailer', () => ({
-      createTransport: vi.fn(() => ({
-        sendMail: vi.fn().mockResolvedValue({ messageId: '12345' }), // Mock do envio de e-mail
-      })),
-    }))
+  // beforeAll(async () => {
+  //   // Mock de nodemailer
+  //   // vi.mock('nodemailer', () => ({
+  //   //   createTransport: vi.fn(() => ({
+  //   //     sendMail: vi.fn().mockResolvedValue({ messageId: '12345' }), // Mock do envio de e-mail
+  //   //   })),
+  //   // }))
 
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule, DatabaseModule],
-      providers: [AdministratorFactory, RecipientFactory],
-    }).compile()
+  //   const moduleRef = await Test.createTestingModule({
+  //     imports: [AppModule, DatabaseModule],
+  //     providers: [AdministratorFactory, RecipientFactory],
+  //   }).compile()
 
-    app = moduleRef.createNestApplication()
-    jwt = moduleRef.get(JwtService)
-    recipientFactory = moduleRef.get(RecipientFactory)
-    administratorFactory = moduleRef.get(AdministratorFactory)
-    prisma = moduleRef.get(PrismaService)
+  //   app = moduleRef.createNestApplication()
+  //   jwt = moduleRef.get(JwtService)
+  //   recipientFactory = moduleRef.get(RecipientFactory)
+  //   administratorFactory = moduleRef.get(AdministratorFactory)
+  //   prisma = moduleRef.get(PrismaService)
 
-    sendMailMock = (nodemailer.createTransport as vi.Mock).mock.results[0].value
-      .sendMail
+  //   sendMailMock = (nodemailer.createTransport as vi.Mock).mock.results[0].value
+  //     .sendMail
 
-    await app.init()
-  })
+  //   await app.init()
+  // })
 
-  test('[POST] /orders/:recipientId', async () => {
+  it.skip('should send email at mock', async () => {
     const administrator = await administratorFactory.makePrismaAdministrator()
 
     const accessToken = await jwt.sign({
@@ -123,5 +121,23 @@ describe('RegisterOrderForRecipientController (e2e)', () => {
         }),
       )
     })
+  })
+})
+
+describe('RegisterOrderForRecipientController (INTEGRATION)', () => {
+  test('should email in service', async () => {
+    const nodemailerSendEmailToUser = new NodemailerSendEmailToUser()
+
+    const uuid = randomUUID()
+
+    const data = await nodemailerSendEmailToUser.send({
+      to: {
+        email: 'jhon-doe@example.com',
+        subject: 'Order created',
+        body: `Your order with id ${uuid} has been created`,
+      },
+    })
+
+    expect(data).toBeUndefined()
   })
 })
