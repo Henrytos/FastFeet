@@ -47,7 +47,24 @@ export class FetchRecipientController {
   @ApiQuery({
     type: FetchSchemaDTO,
   })
-  @ApiOkResponse()
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        recipients: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'uuid' },
+              name: { type: 'string' },
+              email: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({
     type: AdministratorDoesNotExistMessageDTO,
     description: 'Unauthorized access',

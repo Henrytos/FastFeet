@@ -60,7 +60,19 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         type: fetch_schema_dto_1.FetchSchemaDTO,
     }),
-    (0, swagger_1.ApiOkResponse)({}),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                user: {
+                    type: 'array',
+                    items: {
+                        $ref: '#/components/schemas/DeliveryMan',
+                    },
+                },
+            },
+        },
+    }),
     (0, swagger_1.ApiUnauthorizedResponse)({
         type: administrator_does_not_exist_message_dto_1.AdministratorDoesNotExistMessageDTO,
         description: 'Unauthorized access',

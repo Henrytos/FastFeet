@@ -23,6 +23,7 @@ const delivery_man_does_not_exist_error_1 = require("../../../domain/delivery/ap
 const photo_does_not_exist_error_1 = require("../../../domain/delivery/application/use-cases/errors/photo-does-not-exist-error");
 const order_does_not_exist_error_1 = require("../../../domain/delivery/application/use-cases/errors/order-does-not-exist-error");
 const swagger_1 = require("@nestjs/swagger");
+const format_token_dto_1 = require("../dtos/format-token.dto");
 const routeParamsMarkAnOrderSchema = zod_1.z.object({
     orderId: zod_1.z.string().uuid(),
 });
@@ -42,9 +43,9 @@ let MarkAnOrderAsDeliveredController = class MarkAnOrderAsDeliveredController {
         if (result.isLeft()) {
             switch (result.value.constructor) {
                 case order_does_not_exist_error_1.OrderDoesNotExistError:
-                    throw new common_1.NotFoundException(result.value.message);
+                    throw new common_1.BadRequestException(result.value.message);
                 case photo_does_not_exist_error_1.PhotoDoesNotExistError:
-                    throw new common_1.NotFoundException(result.value.message);
+                    throw new common_1.BadRequestException(result.value.message);
                 case delivery_man_does_not_exist_error_1.DeliveryManDoesNotExistError:
                     throw new common_1.UnauthorizedException(result.value.message);
                 default:
@@ -60,6 +61,41 @@ exports.MarkAnOrderAsDeliveredController = MarkAnOrderAsDeliveredController;
 __decorate([
     (0, common_1.Patch)(),
     (0, use_roles_guards_decorator_1.UseRolesGuards)('DELIVERY_MAN'),
+    (0, swagger_1.ApiHeader)(format_token_dto_1.FORMAT_TOKEN_DTO),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    example: 'Order marked as delivered successfully',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiBadRequestResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    example: 'Order does not exist',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiUnauthorizedResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    example: 'DeliveryMan does not exist',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiInternalServerErrorResponse)(),
     __param(0, (0, common_1.Param)(new zod_validation_pipe_1.ZodValidationPipe(routeParamsMarkAnOrderSchema))),
     __param(1, (0, common_1.Body)(new zod_validation_pipe_1.ZodValidationPipe(bodyMarkAnOrderSchema))),
     __param(2, (0, current_user_1.CurrentUser)()),

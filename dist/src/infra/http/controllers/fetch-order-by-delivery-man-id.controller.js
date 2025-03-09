@@ -24,6 +24,7 @@ const format_token_dto_1 = require("../dtos/format-token.dto");
 const fetch_schema_dto_1 = require("../dtos/fetch-schema.dto");
 const administrator_does_not_exist_message_dto_1 = require("../dtos/administrator-does-not-exist-message.dto");
 const use_roles_guards_decorator_1 = require("../guards/use-roles-guards.decorator");
+const client_1 = require("@prisma/client");
 const queryParamsSchema = zod_1.z.object({
     page: zod_1.z.coerce.number().min(1).optional().default(1),
     perPage: zod_1.z.coerce.number().min(1).optional().default(10),
@@ -62,7 +63,30 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         type: fetch_schema_dto_1.FetchSchemaDTO,
     }),
-    (0, swagger_1.ApiOkResponse)(),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                user: {
+                    type: 'array',
+                    items: {
+                        properties: {
+                            id: { type: 'uuid' },
+                            deliveryManId: { type: 'uuid' },
+                            recipientId: { type: 'uuid' },
+                            deliveryAddressId: { type: 'uuid' },
+                            photoId: { type: 'uuid' },
+                            status: { type: 'string', example: client_1.$Enums.OrderStatus },
+                            deliveryAt: { type: 'string', format: 'date-time' },
+                            withdrawnAt: { type: 'string', format: 'date-time' },
+                            updatedAt: { type: 'string', format: 'date-time' },
+                            createdAt: { type: 'string', format: 'date-time' },
+                        },
+                    },
+                },
+            },
+        },
+    }),
     (0, swagger_1.ApiUnauthorizedResponse)({
         type: administrator_does_not_exist_message_dto_1.AdministratorDoesNotExistMessageDTO,
         description: 'Unauthorized access',

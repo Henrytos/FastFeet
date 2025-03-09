@@ -44,9 +44,39 @@ export class SendingOrderToRecipientByDeliveryManController {
   @Patch()
   @UseRolesGuards('DELIVERY_MAN')
   @HttpCode(HttpStatus.OK)
-  @ApiOkResponse()
-  @ApiUnauthorizedResponse()
-  @ApiBadRequestResponse()
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Order sent to recipient successfully',
+        },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'DeliveryMan does not exist',
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Order does not exist',
+        },
+      },
+    },
+  })
   @ApiInternalServerErrorResponse()
   async handler(
     @Param(new ZodValidationPipe(routeParamsSendingOrderSchema))
@@ -72,6 +102,9 @@ export class SendingOrderToRecipientByDeliveryManController {
         default:
           throw new InternalServerErrorException()
       }
+    }
+    return {
+      message: 'Order sent to recipient successfully',
     }
   }
 }

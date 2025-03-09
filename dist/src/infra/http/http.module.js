@@ -63,7 +63,7 @@ const upload_and_create_photo_use_case_1 = require("../../domain/delivery/applic
 const storage_module_1 = require("./storage/storage.module");
 const events_module_1 = require("../events/events.module");
 const fetch_nearby_orders_1 = require("../../domain/delivery/application/use-cases/fetch-nearby-orders");
-const fetch_order_nearby_controller_1 = require("./controllers/fetch-order-nearby.controller");
+const fetch_nearby_order_controller_1 = require("./controllers/fetch-nearby-order.controller");
 let HttpModule = class HttpModule {
 };
 exports.HttpModule = HttpModule;
@@ -101,7 +101,7 @@ exports.HttpModule = HttpModule = __decorate([
             mark_an_order_as_delivered_controller_1.MarkAnOrderAsDeliveredController,
             update_order_controller_1.UpdateOrderCOntroller,
             upload_photo_for_storage_controller_1.UploadPhotoForStorageController,
-            fetch_order_nearby_controller_1.FetchOrderNearbyController,
+            fetch_nearby_order_controller_1.FetchOrderNearbyController,
         ],
         providers: [
             administrator_registration_use_case_1.AdministratorRegistrationUseCase,

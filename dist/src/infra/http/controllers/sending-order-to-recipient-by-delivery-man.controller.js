@@ -50,6 +50,9 @@ let SendingOrderToRecipientByDeliveryManController = class SendingOrderToRecipie
                     throw new common_1.InternalServerErrorException();
             }
         }
+        return {
+            message: 'Order sent to recipient successfully',
+        };
     }
 };
 exports.SendingOrderToRecipientByDeliveryManController = SendingOrderToRecipientByDeliveryManController;
@@ -57,9 +60,39 @@ __decorate([
     (0, common_1.Patch)(),
     (0, use_roles_guards_decorator_1.UseRolesGuards)('DELIVERY_MAN'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
-    (0, swagger_1.ApiOkResponse)(),
-    (0, swagger_1.ApiUnauthorizedResponse)(),
-    (0, swagger_1.ApiBadRequestResponse)(),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    example: 'Order sent to recipient successfully',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiUnauthorizedResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    example: 'DeliveryMan does not exist',
+                },
+            },
+        },
+    }),
+    (0, swagger_1.ApiBadRequestResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    example: 'Order does not exist',
+                },
+            },
+        },
+    }),
     (0, swagger_1.ApiInternalServerErrorResponse)(),
     __param(0, (0, common_1.Param)(new zod_validation_pipe_1.ZodValidationPipe(routeParamsSendingOrderSchema))),
     __param(1, (0, current_user_1.CurrentUser)()),

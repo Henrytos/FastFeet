@@ -26,6 +26,7 @@ import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 import { FetchSchemaDTO } from '../dtos/fetch-schema.dto'
 import { AdministratorDoesNotExistMessageDTO } from '../dtos/administrator-does-not-exist-message.dto'
 import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
+import { $Enums } from '@prisma/client'
 
 const queryParamsSchema = z.object({
   page: z.coerce.number().min(1).optional().default(1),
@@ -54,7 +55,30 @@ export class FetchOrderByDeliveryManIdController {
   @ApiQuery({
     type: FetchSchemaDTO,
   })
-  @ApiOkResponse()
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        user: {
+          type: 'array',
+          items: {
+            properties: {
+              id: { type: 'uuid' },
+              deliveryManId: { type: 'uuid' },
+              recipientId: { type: 'uuid' },
+              deliveryAddressId: { type: 'uuid' },
+              photoId: { type: 'uuid' },
+              status: { type: 'string', example: $Enums.OrderStatus },
+              deliveryAt: { type: 'string', format: 'date-time' },
+              withdrawnAt: { type: 'string', format: 'date-time' },
+              updatedAt: { type: 'string', format: 'date-time' },
+              createdAt: { type: 'string', format: 'date-time' },
+            },
+          },
+        },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({
     type: AdministratorDoesNotExistMessageDTO,
     description: 'Unauthorized access',

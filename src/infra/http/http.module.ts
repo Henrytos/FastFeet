@@ -56,7 +56,7 @@ import { UploadPhotoForStorageUseCase } from '@/domain/delivery/application/use-
 import { StorageModule } from './storage/storage.module'
 import { EventsModule } from '../events/events.module'
 import { FetchNearbyOrdersWithDistanceUseCase } from '@/domain/delivery/application/use-cases/fetch-nearby-orders'
-import { FetchOrderNearbyController } from './controllers/fetch-order-nearby.controller'
+import { FetchOrderNearbyController } from './controllers/fetch-nearby-order.controller'
 
 @Module({
   imports: [

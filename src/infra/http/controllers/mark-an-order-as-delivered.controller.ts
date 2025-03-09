@@ -1,9 +1,9 @@
 import { MarkAnOrderAsDeliveredUseCase } from '@/domain/delivery/application/use-cases/mark-an-order-as-delivered-use-case'
 import {
+  BadRequestException,
   Body,
   Controller,
   InternalServerErrorException,
-  NotFoundException,
   Param,
   Patch,
   UnauthorizedException,
@@ -16,7 +16,16 @@ import { UserPayload } from '@/infra/auth/jwt.strategy'
 import { DeliveryManDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/delivery-man-does-not-exist-error'
 import { PhotoDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/photo-does-not-exist-error'
 import { OrderDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/order-does-not-exist-error'
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiHeader,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsMarkAnOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -38,6 +47,41 @@ export class MarkAnOrderAsDeliveredController {
 
   @Patch()
   @UseRolesGuards('DELIVERY_MAN')
+  @ApiHeader(FORMAT_TOKEN_DTO)
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Order marked as delivered successfully',
+        },
+      },
+    },
+  })
+  @ApiBadRequestResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Order does not exist',
+        },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        message: {
+          type: 'string',
+          example: 'DeliveryMan does not exist',
+        },
+      },
+    },
+  })
+  @ApiInternalServerErrorResponse()
   async handler(
     @Param(new ZodValidationPipe(routeParamsMarkAnOrderSchema))
     { orderId }: RouteParamsMarkAnOrder,
@@ -54,9 +98,9 @@ export class MarkAnOrderAsDeliveredController {
     if (result.isLeft()) {
       switch (result.value.constructor) {
         case OrderDoesNotExistError:
-          throw new NotFoundException(result.value.message)
+          throw new BadRequestException(result.value.message)
         case PhotoDoesNotExistError:
-          throw new NotFoundException(result.value.message)
+          throw new BadRequestException(result.value.message)
         case DeliveryManDoesNotExistError:
           throw new UnauthorizedException(result.value.message)
         default:

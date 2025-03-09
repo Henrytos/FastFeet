@@ -22,6 +22,7 @@ const delivery_man_does_not_exist_error_1 = require("../../../domain/delivery/ap
 const current_user_1 = require("../../auth/current-user");
 const order_with_distance_presenter_1 = require("../presenters/order-with-distance-presenter");
 const use_roles_guards_decorator_1 = require("../guards/use-roles-guards.decorator");
+const client_1 = require("@prisma/client");
 const queryFetchOrderNearbySchema = zod_1.z.object({
     page: zod_1.z.coerce.number().optional().default(1),
 });
@@ -62,6 +63,32 @@ exports.FetchOrderNearbyController = FetchOrderNearbyController;
 __decorate([
     (0, common_1.Get)(),
     (0, use_roles_guards_decorator_1.UseRolesGuards)('DELIVERY_MAN'),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                orders: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: { type: 'uuid' },
+                            deliveryManId: { type: 'uuid' },
+                            recipientId: { type: 'uuid' },
+                            deliveryAddressId: { type: 'uuid' },
+                            photoId: { type: 'uuid' },
+                            status: { type: 'string', example: client_1.$Enums.OrderStatus },
+                            deliveryAt: { type: 'string', format: 'date-time' },
+                            withdrawnAt: { type: 'string', format: 'date-time' },
+                            updatedAt: { type: 'string', format: 'date-time' },
+                            createdAt: { type: 'string', format: 'date-time' },
+                            distanceInKms: { type: 'number', example: 0.5 },
+                        },
+                    },
+                },
+            },
+        },
+    }),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
     __param(0, (0, common_1.Query)(validationQueryFetchNearby)),
     __param(1, (0, common_1.Body)(validationBodyFetchNearby)),
@@ -76,4 +103,4 @@ exports.FetchOrderNearbyController = FetchOrderNearbyController = __decorate([
     (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [fetch_nearby_orders_1.FetchNearbyOrdersWithDistanceUseCase])
 ], FetchOrderNearbyController);
-//# sourceMappingURL=fetch-order-nearby.controller.js.map
+//# sourceMappingURL=fetch-nearby-order.controller.js.map

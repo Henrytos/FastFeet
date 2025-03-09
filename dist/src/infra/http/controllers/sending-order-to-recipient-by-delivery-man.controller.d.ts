@@ -12,6 +12,8 @@ type RouteParamsSendingOrder = z.infer<typeof routeParamsSendingOrderSchema>;
 export declare class SendingOrderToRecipientByDeliveryManController {
     private readonly sendingOrderToRecipientByDeliveryManUseCase;
     constructor(sendingOrderToRecipientByDeliveryManUseCase: SendingOrderToRecipientByDeliveryManUseCase);
-    handler({ orderId }: RouteParamsSendingOrder, deliveryMan: UserPayload): Promise<void>;
+    handler({ orderId }: RouteParamsSendingOrder, deliveryMan: UserPayload): Promise<{
+        message: string;
+    }>;
 }
 export {};

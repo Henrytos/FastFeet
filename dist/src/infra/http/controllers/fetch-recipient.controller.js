@@ -60,7 +60,24 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         type: fetch_schema_dto_1.FetchSchemaDTO,
     }),
-    (0, swagger_1.ApiOkResponse)(),
+    (0, swagger_1.ApiOkResponse)({
+        schema: {
+            type: 'object',
+            properties: {
+                recipients: {
+                    type: 'array',
+                    items: {
+                        type: 'object',
+                        properties: {
+                            id: { type: 'uuid' },
+                            name: { type: 'string' },
+                            email: { type: 'string' },
+                        },
+                    },
+                },
+            },
+        },
+    }),
     (0, swagger_1.ApiUnauthorizedResponse)({
         type: administrator_does_not_exist_message_dto_1.AdministratorDoesNotExistMessageDTO,
         description: 'Unauthorized access',

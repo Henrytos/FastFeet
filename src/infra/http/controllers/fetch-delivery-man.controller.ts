@@ -49,7 +49,19 @@ export class FetchDeliveryManController {
   @ApiQuery({
     type: FetchSchemaDTO,
   })
-  @ApiOkResponse({})
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        user: {
+          type: 'array',
+          items: {
+            $ref: '#/components/schemas/DeliveryMan',
+          },
+        },
+      },
+    },
+  })
   @ApiUnauthorizedResponse({
     type: AdministratorDoesNotExistMessageDTO,
     description: 'Unauthorized access',
