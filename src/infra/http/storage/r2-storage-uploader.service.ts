@@ -41,6 +41,11 @@ export class R2StorageUploader implements Uploader {
         Body: body,
       }),
     )
-    return { url: uniqueFileName }
+    const domainImages = this.envService.get('AWS_DOMAIN_ATTACHMENT')
+    const imageUrl = `${domainImages}/${uniqueFileName}`
+    console.log({
+      imageUrl,
+    })
+    return { url: imageUrl }
   }
 }
