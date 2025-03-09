@@ -5,6 +5,6 @@ export class DeliveryManDoesNotExistError
   implements UseCaseError
 {
   constructor() {
-    super('Administrator does not exist')
+    super('DeliveryMan does not exist')
   }
 }

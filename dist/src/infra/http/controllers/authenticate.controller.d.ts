@@ -4,11 +4,11 @@ declare const authenticateBodySchema: z.ZodObject<{
     cpf: z.ZodString;
     password: z.ZodString;
 }, "strip", z.ZodTypeAny, {
-    cpf?: string;
     password?: string;
+    cpf?: string;
 }, {
-    cpf?: string;
     password?: string;
+    cpf?: string;
 }>;
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
 export declare class AuthenticateController {

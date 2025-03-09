@@ -20,12 +20,14 @@ import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-ca
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiHeader,
   ApiInternalServerErrorResponse,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 const routeParamsSendingOrderSchema = z.object({
   orderId: z.string().uuid(),
@@ -44,6 +46,7 @@ export class SendingOrderToRecipientByDeliveryManController {
   @Patch()
   @UseRolesGuards('DELIVERY_MAN')
   @HttpCode(HttpStatus.OK)
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @ApiOkResponse({
     schema: {
       type: 'object',

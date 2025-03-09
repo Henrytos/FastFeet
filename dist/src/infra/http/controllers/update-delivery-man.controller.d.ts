@@ -7,12 +7,12 @@ declare const updateDeliveryManBodySchema: z.ZodObject<{
     cpf: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     name?: string;
-    cpf?: string;
     password?: string;
+    cpf?: string;
 }, {
     name?: string;
-    cpf?: string;
     password?: string;
+    cpf?: string;
 }>;
 type UpdateDeliveryManBodySchema = z.infer<typeof updateDeliveryManBodySchema>;
 export declare class UpdateDeliveryManController {

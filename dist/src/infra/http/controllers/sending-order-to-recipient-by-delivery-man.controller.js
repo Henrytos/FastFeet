@@ -24,6 +24,7 @@ const order_does_not_exist_error_1 = require("../../../domain/delivery/applicati
 const recipient_does_not_exist_error_1 = require("../../../domain/delivery/application/use-cases/errors/recipient-does-not-exist-error");
 const swagger_1 = require("@nestjs/swagger");
 const zod_validation_pipe_1 = require("../pipes/zod-validation-pipe");
+const format_token_dto_1 = require("../dtos/format-token.dto");
 const routeParamsSendingOrderSchema = zod_1.z.object({
     orderId: zod_1.z.string().uuid(),
 });
@@ -60,6 +61,7 @@ __decorate([
     (0, common_1.Patch)(),
     (0, use_roles_guards_decorator_1.UseRolesGuards)('DELIVERY_MAN'),
     (0, common_1.HttpCode)(common_1.HttpStatus.OK),
+    (0, swagger_1.ApiHeader)(format_token_dto_1.FORMAT_TOKEN_DTO),
     (0, swagger_1.ApiOkResponse)({
         schema: {
             type: 'object',

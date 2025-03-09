@@ -26,22 +26,22 @@ declare const bodyUpdateOrderSchema: z.ZodObject<{
         longitude: z.ZodNumber;
     }, "strip", z.ZodTypeAny, {
         number?: string;
+        latitude?: number;
+        longitude?: number;
         state?: string;
         city?: string;
         neighborhood?: string;
         street?: string;
         zip?: string;
-        latitude?: number;
-        longitude?: number;
     }, {
         number?: string;
+        latitude?: number;
+        longitude?: number;
         state?: string;
         city?: string;
         neighborhood?: string;
         street?: string;
         zip?: string;
-        latitude?: number;
-        longitude?: number;
     }>;
 }, "strip", z.ZodTypeAny, {
     status?: "PENDING" | "DELIVERED" | "WITHDRAWN";
@@ -50,13 +50,13 @@ declare const bodyUpdateOrderSchema: z.ZodObject<{
     withdrawnAt?: Date;
     address?: {
         number?: string;
+        latitude?: number;
+        longitude?: number;
         state?: string;
         city?: string;
         neighborhood?: string;
         street?: string;
         zip?: string;
-        latitude?: number;
-        longitude?: number;
     };
 }, {
     status?: "PENDING" | "DELIVERED" | "WITHDRAWN";
@@ -65,13 +65,13 @@ declare const bodyUpdateOrderSchema: z.ZodObject<{
     withdrawnAt?: string;
     address?: {
         number?: string;
+        latitude?: number;
+        longitude?: number;
         state?: string;
         city?: string;
         neighborhood?: string;
         street?: string;
         zip?: string;
-        latitude?: number;
-        longitude?: number;
     };
 }>;
 type BodyUpdateOrder = z.infer<typeof bodyUpdateOrderSchema>;
