@@ -10,7 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.R2StorageUploader = void 0;
-const env_service_1 = require("../../env/env.service");
+const env_service_1 = require("../env/env.service");
 const client_s3_1 = require("@aws-sdk/client-s3");
 const common_1 = require("@nestjs/common");
 const crypto_1 = require("crypto");
@@ -40,9 +40,6 @@ let R2StorageUploader = class R2StorageUploader {
         }));
         const domainImages = this.envService.get('AWS_DOMAIN_ATTACHMENT');
         const imageUrl = `${domainImages}/${uniqueFileName}`;
-        console.log({
-            imageUrl,
-        });
         return { url: imageUrl };
     }
 };

@@ -8,7 +8,6 @@ class ZodValidationPipe {
         this.schema = schema;
     }
     transform(value, metadata) {
-        console.log('--------------------------error--------------------------');
         try {
             const parsedValue = this.schema.parse(value);
             return parsedValue;

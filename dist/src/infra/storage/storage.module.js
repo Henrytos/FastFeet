@@ -8,8 +8,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StorageModule = void 0;
 const common_1 = require("@nestjs/common");
-const env_module_1 = require("../../env/env.module");
-const uploader_1 = require("../../../domain/delivery/application/storage/uploader");
+const env_module_1 = require("../env/env.module");
+const uploader_1 = require("../../domain/delivery/application/storage/uploader");
 const r2_storage_uploader_service_1 = require("./r2-storage-uploader.service");
 let StorageModule = class StorageModule {
 };
@@ -18,12 +18,7 @@ exports.StorageModule = StorageModule = __decorate([
     (0, common_1.Module)({
         imports: [env_module_1.EnvModule],
         providers: [{ provide: uploader_1.Uploader, useClass: r2_storage_uploader_service_1.R2StorageUploader }],
-        exports: [
-            {
-                provide: uploader_1.Uploader,
-                useClass: r2_storage_uploader_service_1.R2StorageUploader,
-            },
-        ],
+        exports: [uploader_1.Uploader],
     })
 ], StorageModule);
 //# sourceMappingURL=storage.module.js.map

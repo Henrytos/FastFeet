@@ -53,7 +53,7 @@ import { UpdateOrderUseCase } from '@/domain/delivery/application/use-cases/upda
 import { UpdateDeliveryAddressUseCase } from '@/domain/delivery/application/use-cases/update-delivery-address-use-case'
 import { UploadPhotoForStorageController } from './controllers/upload-photo-for-storage.controller'
 import { UploadPhotoForStorageUseCase } from '@/domain/delivery/application/use-cases/upload-and-create-photo-use-case'
-import { StorageModule } from './storage/storage.module'
+import { StorageModule } from '../storage/storage.module'
 import { EventsModule } from '../events/events.module'
 import { FetchNearbyOrdersWithDistanceUseCase } from '@/domain/delivery/application/use-cases/fetch-nearby-orders'
 import { FetchOrderNearbyController } from './controllers/fetch-nearby-order.controller'
