@@ -1,6 +1,9 @@
 node_modules
 test/coverage
-.env
+
+./.env
+./.env.test
+
 postgres_data
 
 # compiled output
