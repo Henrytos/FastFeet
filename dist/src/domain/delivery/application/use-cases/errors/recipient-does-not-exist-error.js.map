@@ -1,0 +1,1 @@
+{"version":3,"file":"recipient-does-not-exist-error.js","sourceRoot":"","sources":["../../../../../../../src/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error.ts"],"names":[],"mappings":";;;AAEA,MAAa,0BAA2B,SAAQ,KAAK;IACnD;QACE,KAAK,CAAC,0BAA0B,CAAC,CAAA;IACnC,CAAC;CACF;AAJD,gEAIC"}

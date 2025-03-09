@@ -1,0 +1,1 @@
+{"version":3,"file":"format-token.dto.js","sourceRoot":"","sources":["../../../../../src/infra/http/dtos/format-token.dto.ts"],"names":[],"mappings":";;;AAEa,QAAA,gBAAgB,GAAqB;IAChD,IAAI,EAAE,eAAe;IACrB,WAAW,EAAE,cAAc;IAC3B,MAAM,EAAE;QACN,IAAI,EAAE,QAAQ;KACf;IACD,QAAQ,EAAE,IAAI;IACd,OAAO,EACL,+EAA+E;CAClF,CAAA"}

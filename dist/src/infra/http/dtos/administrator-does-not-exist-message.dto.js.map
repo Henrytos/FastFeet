@@ -1,0 +1,1 @@
+{"version":3,"file":"administrator-does-not-exist-message.dto.js","sourceRoot":"","sources":["../../../../../src/infra/http/dtos/administrator-does-not-exist-message.dto.ts"],"names":[],"mappings":";;;;;;;;;;;;AACA,6CAA6C;AAE7C,MAAa,mCAAmC;CAO/C;AAPD,kFAOC;AADC;IALC,IAAA,qBAAW,EAAC;QACX,IAAI,EAAE,MAAM;QACZ,WAAW,EAAE,8BAA8B;QAC3C,OAAO,EAAE,8BAA8B;KACxC,CAAC;;oEACa"}
