@@ -28,13 +28,9 @@ export class NodemailerSendEmailToUser implements SendEmailToUser {
    */
   async send(data: FormatSendEmailUser): Promise<void> {
     try {
-      console.log('Enviando e-mail para:', data.to.email)
-
       const isShouldTest = this.envService.get('NODE_ENV') === 'test'
 
-      console.log('isShouldTest:', isShouldTest)
       if (isShouldTest) {
-        console.log('E-mail enviado com sucesso:')
         return
       }
 
@@ -44,8 +40,6 @@ export class NodemailerSendEmailToUser implements SendEmailToUser {
         subject: data.to.subject,
         text: data.to.body,
       })
-
-      console.log('E-mail enviado com sucesso:')
     } catch (error) {
       console.error('Erro ao enviar e-mail:', error)
     }
