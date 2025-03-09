@@ -6,6 +6,7 @@ export class ZodValidationPipe implements PipeTransform {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   transform(value: never, metadata: never) {
+    console.log('--------------------------error--------------------------')
     try {
       const parsedValue = this.schema.parse(value)
       return parsedValue

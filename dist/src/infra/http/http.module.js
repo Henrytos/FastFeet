@@ -62,6 +62,8 @@ const upload_photo_for_storage_controller_1 = require("./controllers/upload-phot
 const upload_and_create_photo_use_case_1 = require("../../domain/delivery/application/use-cases/upload-and-create-photo-use-case");
 const storage_module_1 = require("./storage/storage.module");
 const events_module_1 = require("../events/events.module");
+const fetch_nearby_orders_1 = require("../../domain/delivery/application/use-cases/fetch-nearby-orders");
+const fetch_order_nearby_controller_1 = require("./controllers/fetch-order-nearby.controller");
 let HttpModule = class HttpModule {
 };
 exports.HttpModule = HttpModule;
@@ -99,6 +101,7 @@ exports.HttpModule = HttpModule = __decorate([
             mark_an_order_as_delivered_controller_1.MarkAnOrderAsDeliveredController,
             update_order_controller_1.UpdateOrderCOntroller,
             upload_photo_for_storage_controller_1.UploadPhotoForStorageController,
+            fetch_order_nearby_controller_1.FetchOrderNearbyController,
         ],
         providers: [
             administrator_registration_use_case_1.AdministratorRegistrationUseCase,
@@ -128,6 +131,7 @@ exports.HttpModule = HttpModule = __decorate([
             update_order_use_case_1.UpdateOrderUseCase,
             update_delivery_address_use_case_1.UpdateDeliveryAddressUseCase,
             upload_and_create_photo_use_case_1.UploadPhotoForStorageUseCase,
+            fetch_nearby_orders_1.FetchNearbyOrdersWithDistanceUseCase,
         ],
     })
 ], HttpModule);

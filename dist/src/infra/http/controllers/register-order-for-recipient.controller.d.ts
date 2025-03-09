@@ -21,22 +21,22 @@ declare const bodyRegisterOrderSchema: z.ZodObject<{
     longitude: z.ZodNumber;
 }, "strip", z.ZodTypeAny, {
     number?: string;
+    latitude?: number;
+    longitude?: number;
     state?: string;
     city?: string;
     neighborhood?: string;
     street?: string;
     zip?: string;
-    latitude?: number;
-    longitude?: number;
 }, {
     number?: string;
+    latitude?: number;
+    longitude?: number;
     state?: string;
     city?: string;
     neighborhood?: string;
     street?: string;
     zip?: string;
-    latitude?: number;
-    longitude?: number;
 }>;
 type BodyRegisterOrder = z.infer<typeof bodyRegisterOrderSchema>;
 export declare class RegisterOrderForRecipientController {

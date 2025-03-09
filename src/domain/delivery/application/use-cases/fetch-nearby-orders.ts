@@ -3,6 +3,7 @@ import { OrdersRepository } from '../repositories/orders-repository'
 import { OrderWithDistance } from '../../enterprise/entities/value-object/order-with-distance'
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
 import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
+import { Injectable } from '@nestjs/common'
 
 interface FetchNearbyOrdersWithDistanceUseCaseRequest {
   from: {
@@ -20,6 +21,7 @@ type FetchNearbyOrdersWithDistanceUseCaseResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchNearbyOrdersWithDistanceUseCase {
   constructor(
     private readonly deliveryMansRepository: DeliveryMansRepository,

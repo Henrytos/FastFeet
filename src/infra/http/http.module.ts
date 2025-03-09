@@ -55,6 +55,8 @@ import { UploadPhotoForStorageController } from './controllers/upload-photo-for-
 import { UploadPhotoForStorageUseCase } from '@/domain/delivery/application/use-cases/upload-and-create-photo-use-case'
 import { StorageModule } from './storage/storage.module'
 import { EventsModule } from '../events/events.module'
+import { FetchNearbyOrdersWithDistanceUseCase } from '@/domain/delivery/application/use-cases/fetch-nearby-orders'
+import { FetchOrderNearbyController } from './controllers/fetch-order-nearby.controller'
 
 @Module({
   imports: [
@@ -89,6 +91,7 @@ import { EventsModule } from '../events/events.module'
     MarkAnOrderAsDeliveredController,
     UpdateOrderCOntroller,
     UploadPhotoForStorageController,
+    FetchOrderNearbyController,
   ],
   providers: [
     AdministratorRegistrationUseCase,
@@ -118,6 +121,7 @@ import { EventsModule } from '../events/events.module'
     UpdateOrderUseCase,
     UpdateDeliveryAddressUseCase,
     UploadPhotoForStorageUseCase,
+    FetchNearbyOrdersWithDistanceUseCase,
   ],
 })
 export class HttpModule {}

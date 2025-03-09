@@ -12,8 +12,18 @@ import {
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { UseRolesGuards } from '../guards/use-roles-guards.decorator'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiHeader,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger'
+import { FORMAT_TOKEN_DTO } from '../dtos/format-token.dto'
 
 @Controller('/upload')
+@ApiTags('photo')
+@ApiBearerAuth()
 export class UploadPhotoForStorageController {
   constructor(
     private readonly uploadPhotoForStorageUseCase: UploadPhotoForStorageUseCase,
@@ -21,7 +31,29 @@ export class UploadPhotoForStorageController {
 
   @Post('/photo')
   @UseRolesGuards('DELIVERY_MAN')
+  @ApiHeader(FORMAT_TOKEN_DTO)
   @HttpCode(HttpStatus.CREATED)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      properties: {
+        photoUrl: {
+          type: 'string',
+        },
+      },
+    },
+  })
   @UseInterceptors(FileInterceptor('file'))
   async handler(@UploadedFile() file: Express.Multer.File) {
     const result = await this.uploadPhotoForStorageUseCase.execute({
