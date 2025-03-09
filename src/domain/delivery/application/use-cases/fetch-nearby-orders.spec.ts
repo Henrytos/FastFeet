@@ -6,6 +6,7 @@ import { makeDeliveryAddress } from '@/test/factories/make-delivery-address'
 import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository'
 import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-recipients-repository'
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man'
+import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 
 describe('fetch nearby orders use case', () => {
   let sut: FetchNearbyOrdersWithDistanceUseCase
@@ -164,5 +165,21 @@ describe('fetch nearby orders use case', () => {
       const lengthByOrderWihDistance = result.value.ordersWithDistance.length
       expect(lengthByOrderWihDistance).toBe(0)
     }
+  })
+
+  it('não deveria retornar se não tem entregador', async () => {
+    const deliveryMan = makeDeliveryMan()
+
+    const result = await sut.execute({
+      from: {
+        deliveryManLatitude: -24.00534152940272,
+        deliveryManLongitude: -46.414032247689725,
+      },
+      page: 2,
+      deliveryManId: deliveryMan.id.toString(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError)
   })
 })

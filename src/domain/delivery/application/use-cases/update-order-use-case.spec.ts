@@ -99,4 +99,42 @@ describe('update order use case', () => {
 
     expect(result.isLeft()).toBe(true)
   })
+
+  it('should not update a request if there is no administrator', async () => {
+    const order = makeOrder()
+    inMemoryOrdersRepository.items.push(order)
+
+    const administrator = makeAdministrator()
+    inMemoryAdministratorsRepository.items.push(administrator)
+
+    const result = await sut.execute({
+      orderId: order.id.toString(),
+      administratorId: administrator.id.toString(),
+      deliveryManId: 'invalid-delivery-man-id',
+      status: ORDER_STATUS.DELIVERED,
+      withdrawnAt: new Date(),
+      deliveryAt: new Date(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+  })
+
+  it('should not update a request if there is no delivery', async () => {
+    const order = makeOrder()
+    inMemoryOrdersRepository.items.push(order)
+
+    const deliveryMan = makeDeliveryMan()
+    inMemoryDeliveryMansRepository.items.push(deliveryMan)
+
+    const result = await sut.execute({
+      orderId: order.id.toString(),
+      administratorId: 'invalid-administrator-id',
+      deliveryManId: deliveryMan.id.toString(),
+      status: ORDER_STATUS.DELIVERED,
+      withdrawnAt: new Date(),
+      deliveryAt: new Date(),
+    })
+
+    expect(result.isLeft()).toBe(true)
+  })
 })
