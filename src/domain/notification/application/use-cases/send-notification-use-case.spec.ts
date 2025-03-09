@@ -5,6 +5,7 @@ import { InMemoryRecipientsRepository } from '@/test/repositories/in-memory-reci
 import { InMemoryDeliveryAddressRepository } from '@/test/repositories/in-memory-delivery-address-repository'
 import { InMemoryOrdersRepository } from '@/test/repositories/in-memory-orders-repository'
 import { makeRecipient } from '@/test/factories/make-recipient'
+import { RecipientDoesNotExistError } from '@/domain/delivery/application/use-cases/errors/recipient-does-not-exist-error'
 
 describe('send notification use case', () => {
   let sut: SendNotificationUseCase
@@ -50,5 +51,16 @@ describe('send notification use case', () => {
 
     expect(result.isRight()).toBeTruthy()
     expect(inMemoryNotificationsRepository.items).toHaveLength(1)
+  })
+
+  it('should not send email if there is no destination', async () => {
+    const result = await sut.execute({
+      recipientId: 'invalid-recipient-id',
+      title: 'example-test',
+      content: 'example-content',
+    })
+
+    expect(result.isLeft()).toBeTruthy()
+    expect(result.value).toBeInstanceOf(RecipientDoesNotExistError)
   })
 })

@@ -3,13 +3,12 @@ import { Encrypter } from '../cryptography/encrypter';
 import { HashComparer } from '../cryptography/hash-comparer';
 import { WrongCredentialsError } from './errors/wrong-credentials-error';
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository';
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error';
 import { AdministratorsRepository } from '../repositories/administrators-repository';
 interface AuthenticateUserUseCaseRequest {
     cpf: string;
     password: string;
 }
-type AuthenticateUserUseCaseResponse = Either<DeliveryManDoesNotExistError | WrongCredentialsError, {
+type AuthenticateUserUseCaseResponse = Either<WrongCredentialsError, {
     accessToken: string;
 }>;
 export declare class AuthenticateUserUseCase {

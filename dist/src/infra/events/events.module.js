@@ -15,20 +15,15 @@ const on_order_created_event_handler_1 = require("../../domain/notification/appl
 const on_order_went_out_for_delivery_event_handler_1 = require("../../domain/notification/application/subscribers/on-order-went-out-for-delivery-event-handler");
 const on_order_delivered_event_handler_1 = require("../../domain/notification/application/subscribers/on-order-delivered-event-handler");
 const on_order_cancellation_event_handler_1 = require("../../domain/notification/application/subscribers/on-order-cancellation-event-handler");
-const node_mailer_send_email_service_1 = require("./node-mailer-send-email.service");
-const send_email_1 = require("../../domain/notification/application/email/send-email");
 const env_module_1 = require("../env/env.module");
+const email_module_1 = require("../email/email.module");
 let EventsModule = class EventsModule {
 };
 exports.EventsModule = EventsModule;
 exports.EventsModule = EventsModule = __decorate([
     (0, common_1.Module)({
-        imports: [database_module_1.DatabaseModule, env_module_1.EnvModule],
+        imports: [database_module_1.DatabaseModule, env_module_1.EnvModule, email_module_1.EmailModule],
         providers: [
-            {
-                provide: send_email_1.SendEmailToUser,
-                useClass: node_mailer_send_email_service_1.NodemailerSendEmailToUser,
-            },
             send_notification_use_case_1.SendNotificationUseCase,
             read_notification_use_case_1.ReadNotificationUseCase,
             on_order_created_event_handler_1.OnOrderCreatedEventHandler,

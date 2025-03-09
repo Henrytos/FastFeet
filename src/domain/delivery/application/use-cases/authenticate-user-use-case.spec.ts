@@ -6,10 +6,10 @@ import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { Cpf } from '../../enterprise/entities/value-object/cpf'
 import { InMemoryDeliveryMansRepository } from '@/test/repositories/in-memory-delivery-mans-repository'
 import { makeDeliveryMan } from '@/test/factories/make-delivery-man'
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 import { AuthenticateUserUseCase } from './authenticate-user-use-case'
 import { InMemoryAdministratorsRepository } from '@/test/repositories/in-memory-administrators-repository'
 import { CPF_VALID } from '@/core/constants/cpf-valid'
+import { makeAdministrator } from '@/test/factories/make-administrator'
 
 describe('authenticate administrator use case', () => {
   let sut: AuthenticateUserUseCase
@@ -32,7 +32,7 @@ describe('authenticate administrator use case', () => {
     )
   })
 
-  it('should be able possible to login with CPF and password', async () => {
+  it('should be able possible to login with CPF and password deliveryMan', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
       cpf: Cpf.create(CPF_VALID),
@@ -50,7 +50,25 @@ describe('authenticate administrator use case', () => {
     })
   })
 
-  it('should not be possible to authenticate with the invalid password ', async () => {
+  it('should be able possible to login with CPF and password administrator', async () => {
+    const administrator = makeAdministrator({
+      password: '123456',
+      cpf: Cpf.create(CPF_VALID),
+    })
+    inMemoryAdministratorsRepository.items.push(administrator)
+
+    const result = await sut.execute({
+      password: '123456',
+      cpf: Cpf.create(CPF_VALID).value,
+    })
+
+    expect(result.isRight()).toBe(true)
+    expect(result.value).toEqual({
+      accessToken: expect.any(String),
+    })
+  })
+
+  it('should not be possible to authenticate with the invalid password deliveryMan', async () => {
     const deliveryMan = makeDeliveryMan({
       password: '123456',
       cpf: Cpf.create(CPF_VALID),
@@ -66,6 +84,21 @@ describe('authenticate administrator use case', () => {
     expect(result.value).toBeInstanceOf(WrongCredentialsError)
   })
 
+  it('should not be possible to authenticate with the invalid password administrator', async () => {
+    const deliveryMan = makeAdministrator({
+      password: '123456',
+      cpf: Cpf.create(CPF_VALID),
+    })
+    inMemoryAdministratorsRepository.items.push(deliveryMan)
+
+    const result = await sut.execute({
+      password: '654321',
+      cpf: Cpf.create(CPF_VALID).value,
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(WrongCredentialsError)
+  })
   it('should not be possible to authenticate a nonexistent administrator', async () => {
     const result = await sut.execute({
       password: '123456',
@@ -73,6 +106,6 @@ describe('authenticate administrator use case', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(DeliveryManDoesNotExistError)
+    expect(result.value).toBeInstanceOf(WrongCredentialsError)
   })
 })

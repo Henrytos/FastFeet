@@ -5,7 +5,6 @@ import { HashComparer } from '../cryptography/hash-comparer'
 import { WrongCredentialsError } from './errors/wrong-credentials-error'
 import { Cpf } from '../../enterprise/entities/value-object/cpf'
 import { DeliveryMansRepository } from '../repositories/delivery-mans-repository'
-import { DeliveryManDoesNotExistError } from './errors/delivery-man-does-not-exist-error'
 import { Injectable } from '@nestjs/common'
 import { AdministratorsRepository } from '../repositories/administrators-repository'
 import { USER_ROLE } from '@/core/constants/role.enum'
@@ -15,7 +14,7 @@ interface AuthenticateUserUseCaseRequest {
   password: string
 }
 type AuthenticateUserUseCaseResponse = Either<
-  DeliveryManDoesNotExistError | WrongCredentialsError,
+  WrongCredentialsError,
   {
     accessToken: string
   }
@@ -54,7 +53,7 @@ export class AuthenticateUserUseCase {
 
       return right({ accessToken })
     }
-    
+
     const administrator = await this.administratorsRepository.findByCpf(
       Cpf.create(cpf),
     )
@@ -77,12 +76,8 @@ export class AuthenticateUserUseCase {
       return right({ accessToken })
     }
 
-    if (!administrator) {
-      return left(new DeliveryManDoesNotExistError())
-    }
-
-    if (!deliveryMan) {
-      return left(new DeliveryManDoesNotExistError())
+    if (!administrator || !deliveryMan) {
+      return left(new WrongCredentialsError())
     }
   }
 }

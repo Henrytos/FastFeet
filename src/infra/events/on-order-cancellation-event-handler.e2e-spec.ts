@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 import { waitFor } from '@/test/utils/wait-for'
 import { randomUUID } from 'crypto'
-import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
+import { NodemailerSendEmailToUser } from '../email/node-mailer-send-email.service'
 import { AppModule } from '../app.module'
 import { Test } from '@nestjs/testing'
 

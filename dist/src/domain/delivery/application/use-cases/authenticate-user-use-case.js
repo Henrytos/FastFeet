@@ -16,7 +16,6 @@ const hash_comparer_1 = require("../cryptography/hash-comparer");
 const wrong_credentials_error_1 = require("./errors/wrong-credentials-error");
 const cpf_1 = require("../../enterprise/entities/value-object/cpf");
 const delivery_mans_repository_1 = require("../repositories/delivery-mans-repository");
-const delivery_man_does_not_exist_error_1 = require("./errors/delivery-man-does-not-exist-error");
 const common_1 = require("@nestjs/common");
 const administrators_repository_1 = require("../repositories/administrators-repository");
 const role_enum_1 = require("../../../../core/constants/role.enum");
@@ -52,11 +51,8 @@ let AuthenticateUserUseCase = class AuthenticateUserUseCase {
             });
             return (0, either_1.right)({ accessToken });
         }
-        if (!administrator) {
-            return (0, either_1.left)(new delivery_man_does_not_exist_error_1.DeliveryManDoesNotExistError());
-        }
-        if (!deliveryMan) {
-            return (0, either_1.left)(new delivery_man_does_not_exist_error_1.DeliveryManDoesNotExistError());
+        if (!administrator || !deliveryMan) {
+            return (0, either_1.left)(new wrong_credentials_error_1.WrongCredentialsError());
         }
     }
 };

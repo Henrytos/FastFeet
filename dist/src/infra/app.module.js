@@ -14,6 +14,7 @@ const auth_module_1 = require("./auth/auth.module");
 const config_1 = require("@nestjs/config");
 const env_1 = require("./env/env");
 const events_module_1 = require("./events/events.module");
+const email_module_1 = require("./email/email.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
             http_module_1.HttpModule,
             env_module_1.EnvModule,
             events_module_1.EventsModule,
+            email_module_1.EmailModule,
         ],
     })
 ], AppModule);

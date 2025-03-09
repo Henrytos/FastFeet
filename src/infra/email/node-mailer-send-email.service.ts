@@ -22,10 +22,6 @@ export class NodemailerSendEmailToUser implements SendEmailToUser {
     })
   }
 
-  /**
-   * Implementação do envio de e-mail conforme a classe abstrata
-   * @param data - Dados do destinatário e conteúdo do e-mail
-   */
   async send(data: FormatSendEmailUser): Promise<void> {
     try {
       const isShouldTest = this.envService.get('NODE_ENV') === 'test'
