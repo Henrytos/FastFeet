@@ -21,8 +21,12 @@ export class OnOrderCreatedEventHandler implements EventHandler {
     if (order) {
       await this.sendNotification.execute({
         recipientId: order.recipientId.toString(),
-        title: 'Order created',
-        content: `Your order with id ${order.id.toString()} has been created`,
+        title: 'Pedido criado',
+        content: `
+          Muito obrigado por confiar em nossa empresa.
+          Seu pedido: ${order.id} foi criado com sucesso!
+          Em breve você receberá mais informações sobre o status do pedido.          
+          `,
       })
     }
   }

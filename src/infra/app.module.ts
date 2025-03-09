@@ -12,9 +12,9 @@ import { EventsModule } from './events/events.module'
       isGlobal: true,
       validate: (env) => envSchema.parse(env),
     }),
-    EnvModule,
-    HttpModule,
     AuthModule,
+    HttpModule,
+    EnvModule,
     EventsModule,
   ],
 })

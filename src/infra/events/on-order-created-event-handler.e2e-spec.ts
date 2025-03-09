@@ -8,6 +8,8 @@ import request from 'supertest'
 import { waitFor } from '@/test/utils/wait-for'
 import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
 import { randomUUID } from 'crypto'
+import { Test } from '@nestjs/testing'
+import { AppModule } from '../app.module'
 
 describe.skip('RegisterOrderForRecipientController (MOCK)', () => {
   let app: INestApplication
@@ -125,16 +127,31 @@ describe.skip('RegisterOrderForRecipientController (MOCK)', () => {
 })
 
 describe('RegisterOrderForRecipientController (INTEGRATION)', () => {
-  test('should email in service', async () => {
-    const nodemailerSendEmailToUser = new NodemailerSendEmailToUser()
+  let app: INestApplication
+  let nodemailerSendEmailToUser: NodemailerSendEmailToUser
 
-    const uuid = randomUUID()
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+      providers: [NodemailerSendEmailToUser],
+    }).compile()
+
+    app = moduleRef.createNestApplication()
+    nodemailerSendEmailToUser = moduleRef.get(NodemailerSendEmailToUser)
+    await app.init()
+  })
+  test('should email in service', async () => {
+    const fakeOrderId = randomUUID()
 
     const data = await nodemailerSendEmailToUser.send({
       to: {
         email: 'jhon-doe@example.com',
-        subject: 'Order created',
-        body: `Your order with id ${uuid} has been created`,
+        subject: 'Pedido criado',
+        body: ` 
+          Muito obrigado por confiar em nossa empresa.
+          Seu pedido: ${fakeOrderId} foi criado com sucesso!
+          Em breve você receberá mais informações sobre o status do pedido.          
+          `.trim(),
       },
     })
 

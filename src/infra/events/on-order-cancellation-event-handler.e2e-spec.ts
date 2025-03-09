@@ -9,6 +9,8 @@ import request from 'supertest'
 import { waitFor } from '@/test/utils/wait-for'
 import { randomUUID } from 'crypto'
 import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
+import { AppModule } from '../app.module'
+import { Test } from '@nestjs/testing'
 
 describe.skip('CancelingRecipientOrderController(e2e)', () => {
   let app: INestApplication
@@ -88,16 +90,30 @@ describe.skip('CancelingRecipientOrderController(e2e)', () => {
 })
 
 describe('RegisterOrderForRecipientController (INTEGRATION)', () => {
-  test('should email in service', async () => {
-    const nodemailerSendEmailToUser = new NodemailerSendEmailToUser()
+  let app: INestApplication
+  let nodemailerSendEmailToUser: NodemailerSendEmailToUser
 
-    const uuid = randomUUID()
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+      providers: [NodemailerSendEmailToUser],
+    }).compile()
+
+    app = moduleRef.createNestApplication()
+    nodemailerSendEmailToUser = moduleRef.get(NodemailerSendEmailToUser)
+    await app.init()
+  })
+
+  test('should email in service', async () => {
+    const fakeOrderId = randomUUID()
 
     const data = await nodemailerSendEmailToUser.send({
       to: {
         email: 'jhon-doe@example.com',
-        subject: 'Order cancelled',
-        body: `Your order with id ${uuid} has been cancelled`,
+        subject: `Pedido ${fakeOrderId} cancelado`,
+        body: `O pedido ${fakeOrderId} foi cancelado.
+          Em caso de dúvidas, entre em contato com o suporte. 
+          `.trim(),
       },
     })
 

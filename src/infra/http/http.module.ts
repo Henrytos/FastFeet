@@ -54,9 +54,16 @@ import { UpdateDeliveryAddressUseCase } from '@/domain/delivery/application/use-
 import { UploadPhotoForStorageController } from './controllers/upload-photo-for-storage.controller'
 import { UploadPhotoForStorageUseCase } from '@/domain/delivery/application/use-cases/upload-and-create-photo-use-case'
 import { StorageModule } from './storage/storage.module'
+import { EventsModule } from '../events/events.module'
 
 @Module({
-  imports: [DatabaseModule, CryptographyModule, GuardsModule, StorageModule],
+  imports: [
+    DatabaseModule,
+    CryptographyModule,
+    GuardsModule,
+    StorageModule,
+    EventsModule,
+  ],
   controllers: [
     AuthenticateController,
     CreateAccountController,

@@ -8,6 +8,9 @@ import { JwtService } from '@nestjs/jwt'
 import request from 'supertest'
 import { waitFor } from '@/test/utils/wait-for'
 import { NodemailerSendEmailToUser } from './node-mailer-send-email.service'
+import { Test } from '@nestjs/testing'
+import { AppModule } from '../app.module'
+import { randomUUID } from 'crypto'
 
 describe.skip('CancelingRecipientOrderController(e2e)', () => {
   let app: INestApplication
@@ -84,14 +87,32 @@ describe.skip('CancelingRecipientOrderController(e2e)', () => {
 })
 
 describe('RegisterOrderForRecipientController (INTEGRATION)', () => {
+  let app: INestApplication
+  let nodemailerSendEmailToUser: NodemailerSendEmailToUser
+
+  beforeEach(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+      providers: [NodemailerSendEmailToUser],
+    }).compile()
+
+    app = moduleRef.createNestApplication()
+    nodemailerSendEmailToUser = moduleRef.get(NodemailerSendEmailToUser)
+    await app.init()
+  })
+
   test('should email in service', async () => {
-    const nodemailerSendEmailToUser = new NodemailerSendEmailToUser()
+    const fakeOrderId = randomUUID()
 
     const data = await nodemailerSendEmailToUser.send({
       to: {
         email: 'jhon-doe@example.com',
-        subject: 'Order delivered',
-        body: 'Your Order has been Delivered',
+        subject: 'Pedido Entregue',
+        body: `
+          Seu pedido: ${fakeOrderId} foi entregue com sucesso!
+          Obrigado por escolher a nossa empresa.
+          Volte sempre!
+        `.trim(),
       },
     })
     expect(data).toBeUndefined()

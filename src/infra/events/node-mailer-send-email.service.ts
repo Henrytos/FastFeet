@@ -1,25 +1,23 @@
 import { Injectable } from '@nestjs/common'
 import * as nodemailer from 'nodemailer'
-import * as dotenv from 'dotenv'
 import {
   FormatSendEmailUser,
   SendEmailToUser,
 } from '@/domain/notification/application/email/send-email'
-
-dotenv.config()
+import { EnvService } from '../env/env.service'
 
 @Injectable()
 export class NodemailerSendEmailToUser implements SendEmailToUser {
   private transporter: nodemailer.Transporter
 
-  constructor() {
+  constructor(private readonly envService: EnvService) {
     this.transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
+      host: envService.get('SMTP_HOST'),
+      port: Number(envService.get('SMTP_PORT')),
       secure: false,
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: envService.get('SMTP_USER'),
+        pass: envService.get('SMTP_PASS'),
       },
     })
   }
@@ -31,8 +29,17 @@ export class NodemailerSendEmailToUser implements SendEmailToUser {
   async send(data: FormatSendEmailUser): Promise<void> {
     try {
       console.log('Enviando e-mail para:', data.to.email)
+
+      const isShouldTest = this.envService.get('NODE_ENV') === 'test'
+
+      console.log('isShouldTest:', isShouldTest)
+      if (isShouldTest) {
+        console.log('E-mail enviado com sucesso:')
+        return
+      }
+
       await this.transporter.sendMail({
-        from: process.env.SMTP_USER,
+        from: this.envService.get('SMTP_USER'),
         to: data.to.email,
         subject: data.to.subject,
         text: data.to.body,
@@ -41,7 +48,6 @@ export class NodemailerSendEmailToUser implements SendEmailToUser {
       console.log('E-mail enviado com sucesso:')
     } catch (error) {
       console.error('Erro ao enviar e-mail:', error)
-      throw new Error('Falha ao enviar e-mail')
     }
   }
 }

@@ -23,8 +23,11 @@ export class OnOrderCancellationEventHandler implements EventHandler {
     if (order) {
       await this.sendNotificationUseCase.execute({
         recipientId: order.recipientId.toString(),
-        title: 'Order cancelled',
-        content: `Your order with id ${order.id.toString()} has been cancelled`,
+        title: `Pedido ${order.id.toString()} cancelado`,
+        content: `
+          O pedido ${order.id.toString()} foi cancelado.
+          Em caso de dúvidas, entre em contato com o suporte.  
+        `,
       })
     }
   }
