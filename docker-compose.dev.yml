@@ -1,7 +1,21 @@
-
+version: '3.8'
 
 services:
-  postgres:
+  api-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env.test
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres-dev:5432/postgres?schema=sample"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/home/app
+    depends_on:
+      - postgres-dev 
+  postgres-dev:
     image: postgres:13
     ports:
       - "5432:5432"
@@ -9,3 +23,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: "postgres"
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+    
+volumes:
+  postgres-dev-data:
