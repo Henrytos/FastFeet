@@ -106,11 +106,11 @@
 - **[ x ] PATCH /orders/{id}/returned**: Marcar uma encomenda como devolvida.
 
 ### Listar Encomendas Próximas ao Entregador
-- **[ ] GET /orders/nearby**: Listar encomendas com endereços próximos ao local do entregador (baseado na localização do entregador).
+- **[ x ] GET /orders/nearby**: Listar encomendas com endereços próximos ao local do entregador (baseado na localização do entregador).
 
 ---
 
 ## Notificações
 
 ### Notificar Destinatário
-- **[ ] POST /notifications/{orderId}**: Notificar o destinatário sobre o status da encomenda após qualquer alteração.
+- **[ x ] POST /notifications/{orderId}**: Notificar o destinatário sobre o status da encomenda após qualquer alteração.
