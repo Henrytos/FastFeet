@@ -97,7 +97,7 @@
 - **[ x ] PATCH /orders/{id}/pending**: Marcar uma encomenda como disponível para retirada (somente admin).
 
 ### Retirar Encomenda
-- **[ ] PATCH /orders/{id}/pickup**: Retirar uma encomenda (somente o entregador que foi designado para a entrega pode realizar essa ação).
+- **[ x ] PATCH /orders/{id}/pickup**: Retirar uma encomenda (somente o entregador que foi designado para a entrega pode realizar essa ação).
 
 ### Marcar Encomenda como Entregue
 - **[ x ] PATCH /orders/{id}/delivered**: Marcar uma encomenda como entregue (somente o entregador que retirou a encomenda pode realizar essa ação, e é obrigatório enviar uma foto).
@@ -107,6 +107,10 @@
 
 ### Listar Encomendas Próximas ao Entregador
 - **[ x ] GET /orders/nearby**: Listar encomendas com endereços próximos ao local do entregador (baseado na localização do entregador).
+
+### Funcionalidade de metricas da semana 
+
+- **[ ] GET /metrics**: Retornar qunatidades de vendas e cancelados da semana e comparar com da semana passada 
 
 ---
 
