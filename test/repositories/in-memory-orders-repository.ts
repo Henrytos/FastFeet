@@ -10,6 +10,7 @@ import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-ob
 import { InMemoryDeliveryAddressRepository } from './in-memory-delivery-address-repository'
 import { InMemoryRecipientsRepository } from './in-memory-recipients-repository'
 import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-object/order-with-distance'
+import { MetricsOfWeek } from '@/domain/delivery/enterprise/entities/value-object/metrics-of-week'
 export class InMemoryOrdersRepository implements OrdersRepository {
   public items: Order[] = []
 
@@ -17,6 +18,38 @@ export class InMemoryOrdersRepository implements OrdersRepository {
     private readonly deliveryAddressRepository: InMemoryDeliveryAddressRepository,
     private recipientsRepository: InMemoryRecipientsRepository,
   ) {}
+
+  async getMetricsOfWeek(pastTargetWeek: number): Promise<MetricsOfWeek> {
+    const currentDate = new Date()
+    const statusValid = [ORDER_STATUS.CANCELED, ORDER_STATUS.DELIVERED]
+
+    const { canceled: orderCanceled, delivered: orderDelivered } =
+      this.items.reduce(
+        (accumulator, order) => {
+          const differenceInWeeks = Math.floor(
+            (currentDate.getTime() - order.createdAt.getTime()) /
+              (1000 * 60 * 60 * 24 * 7), // Convert milliseconds to weeks
+          )
+
+          const isaValidWeek = differenceInWeeks === pastTargetWeek
+          const isValidStatus = statusValid.includes(order.status)
+
+          if (isaValidWeek && isValidStatus) {
+            accumulator[order.status] += 1
+          }
+
+          return accumulator
+        },
+        { delivered: 0, canceled: 0 },
+      )
+
+    const metricsOfWeek = MetricsOfWeek.create({
+      orderCanceled,
+      orderDelivered,
+    })
+
+    return metricsOfWeek
+  }
 
   async create(order: Order): Promise<void> {
     this.items.push(order)

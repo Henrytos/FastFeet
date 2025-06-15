@@ -76,7 +76,7 @@ export class Order extends AggregateRoot<OrderProps> {
     this.touch()
   }
 
-  get createdAt() {
+  get createdAt(): Date {
     return this.props.createdAt
   }
 
