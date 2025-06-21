@@ -13,10 +13,15 @@ import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-o
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { DomainEvents } from '@/core/events/domain-events'
 import { MetricsOfWeek } from '@/domain/delivery/enterprise/entities/value-object/metrics-of-week'
+import { CacheRepository } from '@/infra/cache/cache-repository'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly cache: CacheRepository,
+  ) {}
+
   getMetricsOfWeek(pastTargetWeek: number): Promise<MetricsOfWeek> {
     console.log(
       'getMetricsOfWeek method is not implemented in PrismaOrdersRepository.',
@@ -32,6 +37,12 @@ export class PrismaOrdersRepository implements OrdersRepository {
   }
 
   async findByIdWithDetails(id: string): Promise<OrderWithDetails | null> {
+    const cacheHit = await this.cache.get(`order:${id}:details `)
+
+    if (cacheHit) {
+      return PrismaOrderWithDetailsMapper.toDomain(JSON.parse(cacheHit))
+    }
+
     const order = await this.prisma.order.findUnique({
       where: { id },
       include: {
@@ -44,6 +55,8 @@ export class PrismaOrdersRepository implements OrdersRepository {
     if (!order) {
       return null
     }
+
+    await this.cache.set(`order:${id}:details `, JSON.stringify(order))
 
     return PrismaOrderWithDetailsMapper.toDomain(order)
   }
@@ -190,27 +203,33 @@ export class PrismaOrdersRepository implements OrdersRepository {
 
     switch (data.orderStatus) {
       case ORDER_STATUS.PENDING:
-        await DomainEvents.dispatchEventsForAggregate(order.id)
+        DomainEvents.dispatchEventsForAggregate(order.id)
         break
       case 'withdrawn':
-        await DomainEvents.dispatchEventsForAggregate(order.id)
+        DomainEvents.dispatchEventsForAggregate(order.id)
         break
       case ORDER_STATUS.DELIVERED:
-        await DomainEvents.dispatchEventsForAggregate(order.id)
+        DomainEvents.dispatchEventsForAggregate(order.id)
         break
       case 'canceled':
-        await DomainEvents.dispatchEventsForAggregate(order.id)
+        DomainEvents.dispatchEventsForAggregate(order.id)
         break
     }
 
-    await this.prisma.order.update({
-      where: { id: data.id },
-      data,
-    })
+    await Promise.all([
+      this.prisma.order.update({
+        where: { id: data.id },
+        data,
+      }),
+      this.cache.delete(`order:${data.id}:details `),
+    ])
   }
 
   async delete(order: Order): Promise<void> {
-    await this.prisma.order.delete({ where: { id: order.id.toValue() } })
+    await Promise.all([
+      this.prisma.order.delete({ where: { id: order.id.toValue() } }),
+      this.cache.delete(`order:${order.id.toValue()}:details `),
+    ])
   }
 
   async fetchRecentOrder({
