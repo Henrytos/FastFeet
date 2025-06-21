@@ -73,6 +73,7 @@
     "@types/nodemailer-direct-transport": "^1.0.35",
     "@types/nodemailer-smtp-transport": "^2.7.8",
     "bcryptjs": "^2.4.3",
+    "ioredis": "^5.6.1",
     "nodemailer": "^6.10.0",
     "ntl": "^5.1.0",
     "passport": "^0.7.0",
