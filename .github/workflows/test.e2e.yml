@@ -27,9 +27,23 @@ jobs:
       run: docker compose up -d
     - name: 'Test e2e'
       env:
-        PORT: ${{ secrets.PORT }}
+        NODE_ENV: ${{ secrets.NODE_ENV }}
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        PORT: ${{ secrets.PORT }}
+        JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+        JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+        CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DOMAIN_ATTACHMENT: ${{ secrets.AWS_DOMAIN_ATTACHMENT }}
+        SMTP_HOST: ${{ secrets.SMTP_HOST }}
+        SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+        SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        REDIS_PORT: ${{ secrets.REDIS_PORT }}
+        REDIS_HOST: ${{ secrets.REDIS_HOST }}
+        REDIS_DB: ${{ secrets.REDIS_DB }}
       run: npm run test:e2e
     
    
