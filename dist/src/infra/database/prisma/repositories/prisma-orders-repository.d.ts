@@ -4,9 +4,11 @@ import { Coordinate } from '@/test/utils/get-distance-between-coordinate';
 import { PrismaService } from '../prisma.service';
 import { OrderWithDetails } from '@/domain/delivery/enterprise/entities/value-object/order-with-details';
 import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-object/order-with-distance';
+import { MetricsOfWeek } from '@/domain/delivery/enterprise/entities/value-object/metrics-of-week';
 export declare class PrismaOrdersRepository implements OrdersRepository {
     private prisma;
     constructor(prisma: PrismaService);
+    getMetricsOfWeek(pastTargetWeek: number): Promise<MetricsOfWeek>;
     create(order: Order): Promise<void>;
     findByIdWithDetails(id: string): Promise<OrderWithDetails | null>;
     findById(id: string): Promise<Order | null>;

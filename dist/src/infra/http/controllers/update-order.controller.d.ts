@@ -44,8 +44,8 @@ declare const bodyUpdateOrderSchema: z.ZodObject<{
         longitude?: number;
     }>;
 }, "strip", z.ZodTypeAny, {
-    status?: "PENDING" | "DELIVERED" | "WITHDRAWN";
     deliveryManId?: string;
+    status?: "PENDING" | "DELIVERED" | "WITHDRAWN";
     deliveryAt?: Date;
     withdrawnAt?: Date;
     address?: {
@@ -59,8 +59,8 @@ declare const bodyUpdateOrderSchema: z.ZodObject<{
         longitude?: number;
     };
 }, {
-    status?: "PENDING" | "DELIVERED" | "WITHDRAWN";
     deliveryManId?: string;
+    status?: "PENDING" | "DELIVERED" | "WITHDRAWN";
     deliveryAt?: string;
     withdrawnAt?: string;
     address?: {

@@ -14,6 +14,9 @@ export declare const envSchema: z.ZodObject<{
     SMTP_PORT: z.ZodNumber;
     SMTP_USER: z.ZodString;
     SMTP_PASS: z.ZodString;
+    REDIS_PORT: z.ZodDefault<z.ZodOptional<z.ZodNumber>>;
+    REDIS_HOST: z.ZodDefault<z.ZodOptional<z.ZodString>>;
+    REDIS_DB: z.ZodDefault<z.ZodOptional<z.ZodNumber>>;
 }, "strip", z.ZodTypeAny, {
     NODE_ENV?: "test" | "development" | "production";
     DATABASE_URL?: string;
@@ -29,6 +32,9 @@ export declare const envSchema: z.ZodObject<{
     SMTP_PORT?: number;
     SMTP_USER?: string;
     SMTP_PASS?: string;
+    REDIS_PORT?: number;
+    REDIS_HOST?: string;
+    REDIS_DB?: number;
 }, {
     NODE_ENV?: "test" | "development" | "production";
     DATABASE_URL?: string;
@@ -44,5 +50,8 @@ export declare const envSchema: z.ZodObject<{
     SMTP_PORT?: number;
     SMTP_USER?: string;
     SMTP_PASS?: string;
+    REDIS_PORT?: number;
+    REDIS_HOST?: string;
+    REDIS_DB?: number;
 }>;
 export type Env = z.infer<typeof envSchema>;

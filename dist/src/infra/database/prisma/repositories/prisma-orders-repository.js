@@ -22,6 +22,10 @@ let PrismaOrdersRepository = class PrismaOrdersRepository {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    getMetricsOfWeek(pastTargetWeek) {
+        console.log('getMetricsOfWeek method is not implemented in PrismaOrdersRepository.', pastTargetWeek);
+        throw new Error('Method not implemented.');
+    }
     async create(order) {
         const data = prisma_order_mapper_1.PrismaOrderMapper.toPrisma(order);
         domain_events_1.DomainEvents.dispatchEventsForAggregate(order.id);

@@ -2,6 +2,7 @@ import { Coordinate } from '@/test/utils/get-distance-between-coordinate';
 import { Order } from '@/domain/delivery/enterprise/entities/order';
 import { OrderWithDetails } from '../../enterprise/entities/value-object/order-with-details';
 import { OrderWithDistance } from '../../enterprise/entities/value-object/order-with-distance';
+import { MetricsOfWeek } from '../../enterprise/entities/value-object/metrics-of-week';
 export declare abstract class OrdersRepository {
     abstract create(order: Order): Promise<void>;
     abstract findById(id: string): Promise<Order | null>;
@@ -23,4 +24,5 @@ export declare abstract class OrdersRepository {
         perPage: number;
     }): Promise<Order[]>;
     abstract exists(id: string): Promise<boolean>;
+    abstract getMetricsOfWeek(pastTargetWeek: number): Promise<MetricsOfWeek>;
 }

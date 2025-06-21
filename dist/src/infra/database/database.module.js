@@ -23,11 +23,13 @@ const prisma_recipients_repository_1 = require("./prisma/repositories/prisma-rec
 const prisma_delivery_address_repository_1 = require("./prisma/repositories/prisma-delivery-address-repository");
 const delivery_address_repository_1 = require("../../domain/delivery/application/repositories/delivery-address-repository");
 const prisma_notifications_repository_1 = require("./prisma/repositories/prisma-notifications-repository");
+const cache_module_1 = require("../cache/cache.module");
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
 exports.DatabaseModule = DatabaseModule = __decorate([
     (0, common_1.Module)({
+        imports: [cache_module_1.CacheModule],
         providers: [
             prisma_service_1.PrismaService,
             {

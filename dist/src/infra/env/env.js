@@ -17,5 +17,8 @@ exports.envSchema = zod_1.z.object({
     SMTP_PORT: zod_1.z.coerce.number(),
     SMTP_USER: zod_1.z.string(),
     SMTP_PASS: zod_1.z.string(),
+    REDIS_PORT: zod_1.z.coerce.number().optional().default(6379),
+    REDIS_HOST: zod_1.z.string().optional().default('127.0.0.1'),
+    REDIS_DB: zod_1.z.coerce.number().optional().default(0),
 });
 //# sourceMappingURL=env.js.map
