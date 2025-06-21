@@ -25,9 +25,9 @@ services:
   redis:
     image: redis:latest
     ports:
-      - "6378:6379"
+      - "6379:6379"
     volumes:
-      - redis_data:/data
+      - redis-data:/data
 volumes:
   postgresql_data:
   redis_data: 
