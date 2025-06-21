@@ -12,10 +12,18 @@ import { PrismaOrderWithDetailsMapper } from '../mappers/prisma-order-with-detai
 import { OrderWithDistance } from '@/domain/delivery/enterprise/entities/value-object/order-with-distance'
 import { ORDER_STATUS } from '@/core/constants/order-status.enum'
 import { DomainEvents } from '@/core/events/domain-events'
+import { MetricsOfWeek } from '@/domain/delivery/enterprise/entities/value-object/metrics-of-week'
 
 @Injectable()
 export class PrismaOrdersRepository implements OrdersRepository {
   constructor(private prisma: PrismaService) {}
+  getMetricsOfWeek(pastTargetWeek: number): Promise<MetricsOfWeek> {
+    console.log(
+      'getMetricsOfWeek method is not implemented in PrismaOrdersRepository.',
+      pastTargetWeek,
+    )
+    throw new Error('Method not implemented.')
+  }
 
   async create(order: Order): Promise<void> {
     const data = PrismaOrderMapper.toPrisma(order)

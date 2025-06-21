@@ -14,8 +14,10 @@ import { PrismaRecipientsRepository } from './prisma/repositories/prisma-recipie
 import { PrismaDeliveryAddressRepository } from './prisma/repositories/prisma-delivery-address-repository'
 import { DeliveryAddressRepository } from '@/domain/delivery/application/repositories/delivery-address-repository'
 import { PrismaNotificationsRepository } from './prisma/repositories/prisma-notifications-repository'
+import { CacheModule } from '../cache/cache.module'
 
 @Module({
+  imports: [CacheModule],
   providers: [
     PrismaService,
     {

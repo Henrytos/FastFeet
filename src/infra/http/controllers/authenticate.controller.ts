@@ -33,7 +33,6 @@ const authenticateBodySchema = z.object({
 })
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
-
 @Public()
 @ApiTags('sing in')
 @Controller('/sessions')
